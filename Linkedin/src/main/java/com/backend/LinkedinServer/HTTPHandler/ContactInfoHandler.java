@@ -1,17 +1,20 @@
 package com.backend.LinkedinServer.HTTPHandler;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.backend.LinkedinServer.Model.ContactInfo;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.MonthDay;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContactInfoHandler implements HttpHandler {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Map<String, ContactInfo> contactInfoMap = new HashMap<>();
 
     static {
         objectMapper.registerModule(new JavaTimeModule());
@@ -24,7 +27,7 @@ public class ContactInfoHandler implements HttpHandler {
 
         switch (method.toUpperCase()) {
             case "GET":
-                response = getContactInfo();
+                response = getContactInfo(exchange);
                 break;
             case "POST":
                 response = createContactInfo(exchange);
@@ -33,7 +36,7 @@ public class ContactInfoHandler implements HttpHandler {
                 response = updateContactInfo(exchange);
                 break;
             case "DELETE":
-                response = deleteContactInfo();
+                response = deleteContactInfo(exchange);
                 break;
             default:
                 exchange.sendResponseHeaders(405, -1); // 405 Method Not Allowed
@@ -46,37 +49,53 @@ public class ContactInfoHandler implements HttpHandler {
         os.close();
     }
 
-    private String getContactInfo() {
-        ContactInfo contactInfo = new ContactInfo(
-                "http://example.com/profile",
-                "1234567890",
-                "Mobile",
-                MonthDay.of(1, 1),
-                "123 Main St",
-                "example@example.com"
-        );
-        try {
-            return objectMapper.writeValueAsString(contactInfo);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error getting contact info";
+    private String getContactInfo(HttpExchange exchange) throws IOException {
+        String response;
+        String query = exchange.getRequestURI().getQuery();
+        if (query != null && query.startsWith("phoneNumber=")) {
+            String phoneNumber = query.split("=")[1];
+            ContactInfo contactInfo = contactInfoMap.get(phoneNumber);
+            if (contactInfo != null) {
+                response = objectMapper.writeValueAsString(contactInfo);
+            } else {
+                response = "Contact info not found";
+            }
+        } else {
+            response = "Invalid query parameter";
         }
+        return response;
     }
 
     private String createContactInfo(HttpExchange exchange) throws IOException {
         ContactInfo contactInfo = objectMapper.readValue(exchange.getRequestBody(), ContactInfo.class);
-        return "Created contact info for " + contactInfo.getPhoneNumber();
+        contactInfoMap.put(contactInfo.getPhoneNumber(), contactInfo);
+        return objectMapper.writeValueAsString(contactInfo);
     }
 
     private String updateContactInfo(HttpExchange exchange) throws IOException {
         ContactInfo contactInfo = objectMapper.readValue(exchange.getRequestBody(), ContactInfo.class);
-        return "Updated contact info for " + contactInfo.getPhoneNumber();
+        if (contactInfoMap.containsKey(contactInfo.getPhoneNumber())) {
+            contactInfoMap.put(contactInfo.getPhoneNumber(), contactInfo);
+            return objectMapper.writeValueAsString(contactInfo);
+        } else {
+            return "Contact info not found";
+        }
     }
 
-    private String deleteContactInfo() {
-        return "Deleted contact info";
+    private String deleteContactInfo(HttpExchange exchange) throws IOException {
+        String query = exchange.getRequestURI().getQuery();
+        if (query != null && query.startsWith("phoneNumber=")) {
+            String phoneNumber = query.split("=")[1];
+            ContactInfo removed = contactInfoMap.remove(phoneNumber);
+            if (removed != null) {
+                return "Deleted contact info for phone number: " + phoneNumber;
+            } else {
+                return "Contact info not found";
+            }
+        } else {
+            return "Invalid query parameter";
+        }
     }
 }
-
 
 //error in posting the contact info also i still don't know how to relate the user with the info
