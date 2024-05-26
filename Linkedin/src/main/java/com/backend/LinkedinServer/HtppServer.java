@@ -1,6 +1,8 @@
 package com.backend.LinkedinServer;
 
-import com.backend.LinkedinServer.HTTPHandler.UserHandler;
+//import com.backend.LinkedinServer.HTTPHandler.UserHandler;
+import com.backend.LinkedinServer.HTTPHandler.*;
+
 import java.net.InetSocketAddress;
 import com.backend.LinkedinServer.HTTPHandler.UserHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -14,6 +16,7 @@ public class HtppServer {
 
         // Create context for '/users' endpoint and set handler
         server.createContext("/users", new UserHandler());
+        server.createContext("/contactInfo", new ContactInfoHandler());
 
         // Start the server
         server.start();
