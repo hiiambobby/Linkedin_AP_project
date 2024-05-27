@@ -4,6 +4,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 //in linkedin our id is made automatically but we can change it later
+//FIX THE BIRTHDAY OPTION
 public class User {
     @JsonProperty("id")
     private String id;
@@ -53,7 +54,7 @@ public class User {
 
     }
 
-    public String getHeader() {
+    public String getId() {
         return id;
     }
 

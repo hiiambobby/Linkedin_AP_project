@@ -95,7 +95,7 @@ public class ContactInfo {
                 ", phoneType=" + phoneType +
                 ", address=" + address +
                 ", birthday=" + birthday +
-                ", address=" + instantMessaging+
+                ", instantMessaging=" + instantMessaging+
                 '}';
     }
 }

@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
 
 public class Education {
     //school degree field of study //start day and end date Grade Activities and societies  Description Skills
@@ -16,10 +17,10 @@ public class Education {
     private String  fieldOfStudy;
 
     @JsonProperty("startDate")
-    private LocalDate startDate;
+    private Date startDate;
 
     @JsonProperty("endDate")
-    private LocalDate endDate;
+    private Date endDate;
 
     @JsonProperty("activities")
     private String activities;
@@ -30,7 +31,16 @@ public class Education {
     @JsonProperty("skills")
     private ArrayList<String> skills =  new ArrayList<>(); ;
 
-    public Education(String school,String degree,String fieldOfStudy,LocalDate startDate,LocalDate endDate,String activities,String description,ArrayList skills) {
+    @JsonProperty("notifyNetwork")
+    private Boolean notifyNetwork;
+
+    //default constructor
+    public Education() {
+
+    }
+
+
+    public Education(String school,String degree,String fieldOfStudy,Date startDate,Date endDate,String activities,String description,ArrayList skills,boolean notifyNetwork) {
         this.activities = activities;
         this.degree = degree;
         this.description = description;
@@ -39,6 +49,7 @@ public class Education {
         this.endDate = endDate;
         this.fieldOfStudy = fieldOfStudy;
         this.skills = skills;
+        this.notifyNetwork = notifyNetwork;
     }
 
     public void setActivities(String activities) {
@@ -73,11 +84,11 @@ public class Education {
         this.description = description;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -89,7 +100,7 @@ public class Education {
         this.skills = skills;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
@@ -101,7 +112,8 @@ public class Education {
         return fieldOfStudy;
     }
 
-    public void setStartDate(LocalDate startDate) {
+
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
     @Override
@@ -115,6 +127,8 @@ public class Education {
                 ", activities=" +activities+
                 ", description=" +description+
                 ", skills=" +skills+
+                ", notifyNetwork=" +notifyNetwork+
+
                 '}';
     }
 }
