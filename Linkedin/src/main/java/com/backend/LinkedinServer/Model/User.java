@@ -37,7 +37,7 @@ public class User {
 
     // Constructor, getters, setters, and toString() method
 
-    public User(String id, String firstName, String lastName,String additionalName, String email, String phoneNumber, String password, String location, Date birthday) {
+    public User(String id, String firstName, String lastName,String additionalName, String email, String phoneNumber, String password, String location) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,7 +46,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.location = location;
-        this.birthday = birthday;
+        //this.birthday = birthday;
     }
 
     public User() {
@@ -144,7 +144,7 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'' +
                 ", location='" + location + '\'' +
-                ", birthday=" + birthday +
+                //", birthday=" + birthday +
                 ", createdAt=" + createdAt +
                 '}';
     }

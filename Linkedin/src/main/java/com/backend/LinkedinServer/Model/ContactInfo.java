@@ -21,10 +21,13 @@ public class ContactInfo {
     @JsonProperty("birthday")
     private MonthDay birthday; //not sure
 
-
-
     @JsonProperty("instantMessaging")
+
+
     private String instantMessaging;
+    // Default constructor
+    public ContactInfo() {
+    }
 
     public ContactInfo(String profileUrl,String phoneNumber,String phoneType,MonthDay birthday,String address,String instantMessaging)
     {
@@ -32,7 +35,7 @@ public class ContactInfo {
         this.phoneNumber = phoneNumber;
         this.profileUrl = profileUrl;
         this.phoneType = phoneType;
-        this.birthday = birthday;
+        //this.birthday = birthday;
         this.instantMessaging = instantMessaging;
     }
 
