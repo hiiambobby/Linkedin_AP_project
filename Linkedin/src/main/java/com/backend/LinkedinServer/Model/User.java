@@ -1,5 +1,6 @@
 package com.backend.LinkedinServer.Model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,14 +32,14 @@ public class User {
     private String location;
 
     @JsonProperty("birthday")
-    private Date birthday;
+    private LocalDate birthday;
 
     @JsonProperty("createdAt")
     private Date createdAt;
 
     // Constructor, getters, setters, and toString() method
 
-    public User(String id, String firstName, String lastName,String additionalName, String email, String phoneNumber, String password, String location) {
+    public User(String id, String firstName, String lastName,String additionalName, String email, String phoneNumber, String password, String location,LocalDate birthday) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,7 +48,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.location = location;
-        //this.birthday = birthday;
+        this.birthday = birthday;
     }
 
     public User() {
@@ -118,11 +119,11 @@ public class User {
         this.location = location;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -145,8 +146,8 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'' +
                 ", location='" + location + '\'' +
-                //", birthday=" + birthday +
-                ", createdAt=" + createdAt +
+                ", birthday=" + birthday +
+//                ", createdAt=" + createdAt +
                 '}';
     }
 }

@@ -1,6 +1,8 @@
 package com.backend.LinkedinServer.Controller;
 
 import com.backend.LinkedinServer.Model.User;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,8 +13,8 @@ public class UserController {
 
     public UserController() {
         // Initialize with some dummy data
-        users.add(new User("1", "John", "Doe", "john@example", "john@example.com", "091232312312", "2222", "iran"));
-        users.add(new User("2", "Jane", "Smith", "Bobby", "saba@gmail.com", "09126854323", "1234","Canada"));
+        users.add(new User("1", "John", "Doe","Bobby", "john@example", "091231232", "1234", "iran", LocalDate.of(2000, 1, 1)));
+        users.add(new User("2", "Jane", "Smith", "Bobby", "saba@gmail.com", "09126854323", "1234","Canada",LocalDate.of(2000, 1, 1)));
     }
 
     public String getUsers() {
@@ -31,19 +33,20 @@ public class UserController {
     }
 
     public void createUser(String id, String firstName, String lastName,String additionalName, String email, String phoneNumber,
-                           String password, String country) {
+                           String password, String country,LocalDate birthday) {
         // Create a new user and add to the users list
-        User newUser = new User(id, firstName, lastName,additionalName,email, phoneNumber, password, country);
+        User newUser = new User(id, firstName, lastName,additionalName,email, phoneNumber, password, country,birthday);
         users.add(newUser);
     }
 
-    public void updateUser(String id, String firstName, String lastName, String email, String phoneNumber,
-                           String password, String country, Date birthday) {
+    public void updateUser(String id, String firstName, String lastName, String email,String additionalName, String phoneNumber,
+                           String password, String country, LocalDate birthday) {
         // Update user details based on id
         for (User user : users) {
             if (user.getId().equals(id)) {
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
+                user.setAdditionalName(additionalName);
                 user.setEmail(email);
                 user.setPhoneNumber(phoneNumber);
                 user.setPassword(password);

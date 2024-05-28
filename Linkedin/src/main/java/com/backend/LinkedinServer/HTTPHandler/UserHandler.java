@@ -6,6 +6,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.LinkOption;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +74,7 @@ public class UserHandler implements HttpHandler {
         String password = jsonObject.getString("password");
         String confirmPassword = jsonObject.getString("confirmPassword");
         String country = jsonObject.getString("country");
-        Date birthday = new Date(jsonObject.getLong("birthday"));
-
+        LocalDate birthday = Instant.ofEpochMilli(jsonObject.getLong("birthday")).atZone(ZoneId.systemDefault()).toLocalDate();
         // Check if passwords match
         if (!password.equals(confirmPassword)) {
             return "Passwords do not match";
@@ -88,7 +91,7 @@ public class UserHandler implements HttpHandler {
                 return "Email already exists";
             }
 
-            userController.createUser(id, firstName, lastName,additionalName, email, phoneNumber, password, country);
+            userController.createUser(id, firstName, lastName,additionalName, email, phoneNumber, password, country, birthday);
             return "User created successfully";
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,10 +111,10 @@ public class UserHandler implements HttpHandler {
         String password = jsonObject.getString("password");
         String confirmPassword = jsonObject.getString("confirmPassword");
         String country = jsonObject.getString("country");
-        Date birthday = new Date(jsonObject.getLong("birthday"));
+        LocalDate birthday = Instant.ofEpochMilli(jsonObject.getLong("birthday")).atZone(ZoneId.systemDefault()).toLocalDate();
 
         try {
-            userController.updateUser(id, firstName, lastName, email, phoneNumber, password, country, birthday);
+            userController.updateUser(id, firstName, lastName,additionalName, email, phoneNumber, password, country, birthday);
             return "User updated successfully";
         } catch (Exception e) {
             e.printStackTrace();
