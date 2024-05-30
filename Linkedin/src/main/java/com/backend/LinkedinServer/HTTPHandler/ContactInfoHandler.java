@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactInfoHandler implements HttpHandler {
+public class ContactInfoHandler implements HttpHandler,HttpStatusCode{
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private List<ContactInfo> contactInfos = new ArrayList<>();
@@ -44,7 +44,7 @@ public class ContactInfoHandler implements HttpHandler {
                 return;
         }
 
-        exchange.sendResponseHeaders(200, response.getBytes().length);
+        exchange.sendResponseHeaders(OK, response.getBytes().length);
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();

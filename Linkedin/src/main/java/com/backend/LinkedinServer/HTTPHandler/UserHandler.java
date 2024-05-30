@@ -92,7 +92,7 @@ public class UserHandler implements HttpHandler {
             }
 
             userController.createUser(id, firstName, lastName,additionalName, email, phoneNumber, password, country, birthday);
-            return "User created successfully";
+            return "Signed Up Successfully";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error creating user: " + e.getMessage();
