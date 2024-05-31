@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ContactInfoHandler implements HttpHandler,HttpStatusCode{
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static final ObjectMapper objectMapper = new ObjectMapper();
     private List<ContactInfo> contactInfos = new ArrayList<>();
 
     static {

@@ -9,16 +9,19 @@ import com.backend.LinkedinServer.HTTPHandler.UserHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 
 public class HtppServer {
     public static void main(String[] args) {
         try {
-            HttpServer server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(8000), 0);
 
+            Files.createDirectories(Paths.get("src/main/java/com/backend/server"));
+            HttpServer server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(8000), 0);
 
             server.createContext("/user", new UserHandler());
             server.createContext("/contactInfo", new ContactInfoHandler());
-
 
             server.start();
 
@@ -27,6 +30,8 @@ public class HtppServer {
         catch (IOException e)
         {
             e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

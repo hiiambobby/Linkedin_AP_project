@@ -1,0 +1,13 @@
+FOR USER POST:
+///////http://localhost:8000/users//////
+{
+  "id": "1",
+  "firstName": "John",
+  "lastName": "Doe",
+  "additionalName": "Johnny",
+  "email": "john.doe@example.com",
+  "phoneNumber": "1234567890",
+  "password": "password123",
+  "country": "USA",
+  "birthday": "1990-01-01"
+}

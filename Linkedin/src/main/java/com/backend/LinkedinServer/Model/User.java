@@ -34,8 +34,7 @@ public class User {
     @JsonProperty("birthday")
     private LocalDate birthday;
 
-    @JsonProperty("createdAt")
-    private Date createdAt;
+
 
     // Constructor, getters, setters, and toString() method
 
@@ -127,13 +126,6 @@ public class User {
         this.birthday = birthday;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 
     @Override
     public String toString() {
