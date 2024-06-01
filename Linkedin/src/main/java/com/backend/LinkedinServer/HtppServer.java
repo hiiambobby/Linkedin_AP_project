@@ -20,6 +20,8 @@ public class HtppServer {
             Files.createDirectories(Paths.get("src/main/java/com/backend/server"));
             HttpServer server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(8000), 0);
 
+            server.createContext("/login", new LoginHandler());
+
             server.createContext("/user", new UserHandler());
             server.createContext("/contactInfo", new ContactInfoHandler());
 

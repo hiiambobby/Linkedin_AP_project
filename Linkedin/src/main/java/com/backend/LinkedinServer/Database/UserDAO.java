@@ -107,7 +107,7 @@ public class UserDAO {
         }
     }
     public boolean checkUserExists(String email, String password) throws SQLException {
-        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
         try (Connection conn = MySql.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
