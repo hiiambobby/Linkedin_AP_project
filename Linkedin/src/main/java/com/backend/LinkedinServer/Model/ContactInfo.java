@@ -1,6 +1,7 @@
 package com.backend.LinkedinServer.Model;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.MonthDay;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +20,7 @@ public class ContactInfo {
 
 
     @JsonProperty("birthday")
-    private MonthDay birthday; //not sure
+    private LocalDate birthday; //not sure
 
     @JsonProperty("instantMessaging")
 
@@ -29,13 +30,13 @@ public class ContactInfo {
     public ContactInfo() {
     }
 
-    public ContactInfo(String profileUrl,String phoneNumber,String phoneType,MonthDay birthday,String address,String instantMessaging)
+    public ContactInfo(String profileUrl,String phoneNumber,String phoneType,String address,LocalDate birthday,String instantMessaging)
     {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.profileUrl = profileUrl;
         this.phoneType = phoneType;
-        //this.birthday = birthday;
+        this.birthday = birthday;
         this.instantMessaging = instantMessaging;
     }
 
@@ -71,11 +72,11 @@ public class ContactInfo {
         return profileUrl;
     }
 
-    public void setBirthday(MonthDay birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
-    public MonthDay getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 

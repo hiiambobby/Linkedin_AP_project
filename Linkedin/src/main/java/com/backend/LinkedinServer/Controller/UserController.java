@@ -43,8 +43,8 @@ public class UserController {
                            String password, String country, LocalDate birthday) {
         User newUser = new User(id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday);
         try {
-            userDAO.createUser(newUser);
-            System.out.println("user created");
+            userDAO.create(newUser);
+            //System.out.println("user created");
         } catch (SQLException e) {
 
             System.err.println("Failed to create user: " + e.getMessage());
@@ -73,13 +73,12 @@ public class UserController {
         }
     }
 
-    public boolean isEmailExists(String email) {
+    public boolean checkUserExists(String email, String password) {
         try {
-            List<User> users = userDAO.getAllUsers();
-            return users.stream().anyMatch(user -> user.getEmail().equals(email));
+            return userDAO.checkUserExists(email, password);
         } catch (SQLException e) {
             // Handle exception appropriately
-            System.err.println("Failed to check email existence: " + e.getMessage());
+            System.err.println("Failed to check user existence: " + e.getMessage());
             return false;
         }
     }

@@ -10,30 +10,31 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 public class JWT {
+    private static final String SECRET_KEY = "bobbyJunior"; // Replace with your secret key
+    private static final long EXPIRATION_TIME = 86400000; // 24 hours
 
-    private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-    public static String generateJwtToken(String userId) {
-        String token = Jwts.builder()
+    public static String generateToken(String userId) {
+        return Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day validity
-                .signWith(secretKey)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
-        return token;
     }
 
-    public static String validateJwtToken(String token) {
+    public static Claims validateToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public static boolean isTokenValid(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            return claims.getSubject();
+            validateToken(token);
+            return true;
         } catch (Exception e) {
-            return null;
+            return false;
         }
     }
 }
-

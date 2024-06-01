@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UserDAO {
 
-    public void createUser(User user) throws SQLException {
+    public void create(User user) throws SQLException {
         String sql = "INSERT INTO user (id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = MySql.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -104,6 +104,16 @@ public class UserDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, id);
             stmt.executeUpdate();
+        }
+    }
+    public boolean checkUserExists(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        try (Connection conn = MySql.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // returns true if a user is found
         }
     }
 }
