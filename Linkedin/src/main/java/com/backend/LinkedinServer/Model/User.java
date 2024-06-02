@@ -1,7 +1,6 @@
 package com.backend.LinkedinServer.Model;
 
 import java.time.LocalDate;
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 //in linkedin our id is made automatically but we can change it later

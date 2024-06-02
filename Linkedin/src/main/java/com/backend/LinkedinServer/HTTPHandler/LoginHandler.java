@@ -95,7 +95,7 @@ public class LoginHandler implements HttpHandler {
         // Create a JWT token
         String token;
         try {
-            token =JWT.generateToken(email);
+            token = JWT.generateToken(email);
             System.out.println("Token generated successfully for email: " + email);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,6 +111,7 @@ public class LoginHandler implements HttpHandler {
         sendResponse(exchange, 200, responseJson.toString());
         System.out.println("Response sent successfully for email: " + email);
     }
+
 
 
     private boolean isValidEmail(String email) {
