@@ -1,8 +1,7 @@
 package com.backend.LinkedinServer;
 
-//import com.backend.LinkedinServer.HTTPHandler.UserHandler;
-import com.backend.LinkedinServer.HTTPHandler.*;
 
+import com.backend.LinkedinServer.HTTPHandler.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.backend.LinkedinServer.HTTPHandler.UserHandler;
@@ -18,7 +17,7 @@ public class HtppServer {
         try {
 
             Files.createDirectories(Paths.get("src/main/java/com/backend/server"));
-            HttpServer server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(8000), 0);
+            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
             server.createContext("/login", new LoginHandler());
 

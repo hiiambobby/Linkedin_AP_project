@@ -81,22 +81,37 @@ public class LoginHandler implements HttpHandler {
         sendResponse(exchange, 201, "User created successfully");
     }
 
-    private void handleLogin(HttpExchange exchange, JSONObject jsonObject) throws IOException, SQLException {
+    public void handleLogin(HttpExchange exchange, JSONObject jsonObject) throws IOException, SQLException {
+        System.out.println("Handling login request");
         String email = jsonObject.getString("email");
         String password = jsonObject.getString("password");
 
         if (!userController.checkUserExists(email, password)) {
+            System.out.println("Invalid credentials for email: " + email);
             sendResponse(exchange, 401, "Invalid credentials");
             return;
         }
 
         // Create a JWT token
-        String token = JWT.generateToken(email);
+        String token;
+        try {
+            token =JWT.generateToken(email);
+            System.out.println("Token generated successfully for email: " + email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error generating token for email: " + email);
+            sendResponse(exchange, 500, "Error generating token");
+            return;
+        }
 
-        // Now, include the token in the response
+        // Include the token in the response
         exchange.getResponseHeaders().set("Content-Type", "application/json");
-        sendResponse(exchange, 200, token);
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("token", token);
+        sendResponse(exchange, 200, responseJson.toString());
+        System.out.println("Response sent successfully for email: " + email);
     }
+
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";

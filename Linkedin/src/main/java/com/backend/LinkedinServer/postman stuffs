@@ -11,3 +11,20 @@ FOR USER POST:
   "country": "USA",
   "birthday": "1990-01-01"
 }
+
+
+/////for signup///
+{
+    "action":"signup",
+    "email":"sasfd@asf.sf",
+    "password":"12341234",
+    "confirmPassword":"12341234",
+    "id" : "1",
+    "firstName":"saba",
+    "lastname":"st",
+    "additionalName":"Bobby",
+    "phoneNumber":"09113882515",
+    "country":"USA",
+    "birthday":"01-02-2010"
+}
+/////////////////////////////////

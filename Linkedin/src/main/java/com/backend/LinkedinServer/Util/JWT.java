@@ -9,32 +9,24 @@ import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+import java.util.Date;
+
 public class JWT {
-    private static final String SECRET_KEY = "bobbyJunior"; // Replace with your secret key
-    private static final long EXPIRATION_TIME = 86400000; // 24 hours
 
-    public static String generateToken(String userId) {
+    // Generate a secure key
+    private static final Key KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    public static String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(userId)
+                .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + 3600 * 1000)) // 1 hour expiration
+                .signWith(KEY)
                 .compact();
-    }
-
-    public static Claims validateToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    public static boolean isTokenValid(String token) {
-        try {
-            validateToken(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }
