@@ -95,11 +95,11 @@ public class userActionsHandler implements HttpHandler {
         String firstName = jsonObject.getString("firstName");
         String lastName = jsonObject.getString("lastName");
         String additionalName = jsonObject.getString("additionalName");
-        String phoneNumber = jsonObject.getString("phoneNumber");
         String country = jsonObject.getString("country");
-        LocalDate birthday = LocalDate.parse(jsonObject.getString("birthday"));
+        String city = jsonObject.getString("city");
 
-        userController.createUser(id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday);
+
+        userController.createUser(id,firstName, lastName, additionalName, email,password, country, city);
 
         sendResponse(exchange, 201, "User created successfully");
     }
@@ -151,12 +151,11 @@ public class userActionsHandler implements HttpHandler {
         String lastName = jsonObject.getString("lastName");
         String additionalName = jsonObject.getString("additionalName");
         String email = jsonObject.getString("email");
-        String phoneNumber = jsonObject.getString("phoneNumber");
         String password = jsonObject.getString("password");
         String country = jsonObject.getString("country");
-        LocalDate birthday = LocalDate.parse(jsonObject.getString("birthday"));
+        String city = jsonObject.getString("city");
 
-        userController.createUser(id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday);
+        userController.createUser(id,firstName, lastName, additionalName, email, password, country, city);
         return "User created successfully";
     }
 
@@ -167,12 +166,11 @@ public class userActionsHandler implements HttpHandler {
         String lastName = jsonObject.getString("lastName");
         String additionalName = jsonObject.getString("additionalName");
         String email = jsonObject.getString("email");
-        String phoneNumber = jsonObject.getString("phoneNumber");
         String password = jsonObject.getString("password");
         String country = jsonObject.getString("country");
-        LocalDate birthday = LocalDate.parse(jsonObject.getString("birthday"));
+        String city = jsonObject.getString("city");
 
-        userController.updateUser(id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday);
+        userController.updateUser(id, firstName, lastName, additionalName, email,password, country, city);
         return "User updated successfully";
     }
 

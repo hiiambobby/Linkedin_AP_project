@@ -1,6 +1,5 @@
 package com.backend.LinkedinServer.Model;
 
-import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 //in linkedin our id is made automatically but we can change it later
@@ -21,32 +20,27 @@ public class User {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("phoneNumber")
-    private String phoneNumber;
-
     @JsonProperty("password")
     private String password;
 
-    @JsonProperty("location")
-    private String location;
+    @JsonProperty("country")
+    private String country;
 
-    @JsonProperty("birthday")
-    private LocalDate birthday;
-
+    @JsonProperty("city")
+    private String city;
 
 
     // Constructor, getters, setters, and toString() method
 
-    public User(String id, String firstName, String lastName,String additionalName, String email, String phoneNumber, String password, String location,LocalDate birthday) {
+    public User(String id, String firstName, String lastName, String additionalName, String email, String password, String country, String city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.additionalName = additionalName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.password = password;
-        this.location = location;
-        this.birthday = birthday;
+        this.country = country;
+        this.city = city;
     }
 
     public User() {
@@ -93,13 +87,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
     public String getPassword() {
         return password;
@@ -109,22 +96,21 @@ public class User {
         this.password = password;
     }
 
-    public String getLocation() {
-        return location;
+    public String getCountry() {
+        return country;
     }
 
     public void setCountry(String location) {
-        this.location = location;
+        this.country = location;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public String getCity() {
+        return city;
     }
-
 
     @Override
     public String toString() {
@@ -134,10 +120,9 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", additionalName='" + additionalName + '\'' +
                 ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'' +
-                ", location='" + location + '\'' +
-                ", birthday=" + birthday +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
                 '}';
     }
 }

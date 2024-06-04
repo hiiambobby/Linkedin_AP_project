@@ -1,6 +1,5 @@
 package com.backend.LinkedinServer.Controller;
 
-import com.backend.LinkedinServer.Database.ContactInfoDAO;
 import com.backend.LinkedinServer.Database.UserDAO;
 import com.backend.LinkedinServer.Model.ContactInfo;
 import com.backend.LinkedinServer.Model.User;
@@ -12,7 +11,7 @@ import java.util.UUID;
 
 public class UserController {
     private UserDAO userDAO;
-    private ContactInfoDAO contactInfoDAO;
+    //private ContactInfoDAO contactInfoDAO;
 
     public UserController() throws SQLException {
         this.userDAO = new UserDAO(); // Initialize UserDAO instance
@@ -40,17 +39,17 @@ public class UserController {
         }
     }
 
-    public void createUser(String firstName, String lastName,String additionalName, String email, String password, String phoneNumber, String country, LocalDate birthday) throws SQLException {
-        String userId = UUID.randomUUID().toString(); // Generate random ID for user
-        User newUser = new User(userId, firstName, lastName,additionalName, email, password, phoneNumber, country, birthday);
+    public void createUser(String userId,String firstName, String lastName,String additionalName, String email, String password, String country, String city) throws SQLException {
+       // String userId = UUID.randomUUID().toString(); // Generate random ID for user
+        User newUser = new User(userId, firstName, lastName,additionalName, email, password,country,city);
         userDAO.saveUser(newUser); // Save user to User table
 
         // Create profile URL for user
         String profileUrl = generateProfileUrl(firstName, lastName, userId);
 
 
-        ContactInfo contactInfo = new ContactInfo(userId,profileUrl, phoneNumber,birthday);
-        contactInfoDAO.saveContactInfo(contactInfo); // Save contact info to ContactInfo table
+       // ContactInfo contactInfo = new ContactInfo(userId,email,profileUrl);
+       // contactInfoDAO.saveContactInfo(contactInfo); // Save contact info to ContactInfo table
     }
 
     private String generateProfileUrl(String firstName, String lastName, String userId) {
@@ -59,10 +58,10 @@ public class UserController {
         return String.format("www.linkedin.com/in/%s-%s-%s", firstName, lastName, uniqueId);
     }
 
-    public void updateUser(String id, String firstName, String lastName, String email, String additionalName, String phoneNumber,
-                           String password, String country, LocalDate birthday) {
+    public void updateUser(String id, String firstName, String lastName, String email, String additionalName,
+                           String password, String country, String city) {
         try {
-            User userToUpdate = new User(id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday);
+            User userToUpdate = new User(id, firstName, lastName, additionalName, email, password, country,city);
             userDAO.updateUser(userToUpdate);
         } catch (SQLException e) {
             // Handle exception appropriately

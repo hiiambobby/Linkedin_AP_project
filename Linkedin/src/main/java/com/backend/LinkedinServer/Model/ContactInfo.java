@@ -1,12 +1,16 @@
 package com.backend.LinkedinServer.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.json.JSONPropertyName;
 
 import java.time.LocalDate;
 
 public class ContactInfo {
     @JsonProperty("profileUrl")
     private String profileUrl;
+
+    @JsonProperty("email")
+    private String email;
 
     @JsonProperty("phoneNumber")
     private String phoneNumber;
@@ -31,21 +35,17 @@ public class ContactInfo {
     public ContactInfo() {
     }
 
-    public ContactInfo(String userId, String profileUrl, String phoneNumber, String phoneType, String address, LocalDate birthday, String instantMessaging) {
-        this.userId = userId;
+    public ContactInfo(String phoneNumber, String phoneType, String address,String instantMessaging) {
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.profileUrl = profileUrl;
         this.phoneType = phoneType;
-        this.birthday = birthday;
         this.instantMessaging = instantMessaging;
     }
 
-    public ContactInfo(String userId, String profileUrl, String phoneNumber, LocalDate birthday) {
+    public ContactInfo(String userId, String profileUrl,String email) {
         this.userId = userId;
         this.profileUrl = profileUrl;
-        this.birthday = birthday;
-        this.phoneNumber= phoneNumber;
+        this.email = email;
     }
 
     public void setUserId(String userId) {
@@ -104,11 +104,20 @@ public class ContactInfo {
         return instantMessaging;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public String toString() {
         return "ContactInfo{" +
                 ", userId='" + userId + '\'' +
                 ", profileUrl='" + profileUrl + '\'' +
+                ", email='" + email + '\'' +
                 ",  phoneNumber='" + phoneNumber + '\'' + //common with user
                 ", phoneType=" + phoneType +
                 ", address=" + address +

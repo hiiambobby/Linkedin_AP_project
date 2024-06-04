@@ -22,32 +22,33 @@ public class UserDAO {
 
     public void createUserTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS users ("
-                + "id VARCHAR(16) PRIMARY KEY, "
+                + "id VARCHAR(36) PRIMARY KEY, "
                 + "first_name VARCHAR(255), "
                 + "last_name VARCHAR(255), "
                 + "additional_name VARCHAR(255), "
                 + "email VARCHAR(255), "
-                + "phone_number VARCHAR(255), "
                 + "password VARCHAR(255), "
                 + "country VARCHAR(255), "
-                + "birthday DATE)";
+                + "city VARCHAR(255))"; // Add closing parenthesis here
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Or use a logger
+            System.out.println("SQL Exception: " + e.getMessage());
         }
     }
 
     public void saveUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (id, first_name, last_name, additional_name, email, phone_number, password, country, birthday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (id, first_name, last_name, additional_name, email, password, country, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getId());
             stmt.setString(2, user.getFirstName());
             stmt.setString(3, user.getLastName());
             stmt.setString(4, user.getAdditionalName());
             stmt.setString(5, user.getEmail());
-            stmt.setString(6, user.getPhoneNumber());
-            stmt.setString(7, user.getPassword());
-            stmt.setString(8, user.getLocation());
-            stmt.setDate(9, java.sql.Date.valueOf(user.getBirthday()));
+            stmt.setString(6, user.getPassword());
+            stmt.setString(7, user.getCountry());
+            stmt.setString(8, user.getCity());
             stmt.executeUpdate();
         }
     }
@@ -64,11 +65,9 @@ public class UserDAO {
                         rs.getString("last_name"),
                         rs.getString("additional_name"),
                         rs.getString("email"),
-                        rs.getString("phone_number"),
                         rs.getString("password"),
                         rs.getString("country"),
-                        rs.getDate("birthday").toLocalDate()
-                );
+                        rs.getString("city"));
             }
         }
         return null;
@@ -86,31 +85,29 @@ public class UserDAO {
                         rs.getString("last_name"),
                         rs.getString("additional_name"),
                         rs.getString("email"),
-                        rs.getString("phone_number"),
                         rs.getString("password"),
                         rs.getString("country"),
-                        rs.getDate("birthday").toLocalDate()
-                ));
+                        rs.getString("city")));
             }
         }
         return users;
     }
 
     public void updateUser(User user) throws SQLException {
-        String sql = "UPDATE users SET first_name = ?, last_name = ?, additional_name = ?, email = ?, phone_number = ?, password = ?, country = ?, birthday = ? WHERE id = ?";
+        String sql = "UPDATE users SET first_name =?, last_name =?, additional_name =?, email =?, password =?, country =?, city =? WHERE id =?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getFirstName());
             stmt.setString(2, user.getLastName());
             stmt.setString(3, user.getAdditionalName());
             stmt.setString(4, user.getEmail());
-            stmt.setString(5, user.getPhoneNumber());
-            stmt.setString(6, user.getPassword());
-            stmt.setString(7, user.getLocation());
-            stmt.setDate(8, java.sql.Date.valueOf(user.getBirthday()));
-            stmt.setString(9, user.getId());
+            stmt.setString(5, user.getPassword()); // Corrected order
+            stmt.setString(6, user.getCountry()); // Corrected order
+            stmt.setString(7, user.getCity());
+            stmt.setString(8, user.getId());
             stmt.executeUpdate();
         }
     }
+
 
     public void deleteUser(String id) throws SQLException {
         String sql = "DELETE FROM users WHERE id = ?";

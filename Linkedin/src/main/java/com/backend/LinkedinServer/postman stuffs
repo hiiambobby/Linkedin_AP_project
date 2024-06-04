@@ -9,7 +9,7 @@ FOR USER POST:
   "phoneNumber": "1234567890",
   "password": "password123",
   "country": "USA",
-  "birthday": "1990-01-01"
+  "city": "LA"
 }
 
 
@@ -23,11 +23,21 @@ FOR USER POST:
     "firstName":"saba",
     "lastname":"st",
     "additionalName":"Bobby",
-    "phoneNumber":"09113882515",
     "country":"USA",
-    "birthday":"01-02-2010"
+    "city":"LA"
 }
 /////////////////////////////////
 
+{
+    "action": "signup",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "additionalName": "B",
+    "email": "jane.doe@example.com",
+    "password": "SecurePass123",
+    "confirmPassword": "SecurePass123",
+    "country": "USA",
+    "city": "LA"
+}
 
 
