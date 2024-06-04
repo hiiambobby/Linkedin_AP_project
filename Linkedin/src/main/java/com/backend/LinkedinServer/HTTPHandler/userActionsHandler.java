@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -200,9 +201,10 @@ public class userActionsHandler implements HttpHandler {
         os.close();
     }
 
+    //this are very unlikely to colide but i will add extra logic to check for the uniqueness later on
     private String generateRandomId() {
-        // Implement logic to generate a random unique ID
-        return java.util.UUID.randomUUID().toString().substring(0, 16);
+        return UUID.randomUUID().toString().substring(0, 16);
     }
+
 }
 

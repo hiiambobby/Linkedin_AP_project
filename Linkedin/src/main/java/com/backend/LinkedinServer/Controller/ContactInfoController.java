@@ -1,11 +1,9 @@
-//package com.backend.LinkedinServer.Controller;
-//
-//import com.backend.LinkedinServer.Model.ContactInfo;
-//import com.backend.LinkedinServer.Model.User;
-//import java.time.LocalDate;
-//import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
-//
-//
-//}
+package com.backend.LinkedinServer.Controller;
+
+
+import com.backend.LinkedinServer.Database.UserDAO;
+import com.backend.LinkedinServer.Model.User;
+import java.sql.SQLException;
+public class ContactInfoController {
+
+}

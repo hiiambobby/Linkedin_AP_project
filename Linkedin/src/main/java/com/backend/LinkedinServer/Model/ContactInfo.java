@@ -38,7 +38,8 @@ public class ContactInfo {
     }
 
 
-    public ContactInfo(String profileUrl,String email,String phoneNumber, String phoneType, String address,String instantMessaging,LocalDate birthday) {
+    public ContactInfo(String userId,String profileUrl,String email,String phoneNumber, String phoneType, String address,String instantMessaging,LocalDate birthday) {
+        this.userId = userId;
         this.profileUrl = profileUrl;
         this.address = address;
         this.email = email;
@@ -127,8 +128,8 @@ public class ContactInfo {
                 ",  phoneNumber='" + phoneNumber + '\'' + //common with user
                 ", phoneType=" + phoneType +
                 ", address=" + address +
-                ", birthday=" + birthday +
                 ", instantMessaging=" + instantMessaging +
+                ", birthday=" + birthday +
                 '}';
     }
 }

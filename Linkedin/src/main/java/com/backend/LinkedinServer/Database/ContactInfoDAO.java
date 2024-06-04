@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 
-public class ContactInfoDAO implements sqlOperations{
+public class ContactInfoDAO implements sqlOperations {
     private Connection connection;
 
     public ContactInfoDAO() throws SQLException {
@@ -18,7 +18,7 @@ public class ContactInfoDAO implements sqlOperations{
 
     private void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS contactInfo ("
-                + "userId VARCHAR(16) PRIMARY KEY, "
+                + "id VARCHAR(16) PRIMARY KEY, "
                 + "profileUrl VARCHAR(255), "
                 + "email VARCHAR(255), "
                 + "phoneNumber VARCHAR(255), "
@@ -28,12 +28,15 @@ public class ContactInfoDAO implements sqlOperations{
                 + "birthday DATE)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("SQL Exception: " + e.getMessage());
         }
     }
 
 
     public void save(ContactInfo contactInfo) {
-        String sql = "INSERT INTO users (userId, profileUrl, email, phoneNumber, phoneType, address, instantMessaging, birthday) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO contactInfo (id, profileUrl, email, phoneNumber, phoneType, address, instantMessaging, birthday) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, contactInfo.getUserId());
             stmt.setString(2, contactInfo.getProfileUrl());
@@ -49,28 +52,29 @@ public class ContactInfoDAO implements sqlOperations{
             throw new RuntimeException(e);
         }
     }
-    public void update(ContactInfo contactInfo)
-    {
-        String sql = "UPDATE users SET userId =?, profileUrl =?, email =?,phoneNumber =?, phoneType =?, address =?,instantMessaging=? ," +
-                "birthday =? WHERE id =?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, contactInfo.getUserId());
-            stmt.setString(2, contactInfo.getProfileUrl());
-            stmt.setString(3, contactInfo.getEmail());
-            stmt.setString(4, contactInfo.getPhoneNumber());
-            stmt.setString(5, contactInfo.getPhoneType());
-            stmt.setString(6, contactInfo.getAddress());
-            stmt.setString(7, contactInfo.getInstantMessaging());
-            stmt.setDate(8, java.sql.Date.valueOf(contactInfo.getBirthday()));
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    //    public void update(ContactInfo contactInfo)
+//    {
+//        String sql = "UPDATE contactInfo SET id =?, profileUrl =?, email =?,phoneNumber =?, phoneType =?, address =?,instantMessaging=? ," +
+//                "birthday =? WHERE id =?";
+//
+//        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            stmt.setString(1, contactInfo.getUserId());
+//            stmt.setString(2, contactInfo.getProfileUrl());
+//            stmt.setString(3, contactInfo.getEmail());
+//            stmt.setString(4, contactInfo.getPhoneNumber());
+//            stmt.setString(5, contactInfo.getPhoneType());
+//            stmt.setString(6, contactInfo.getAddress());
+//            stmt.setString(7, contactInfo.getInstantMessaging());
+//            stmt.setDate(8, java.sql.Date.valueOf(contactInfo.getBirthday()));
+//
+//            stmt.executeUpdate();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
     public void delete(String userId) throws SQLException {
-        String sql = "DELETE FROM contactInfo WHERE userId = ?";
+        String sql = "DELETE FROM contactInfo WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, userId);
             stmt.executeUpdate();

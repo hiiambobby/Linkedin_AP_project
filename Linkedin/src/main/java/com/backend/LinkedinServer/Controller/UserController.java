@@ -6,6 +6,7 @@ import com.backend.LinkedinServer.Model.ContactInfo;
 import com.backend.LinkedinServer.Model.User;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserController {
@@ -13,7 +14,7 @@ public class UserController {
     private ContactInfoDAO contactInfoDAO;
 
     public UserController() throws SQLException {
-        this.contactInfoDAO = contactInfoDAO;
+        this.contactInfoDAO = new ContactInfoDAO();
         this.userDAO = new UserDAO(); // Initialize UserDAO instance
     }
 
@@ -48,7 +49,7 @@ public class UserController {
         String profileUrl = generateProfileUrl(firstName, lastName, userId);
 
 
-       ContactInfo contactInfo = new ContactInfo(userId,email,profileUrl);
+       ContactInfo contactInfo = new ContactInfo(userId,profileUrl,email,"null","null","null","skype",null);
        contactInfoDAO.save(contactInfo); // Save contact info to ContactInfo table
     }
 
