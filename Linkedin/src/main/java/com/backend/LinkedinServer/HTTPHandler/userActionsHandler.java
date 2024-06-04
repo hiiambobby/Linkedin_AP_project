@@ -99,6 +99,8 @@ public class userActionsHandler implements HttpHandler {
         String country = jsonObject.getString("country");
         String city = jsonObject.getString("city");
 
+        if(userController.checkUserExists(email,password))
+            sendResponse(exchange, 201, "User already exists");
 
         userController.createUser(id,firstName, lastName, additionalName, email,password, country, city);
 
@@ -156,6 +158,8 @@ public class userActionsHandler implements HttpHandler {
         String country = jsonObject.getString("country");
         String city = jsonObject.getString("city");
 
+        if(userController.checkUserExists(email,password))
+            return "user exists";
         userController.createUser(id,firstName, lastName, additionalName, email, password, country, city);
         return "User created successfully";
     }

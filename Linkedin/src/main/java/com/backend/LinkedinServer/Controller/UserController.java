@@ -49,8 +49,8 @@ public class UserController {
         String profileUrl = generateProfileUrl(firstName, lastName, userId);
 
 
-       ContactInfo contactInfo = new ContactInfo(userId,profileUrl,email,"null","null","null","skype",null);
-       contactInfoDAO.save(contactInfo); // Save contact info to ContactInfo table
+     //  ContactInfo contactInfo = new ContactInfo(userId,profileUrl,email,"null","null","null","skype",null);
+       //contactInfoDAO.save(contactInfo); // Save contact info to ContactInfo table
     }
 
     private String generateProfileUrl(String firstName, String lastName, String userId) {

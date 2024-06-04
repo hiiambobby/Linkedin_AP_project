@@ -13,32 +13,8 @@ FOR USER POST:
 }
 
 
-/////for signup///
-{
-    "action":"signup",
-    "email":"sasfd@asf.sf",
-    "password":"12341234",
-    "confirmPassword":"12341234",
-    "id" : "1",
-    "firstName":"saba",
-    "lastname":"st",
-    "additionalName":"Bobby",
-    "country":"USA",
-    "city":"LA"
-}
-/////////////////////////////////
 
-{
-    "action": "signup",
-    "firstName": "Jane",
-    "lastName": "Doe",
-    "additionalName": "B",
-    "email": "jane.doe@example.com",
-    "password": "SecurePass123",
-    "confirmPassword": "SecurePass123",
-    "country": "USA",
-    "city": "LA"
-}
+/////////////////////////////////
 ///////////////
 http://localhost:8000/signup
 {
@@ -52,4 +28,11 @@ http://localhost:8000/signup
     "country": "Iran",
     "city": "Tehran"
 }
+////http://localhost:8000/login
+{
+    "action": "signup",
+    "email": "saba3st@gmail.com",
+    "password": "bobby0068",
+}
+
 
