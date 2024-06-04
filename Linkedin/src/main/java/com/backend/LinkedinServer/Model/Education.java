@@ -7,6 +7,8 @@ import java.sql.Date;
 
 public class Education {
     //school degree field of study //start day and end date Grade Activities and societies  Description Skills
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("school")
     private String school;
 
@@ -40,7 +42,8 @@ public class Education {
     }
 
 
-    public Education(String school,String degree,String fieldOfStudy,Date startDate,Date endDate,String activities,String description,ArrayList skills,boolean notifyNetwork) {
+    public Education(String id,String school,String degree,String fieldOfStudy,Date startDate,Date endDate,String activities,String description,ArrayList skills,boolean notifyNetwork) {
+        this.id = id;
         this.activities = activities;
         this.degree = degree;
         this.description = description;
@@ -50,6 +53,14 @@ public class Education {
         this.fieldOfStudy = fieldOfStudy;
         this.skills = skills;
         this.notifyNetwork = notifyNetwork;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setActivities(String activities) {
@@ -118,7 +129,8 @@ public class Education {
     }
     @Override
     public String toString() {
-        return "ContactInfo{" +
+        return "Education{" +
+                ", id='" + id + '\'' +
                 ", school='" + school + '\'' +
                 ",  degree='" + degree + '\'' + //common with user
                 ", fieldOfStudy=" + fieldOfStudy+

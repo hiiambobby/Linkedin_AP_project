@@ -8,7 +8,7 @@ public class MySql {
     private static final String USERNAME = "root"; // Change to your MySQL username
     private static final String PASSWORD = "saba5782"; // Change to your MySQL password
 
-    private static Connection connection;
+    public static Connection connection;
 
     private MySql() {
 

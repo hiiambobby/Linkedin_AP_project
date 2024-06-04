@@ -12,6 +12,7 @@ import com.backend.LinkedinServer.Util.JWT;
 import org.json.JSONObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import static com.backend.LinkedinServer.HTTPHandler.HttpStatusCode.*;
 
 public class LoginHandler implements HttpHandler {
 
@@ -22,6 +23,7 @@ public class LoginHandler implements HttpHandler {
     }
 
     @Override
+    //i think we can change this part to only have the login part but it's fine till now
     public void handle(HttpExchange exchange) throws IOException {
         if ("POST".equals(exchange.getRequestMethod())) {
             try {
@@ -33,14 +35,14 @@ public class LoginHandler implements HttpHandler {
                 } else if ("login".equals(action)) {
                     handleLogin(exchange, jsonObject);
                 } else {
-                    exchange.sendResponseHeaders(400, 0); // Bad Request
+                    exchange.sendResponseHeaders(BAD_REQUEST, 0); // Bad Request
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                exchange.sendResponseHeaders(500, 0);
+                exchange.sendResponseHeaders(INTERNAL_SERVER_ERROR, 0);
             }
         } else {
-            exchange.sendResponseHeaders(405, 0); // Method not allowed
+            exchange.sendResponseHeaders(METHOD_NOT_ALLOWED, 0); // Method not allowed
         }
     }
 
@@ -51,19 +53,19 @@ public class LoginHandler implements HttpHandler {
 
         // Validate email format
         if (!isValidEmail(email)) {
-            sendResponse(exchange, 400, "Invalid email format");
+            sendResponse(exchange, BAD_REQUEST, "Invalid email format");
             return;
         }
 
         // Check if password matches confirmPassword
         if (!password.equals(confirmPassword)) {
-            sendResponse(exchange, 400, "Passwords do not match");
+            sendResponse(exchange, BAD_REQUEST, "Passwords do not match");
             return;
         }
 
         // Check if password is at least 8 characters long
         if (password.length() < 8) {
-            sendResponse(exchange, 400, "Password must be at least 8 characters long");
+            sendResponse(exchange, BAD_REQUEST, "Password must be at least 8 characters long");
             return;
         }
 
@@ -78,7 +80,7 @@ public class LoginHandler implements HttpHandler {
 
         userController.createUser(id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday);
 
-        sendResponse(exchange, 201, "User created successfully");
+        sendResponse(exchange, CREATED, "User created successfully");
     }
 
     public void handleLogin(HttpExchange exchange, JSONObject jsonObject) throws IOException, SQLException {
@@ -88,11 +90,11 @@ public class LoginHandler implements HttpHandler {
 
         if (!userController.checkUserExists(email, password)) {
             System.out.println("Invalid credentials for email: " + email);
-            sendResponse(exchange, 401, "Invalid credentials");
+            sendResponse(exchange, UNAUTHORIZED, "Invalid credentials");
             return;
         }
 
-        // Create a JWT token
+        // the print lines are just for testing the program
         String token;
         try {
             token = JWT.generateToken(email);
@@ -100,15 +102,15 @@ public class LoginHandler implements HttpHandler {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error generating token for email: " + email);
-            sendResponse(exchange, 500, "Error generating token");
+            sendResponse(exchange, INTERNAL_SERVER_ERROR, "Error generating token");
             return;
         }
 
-        // Include the token in the response
+        //this is just for checking
         exchange.getResponseHeaders().set("Content-Type", "application/json");
         JSONObject responseJson = new JSONObject();
         responseJson.put("token", token);
-        sendResponse(exchange, 200, responseJson.toString());
+        sendResponse(exchange, OK, responseJson.toString());
         System.out.println("Response sent successfully for email: " + email);
     }
 

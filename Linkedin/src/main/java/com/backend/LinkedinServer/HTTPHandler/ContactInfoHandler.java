@@ -12,7 +12,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactInfoHandler implements HttpHandler,HttpStatusCode{
+import static com.backend.LinkedinServer.HTTPHandler.HttpStatusCode.*;
+
+public class ContactInfoHandler implements HttpHandler{
 
     public static final ObjectMapper objectMapper = new ObjectMapper();
     private List<ContactInfo> contactInfos = new ArrayList<>();
@@ -40,7 +42,7 @@ public class ContactInfoHandler implements HttpHandler,HttpStatusCode{
                 response = deleteContactInfo(exchange);
                 break;
             default:
-                exchange.sendResponseHeaders(405, -1); // 405 Method Not Allowed
+                exchange.sendResponseHeaders(METHOD_NOT_ALLOWED, -1); //
                 return;
         }
 

@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class ControllerDAO implements sqlOperations{
+public class ControllerDAO {
     public void create(ContactInfo contactInfo) throws SQLException {
         String sql = "INSERT INTO contactInfo (profileUrl, phoneNumber, phoneType, address, birthday, instantMessaging)";
         try(Connection conn = MySql.getConnection();

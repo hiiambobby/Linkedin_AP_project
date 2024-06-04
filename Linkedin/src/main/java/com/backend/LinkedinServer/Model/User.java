@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 //FIX THE BIRTHDAY OPTION
 public class User {
     @JsonProperty("id")
-    private String id;
+    private String id; //which is the jwt token at first( the user do not choose id in linkedin at first)
 
     @JsonProperty("firstName")
     private String firstName;

@@ -14,7 +14,7 @@ import static com.backend.LinkedinServer.HTTPHandler.ContactInfoHandler.objectMa
 public class UserController {
     private UserDAO userDAO; // Inject UserDAO dependency
 
-    public UserController() {
+    public UserController() throws SQLException {
         this.userDAO = new UserDAO(); // Initialize UserDAO instance
     }
 
@@ -43,7 +43,7 @@ public class UserController {
                            String password, String country, LocalDate birthday) {
         User newUser = new User(id, firstName, lastName, additionalName, email, phoneNumber, password, country, birthday);
         try {
-            userDAO.create(newUser);
+            userDAO.saveUser(newUser);
             //System.out.println("user created");
         } catch (SQLException e) {
 
