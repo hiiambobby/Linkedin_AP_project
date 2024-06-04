@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONPropertyName;
 
 public class Header {
+    @JsonProperty("userId")
+    private String userId;
     @JsonProperty("header")
     private String header;
 
@@ -16,6 +18,15 @@ public class Header {
     {
         this.header = header;
     }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
     public void setHeader(String header) {
         this.header = header;
     }
