@@ -12,15 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDAO {
+public class UserDAO implements sqlOperations{
     private Connection connection;
 
     public UserDAO() throws SQLException {
         connection = MySql.getConnection();
-        createUserTable();
+        createTable();
     }
 
-    public void createUserTable() throws SQLException {
+    public void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS users ("
                 + "id VARCHAR(36) PRIMARY KEY, "
                 + "first_name VARCHAR(255), "
@@ -38,7 +38,7 @@ public class UserDAO {
         }
     }
 
-    public void saveUser(User user) throws SQLException {
+    public void save(User user) throws SQLException {
         String sql = "INSERT INTO users (id, first_name, last_name, additional_name, email, password, country, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getId());
@@ -93,7 +93,7 @@ public class UserDAO {
         return users;
     }
 
-    public void updateUser(User user) throws SQLException {
+    public void update(User user) throws SQLException {
         String sql = "UPDATE users SET first_name =?, last_name =?, additional_name =?, email =?, password =?, country =?, city =? WHERE id =?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, user.getFirstName());
@@ -109,7 +109,7 @@ public class UserDAO {
     }
 
 
-    public void deleteUser(String id) throws SQLException {
+    public void delete(String id) throws SQLException {
         String sql = "DELETE FROM users WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, id);

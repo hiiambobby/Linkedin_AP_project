@@ -39,5 +39,17 @@ FOR USER POST:
     "country": "USA",
     "city": "LA"
 }
-
+///////////////
+http://localhost:8000/signup
+{
+    "action": "signup",
+    "firstName": "Saba",
+    "lastName": "St",
+    "additionalName": "Bobby",
+    "email": "saba3st@gmail.com",
+    "password": "bobby0068",
+    "confirmPassword": "bobby0068",
+    "country": "Iran",
+    "city": "Tehran"
+}
 

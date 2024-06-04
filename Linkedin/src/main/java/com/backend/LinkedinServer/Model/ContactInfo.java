@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONPropertyName;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class ContactInfo {
     @JsonProperty("profileUrl")
@@ -33,13 +34,18 @@ public class ContactInfo {
 
     // Default constructor
     public ContactInfo() {
+
     }
 
-    public ContactInfo(String phoneNumber, String phoneType, String address,String instantMessaging) {
+
+    public ContactInfo(String profileUrl,String email,String phoneNumber, String phoneType, String address,String instantMessaging,LocalDate birthday) {
+        this.profileUrl = profileUrl;
         this.address = address;
+        this.email = email;
         this.phoneNumber = phoneNumber;
         this.phoneType = phoneType;
         this.instantMessaging = instantMessaging;
+        this.birthday = birthday;
     }
 
     public ContactInfo(String userId, String profileUrl,String email) {

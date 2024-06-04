@@ -1,19 +1,19 @@
 package com.backend.LinkedinServer.Controller;
 
+import com.backend.LinkedinServer.Database.ContactInfoDAO;
 import com.backend.LinkedinServer.Database.UserDAO;
 import com.backend.LinkedinServer.Model.ContactInfo;
 import com.backend.LinkedinServer.Model.User;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 public class UserController {
     private UserDAO userDAO;
-    //private ContactInfoDAO contactInfoDAO;
+    private ContactInfoDAO contactInfoDAO;
 
     public UserController() throws SQLException {
+        this.contactInfoDAO = contactInfoDAO;
         this.userDAO = new UserDAO(); // Initialize UserDAO instance
     }
 
@@ -42,14 +42,14 @@ public class UserController {
     public void createUser(String userId,String firstName, String lastName,String additionalName, String email, String password, String country, String city) throws SQLException {
        // String userId = UUID.randomUUID().toString(); // Generate random ID for user
         User newUser = new User(userId, firstName, lastName,additionalName, email, password,country,city);
-        userDAO.saveUser(newUser); // Save user to User table
+        userDAO.save(newUser); // Save user to User table
 
         // Create profile URL for user
         String profileUrl = generateProfileUrl(firstName, lastName, userId);
 
 
-       // ContactInfo contactInfo = new ContactInfo(userId,email,profileUrl);
-       // contactInfoDAO.saveContactInfo(contactInfo); // Save contact info to ContactInfo table
+       ContactInfo contactInfo = new ContactInfo(userId,email,profileUrl);
+       contactInfoDAO.save(contactInfo); // Save contact info to ContactInfo table
     }
 
     private String generateProfileUrl(String firstName, String lastName, String userId) {
@@ -62,7 +62,7 @@ public class UserController {
                            String password, String country, String city) {
         try {
             User userToUpdate = new User(id, firstName, lastName, additionalName, email, password, country,city);
-            userDAO.updateUser(userToUpdate);
+            userDAO.update(userToUpdate);
         } catch (SQLException e) {
             // Handle exception appropriately
             System.err.println("Failed to update user: " + e.getMessage());
@@ -72,7 +72,7 @@ public class UserController {
 
     public void deleteUser(String id) {
         try {
-            userDAO.deleteUser(id);
+            userDAO.delete(id);
         } catch (SQLException e) {
             // Handle exception appropriately
             System.err.println("Failed to delete user: " + e.getMessage());
