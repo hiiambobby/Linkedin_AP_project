@@ -1,10 +1,9 @@
 package com.backend.LinkedinServer.Model;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.MonthDay;
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
+
 public class ContactInfo {
     @JsonProperty("profileUrl")
     private String profileUrl;
@@ -23,21 +22,38 @@ public class ContactInfo {
     private LocalDate birthday; //not sure
 
     @JsonProperty("instantMessaging")
-
-
     private String instantMessaging;
+
+    @JsonProperty("userId")
+    private String userId;
+
     // Default constructor
     public ContactInfo() {
     }
 
-    public ContactInfo(String profileUrl,String phoneNumber,String phoneType,String address,LocalDate birthday,String instantMessaging)
-    {
+    public ContactInfo(String userId, String profileUrl, String phoneNumber, String phoneType, String address, LocalDate birthday, String instantMessaging) {
+        this.userId = userId;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.profileUrl = profileUrl;
         this.phoneType = phoneType;
         this.birthday = birthday;
         this.instantMessaging = instantMessaging;
+    }
+
+    public ContactInfo(String userId, String profileUrl, String phoneNumber, LocalDate birthday) {
+        this.userId = userId;
+        this.profileUrl = profileUrl;
+        this.birthday = birthday;
+        this.phoneNumber= phoneNumber;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public void setAddress(String address) {
@@ -91,12 +107,13 @@ public class ContactInfo {
     @Override
     public String toString() {
         return "ContactInfo{" +
+                ", userId='" + userId + '\'' +
                 ", profileUrl='" + profileUrl + '\'' +
                 ",  phoneNumber='" + phoneNumber + '\'' + //common with user
                 ", phoneType=" + phoneType +
                 ", address=" + address +
                 ", birthday=" + birthday +
-                ", instantMessaging=" + instantMessaging+
+                ", instantMessaging=" + instantMessaging +
                 '}';
     }
 }

@@ -2,18 +2,18 @@ package com.backend.LinkedinServer.HTTPHandler;
 
 import com.backend.LinkedinServer.Controller.UserController;
 import com.backend.LinkedinServer.Model.User;
+import com.backend.LinkedinServer.Util.JWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.backend.LinkedinServer.Util.JWT;
 
+import java.util.regex.Pattern;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class userActionsHandler implements HttpHandler {
