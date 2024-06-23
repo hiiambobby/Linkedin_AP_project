@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" styleClass="blue-panel"  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label text="Sign Up" textFill="#2196f3">
+            <font>
+                <Font size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="20.0" />
+            </VBox.margin>
+        </Label>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+            <children>
+                <TextField promptText="Full Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+<!--                <FontAwesomeIconView fill="WHITE" glyphName="USER" size="1.3em" />-->
+            </children>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="20.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+            <children>
+                <TextField promptText="Email" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+            </children>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="15.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+            <children>
+                <TextField promptText="Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+<!--                <FontAwesomeIconView fill="WHITE" glyphName="LOCK" size="1.3em" />-->
+            </children>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="20.0" />
+            </VBox.margin>
+        </HBox>
+        <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="456.0" styleClass="blue-btn" text="Sign Up" textFill="WHITE">
+            <font>
+                <Font size="17.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="20.0" />
+            </VBox.margin>
+        </Button>
+    </children>
+
+</VBox>
