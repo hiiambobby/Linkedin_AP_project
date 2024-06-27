@@ -15,11 +15,12 @@ public class HtppServer {
     public static void main(String[] args) {
         try {
 
-            Files.createDirectories(Paths.get("src/main/java/com/backend/server"));
+            //Files.createDirectories(Paths.get("src/main/java/com/backend/server"));
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
             server.createContext("/login", new userActionsHandler());
             server.createContext("/signup", new userActionsHandler());
+            server.createContext("/user", new userActionsHandler());
             //server.createContext("/contactInfo", new ContactInfoHandler());
 
             server.start();

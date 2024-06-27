@@ -46,9 +46,9 @@ public class userActionsHandler implements HttpHandler {
                     case "GET":
                         response = handleGet(exchange);
                         break;
-                    case "POST":
-                        response = handlePost(exchange);
-                        break;
+//                    case "POST":
+//                        response = handlePost(exchange);
+//                        break;
                     case "PUT":
                         response = handlePut(exchange);
                         break;
@@ -99,8 +99,9 @@ public class userActionsHandler implements HttpHandler {
         String country = jsonObject.getString("country");
         String city = jsonObject.getString("city");
 
-        if(userController.checkUserExists(email,password))
-            sendResponse(exchange, 201, "User already exists");
+        if(userController.checkUserExists(email,password)){
+            sendResponse(exchange, 401, "User already exists");
+        return;}
 
         userController.createUser(id,firstName, lastName, additionalName, email,password, country, city);
 
@@ -147,22 +148,22 @@ public class userActionsHandler implements HttpHandler {
         }
     }
 
-    private String handlePost(HttpExchange exchange) throws IOException, SQLException {
-        JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
-        String id = generateRandomId(); // Implement this method to generate a random ID
-        String firstName = jsonObject.getString("firstName");
-        String lastName = jsonObject.getString("lastName");
-        String additionalName = jsonObject.getString("additionalName");
-        String email = jsonObject.getString("email");
-        String password = jsonObject.getString("password");
-        String country = jsonObject.getString("country");
-        String city = jsonObject.getString("city");
-
-        if(userController.checkUserExists(email,password))
-            return "user exists";
-        userController.createUser(id,firstName, lastName, additionalName, email, password, country, city);
-        return "User created successfully";
-    }
+//    private String handlePost(HttpExchange exchange) throws IOException, SQLException {
+//        JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
+//        String id = generateRandomId(); // Implement this method to generate a random ID
+//        String firstName = jsonObject.getString("firstName");
+//        String lastName = jsonObject.getString("lastName");
+//        String additionalName = jsonObject.getString("additionalName");
+//        String email = jsonObject.getString("email");
+//        String password = jsonObject.getString("password");
+//        String country = jsonObject.getString("country");
+//        String city = jsonObject.getString("city");
+//
+//        if(userController.checkUserExists(email,password))
+//            return "user exists";
+//        userController.createUser(id,firstName, lastName, additionalName, email, password, country, city);
+//        return "User created successfully";
+//    }
 
     private String handlePut(HttpExchange exchange) throws IOException, SQLException {
         JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
@@ -179,6 +180,7 @@ public class userActionsHandler implements HttpHandler {
         return "User updated successfully";
     }
 
+    //delete account was not required
     private String handleDelete(HttpExchange exchange) throws SQLException, IOException {
         String query = exchange.getRequestURI().getQuery();
         if (query != null && query.startsWith("id=")) {

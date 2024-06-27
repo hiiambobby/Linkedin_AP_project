@@ -21,7 +21,7 @@
         </Label>
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
             <children>
-                <TextField fx:id="firstNameFeild" promptText="First Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="firstNameField" promptText="First Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
             </children>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" top="20.0" />
@@ -29,7 +29,7 @@
         </HBox>
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
             <children>
-                <TextField fx:id="lastNameFeild" promptText="Last Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="lastNameField" promptText="Last Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
             </children>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" top="20.0" />
@@ -45,7 +45,7 @@
         </HBox>
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
             <children>
-                <PasswordField fx:id="passwordFeild" promptText="Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+                <PasswordField fx:id="passwordField" promptText="Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
             </children>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" top="20.0" />
