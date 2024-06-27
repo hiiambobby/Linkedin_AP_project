@@ -98,10 +98,15 @@ public class userActionsHandler implements HttpHandler {
         String additionalName = jsonObject.getString("additionalName");
         String country = jsonObject.getString("country");
         String city = jsonObject.getString("city");
+        if(firstName == null || lastName == null || email == null || password == null){
+            sendResponse(exchange, 304, "please input all fields"); //NOT_MODIFIED
+            return;}
 
         if(userController.checkUserExists(email,password)){
-            sendResponse(exchange, 401, "User already exists");
+            sendResponse(exchange, 226, "User already exists"); //IM_USED
         return;}
+
+
 
         userController.createUser(id,firstName, lastName, additionalName, email,password, country, city);
 
@@ -113,7 +118,7 @@ public class userActionsHandler implements HttpHandler {
         String password = jsonObject.getString("password");
 
         if (!userController.checkUserExists(email, password)) {
-            sendResponse(exchange, 401, "Invalid credentials");
+            sendResponse(exchange, 401, "Invalid credentials"); //UNAUTHORIZED
             return;
         }
 
@@ -122,7 +127,7 @@ public class userActionsHandler implements HttpHandler {
             token = JWT.generateToken(email);
         } catch (Exception e) {
             e.printStackTrace();
-            sendResponse(exchange, 500, "Error generating token");
+            sendResponse(exchange, 500, "Error generating token"); //INTERNAL_SERVER_ERROR
             return;
         }
 
