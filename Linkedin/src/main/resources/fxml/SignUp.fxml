@@ -20,8 +20,15 @@
         </Label>
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
             <children>
-                <TextField promptText="Full Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
-<!--                <FontAwesomeIconView fill="WHITE" glyphName="USER" size="1.3em" />-->
+                <TextField promptText="First Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+            </children>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="20.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+            <children>
+                <TextField promptText="Last Name" styleClass="tf_box" HBox.hgrow="ALWAYS" />
             </children>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" top="20.0" />
@@ -37,8 +44,15 @@
         </HBox>
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
             <children>
-                <TextField promptText="Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
-<!--                <FontAwesomeIconView fill="WHITE" glyphName="LOCK" size="1.3em" />-->
+                <PasswordField promptText="Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
+            </children>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="20.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+            <children>
+                <PasswordField promptText="Confirm Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
             </children>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" top="20.0" />

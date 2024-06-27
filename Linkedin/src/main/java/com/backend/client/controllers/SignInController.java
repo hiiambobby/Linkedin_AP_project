@@ -22,6 +22,9 @@ public class SignInController implements Initializable {
     private Parent fxml;
 
 
+    @FXML
+    private String firstName;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
