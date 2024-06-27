@@ -23,7 +23,7 @@
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
             <children>
                 <TextField promptText="Email" styleClass="tf_box" HBox.hgrow="ALWAYS" />
-<!--               // <FontAwesomeIconView fill="WHITE" glyphName="USER" size="1.3em" />-->
+                <!--               // <FontAwesomeIconView fill="WHITE" glyphName="USER" size="1.3em" />-->
             </children>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" top="15.0" />
@@ -32,7 +32,7 @@
         <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
             <children>
                 <TextField promptText="Password" styleClass="tf_box" HBox.hgrow="ALWAYS" />
-<!--                <FontAwesomeIconView fill="WHITE" glyphName="LOCK" size="1.3em" />-->
+                <!--                <FontAwesomeIconView fill="WHITE" glyphName="LOCK" size="1.3em" />-->
             </children>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" top="20.0" />
