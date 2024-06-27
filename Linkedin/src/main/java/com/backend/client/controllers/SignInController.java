@@ -30,7 +30,7 @@ public class SignInController implements Initializable {
         t.play();
         t.setOnFinished((e) ->{
             try{
-                fxml = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
+                fxml = FXMLLoader.load(getClass().getResource("/fxml/SignIn.fxml"));
                 vbox.getChildren().removeAll();
                 vbox.getChildren().setAll(fxml);
             }catch(IOException ex){
@@ -45,7 +45,7 @@ public class SignInController implements Initializable {
         t.play();
         t.setOnFinished((e) ->{
             try{
-                fxml = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
+                fxml = FXMLLoader.load(getClass().getResource("/fxml/SignIn.fxml"));
                 vbox.getChildren().removeAll();
                 vbox.getChildren().setAll(fxml);
             }catch(IOException ex){
@@ -60,7 +60,7 @@ public class SignInController implements Initializable {
         t.play();
         t.setOnFinished((e) ->{
             try{
-                fxml = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
+                fxml = FXMLLoader.load(getClass().getResource("/fxml/SignUp.fxml"));
                 vbox.getChildren().removeAll();
                 vbox.getChildren().setAll(fxml);
             }catch(IOException ex){
