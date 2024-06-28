@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -98,17 +99,18 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
         String additionalName = jsonObject.getString("additionalName");
         String country = jsonObject.getString("country");
         String city = jsonObject.getString("city");
-        if(firstName == null || lastName == null || email == null || password == null){
+        if (firstName == null || lastName == null || email == null || password == null) {
             sendResponse(exchange, 304, "please input all fields"); //NOT_MODIFIED
-            return;}
+            return;
+        }
 
-        if(userController.checkUserExists(email,password)){
+        if (userController.checkUserExists(email, password)) {
             sendResponse(exchange, 226, "User already exists"); //IM_USED
-        return;}
+            return;
+        }
 
 
-
-        userController.createUser(id,firstName, lastName, additionalName, email,password, country, city);
+        userController.createUser(id, firstName, lastName, additionalName, email, password, country, city);
 
         sendResponse(exchange, 201, "User created successfully");
     }
@@ -181,7 +183,7 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
         String country = jsonObject.getString("country");
         String city = jsonObject.getString("city");
 
-        userController.updateUser(id, firstName, lastName, additionalName, email,password, country, city);
+        userController.updateUser(id, firstName, lastName, additionalName, email, password, country, city);
         return "User updated successfully";
     }
 
@@ -198,11 +200,10 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
         }
     }
 
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+    private boolean isValidEmail(String email)
+    {
+        EmailValidator validator = EmailValidator.getInstance();
+        return validator.isValid(email);
     }
 
     private void sendResponse(HttpExchange exchange, int statusCode, String responseText) throws IOException {

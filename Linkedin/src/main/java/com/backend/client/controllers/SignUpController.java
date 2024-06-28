@@ -102,8 +102,9 @@ public class SignUpController {
             System.out.println("User created successfully.");
         } else {
             System.out.println(msg);
+            msgId.setText(msg);
         }
-        msgId.setText(msg);
+
     }
 
 
