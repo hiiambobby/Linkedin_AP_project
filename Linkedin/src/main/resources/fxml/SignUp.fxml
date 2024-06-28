@@ -67,7 +67,7 @@
                 <Insets left="15.0" right="15.0" top="20.0" />
             </VBox.margin>
         </Button>
-      <Label fx:id="msgId" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="493.0" />
+      <Label fx:id="msgId" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="493.0"  textFill="RED" />
     </children>
 
 </VBox>

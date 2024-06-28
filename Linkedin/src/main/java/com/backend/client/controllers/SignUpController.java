@@ -47,7 +47,17 @@ public class SignUpController {
             String password = passwordField.getText();
             String email = emailField.getText();
             String confPassword = confPassField.getText();
+            if (firstName.length() > 20) {
+                msgId.setText("First name cannot be longer than 20 characters");
+                msgId.setStyle("-fx-text-fill: red;");
+                return;
+            }
 
+            if (lastName.length() > 40) {
+                msgId.setText("Last name cannot be longer than 40 characters");
+                msgId.setStyle("-fx-text-fill: red;");
+                return;
+            }
 
             // Make the HTTP request
             sendPostRequest(firstName, lastName,email, password, confPassword);
@@ -111,7 +121,7 @@ public class SignUpController {
                 return "Password do not match";
             default:
                 return "Error...";
-                
+
         }
     }
 
