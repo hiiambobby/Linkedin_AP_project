@@ -78,6 +78,17 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
         String password = jsonObject.getString("password");
         String confirmPassword = jsonObject.getString("confirmPassword");
 
+        String id = generateRandomId(); // Implement this method to generate a random ID
+        String firstName = jsonObject.getString("firstName");
+        String lastName = jsonObject.getString("lastName");
+        String additionalName = jsonObject.getString("additionalName");
+        String country = jsonObject.getString("country");
+        String city = jsonObject.getString("city");
+//        if (firstName == null || lastName == null || email == null || password == null) {
+//            sendResponse(exchange, 304, "please input all fields"); //NOT_MODIFIED
+//            return;
+//        }
+
         if (!isValidEmail(email)) {
             sendResponse(exchange, UNAVAILABLE_FOR_LEGAL_REASONS, "Invalid email format");
             return;
@@ -93,16 +104,6 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
             return;
         }
 
-        String id = generateRandomId(); // Implement this method to generate a random ID
-        String firstName = jsonObject.getString("firstName");
-        String lastName = jsonObject.getString("lastName");
-        String additionalName = jsonObject.getString("additionalName");
-        String country = jsonObject.getString("country");
-        String city = jsonObject.getString("city");
-        if (firstName == null || lastName == null || email == null || password == null) {
-            sendResponse(exchange, 304, "please input all fields"); //NOT_MODIFIED
-            return;
-        }
 
         if (userController.checkUserExists(email, password)) {
             sendResponse(exchange, 226, "User already exists"); //IM_USED

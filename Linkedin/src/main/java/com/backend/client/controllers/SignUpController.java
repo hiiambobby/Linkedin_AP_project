@@ -1,23 +1,14 @@
 package com.backend.client.controllers;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.ResourceBundle;
-import javafx.animation.TranslateTransition;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import org.json.JSONObject;
 
 
@@ -33,8 +24,6 @@ public class SignUpController {
     private TextField emailField;
     @FXML
     private TextField confPassField;
-    @FXML
-    private Button signUpButton;
 
     @FXML
     private Label msgId;
@@ -58,7 +47,11 @@ public class SignUpController {
                 msgId.setStyle("-fx-text-fill: red;");
                 return;
             }
-
+            if(firstName.length() == 0 || lastName.length() == 0|| email.length() == 0 ||password.length() == 0)
+            {
+                msgId.setText("All fields are required!");
+                return;
+            }
             // Make the HTTP request
             sendPostRequest(firstName, lastName,email, password, confPassword);
         } catch (Exception e) {
@@ -112,8 +105,6 @@ public class SignUpController {
         switch (code) {
             case 226:
                 return "User already exists! login to continue";
-            case 304:
-                return "Fill all the fields!";
             case 451:
                 return "Please enter a valid email";
             case 411:

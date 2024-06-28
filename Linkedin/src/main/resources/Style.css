@@ -30,11 +30,14 @@
 .tf{
     -fx-background-color: transparent;
 }
-.blue-btn{
-    -fx-background-color: #2196f3;
-    -fx-background-radius: 5px;
-    -fx-text-fill: #ffffff;
+
+.blue-btn {
+    -fx-background-color: #2196f3; /* Blue background color */
+    -fx-background-radius: 5; /* Rounded corners */
+    -fx-text-fill: white; /* White text color */
+    -fx-font-size: 17px; /* Font size */
 }
+
 .text-field, .password-field {
     -fx-text-fill: white;
 }
