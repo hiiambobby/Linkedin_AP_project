@@ -23,8 +23,8 @@ public class UserDAO implements sqlOperations{
     public void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS users ("
                 + "id VARCHAR(36) PRIMARY KEY, "
-                + "first_name VARCHAR(255), "
-                + "last_name VARCHAR(255), "
+                + "first_name VARCHAR(20), "
+                + "last_name VARCHAR(40), "
                 + "additional_name VARCHAR(255), "
                 + "email VARCHAR(255), "
                 + "password VARCHAR(255), "

@@ -1,6 +1,6 @@
 package com.backend.LinkedinServer.HTTPHandler;
 
-public enum HttpStatusCode {;
+public interface HttpStatusCode {;
 
     // 1xx Informational
     public static final int CONTINUE = 100;

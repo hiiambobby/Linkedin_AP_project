@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.regex.Matcher;
 
 
-public class userActionsHandler implements HttpHandler {
+public class userActionsHandler implements HttpHandler,HttpStatusCode {
 
     private final UserController userController;
     private final ObjectMapper objectMapper;
@@ -78,17 +78,17 @@ public class userActionsHandler implements HttpHandler {
         String confirmPassword = jsonObject.getString("confirmPassword");
 
         if (!isValidEmail(email)) {
-            sendResponse(exchange, 400, "Invalid email format");
+            sendResponse(exchange, UNAVAILABLE_FOR_LEGAL_REASONS, "Invalid email format");
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            sendResponse(exchange, 400, "Passwords do not match");
+            sendResponse(exchange, CONFLICT, "Passwords do not match");
             return;
         }
 
         if (password.length() < 8) {
-            sendResponse(exchange, 400, "Password must be at least 8 characters long");
+            sendResponse(exchange, LENGTH_REQUIRED, "Password must be at least 8 characters long");
             return;
         }
 
