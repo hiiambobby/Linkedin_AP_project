@@ -62,6 +62,25 @@ public class SignInController {
         }
         int responseCode = conn.getResponseCode();
         System.out.println("POST Response Code :: " + responseCode);
+        String msg = setResponseMsg(responseCode);
 
+        if (responseCode == HttpURLConnection.HTTP_CREATED) { // success
+            System.out.println("you are logged in...");
+        } else {
+            System.out.println(msg);
+            msgId.setText(msg);
+        }
+    }
+
+    private String setResponseMsg(int responseCode) {
+        switch (responseCode)
+        {
+            case 401:
+                return "user not found.";
+            case 500:
+                return "something went wrong. pls try again later...";
+            default:
+                return "unknown error!";
+        }
     }
 }

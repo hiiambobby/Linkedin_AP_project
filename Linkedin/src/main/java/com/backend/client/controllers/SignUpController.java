@@ -86,8 +86,6 @@ public class SignUpController {
         }
 
         int responseCode = conn.getResponseCode();
-
-
         System.out.println("POST Response Code :: " + responseCode);
         String msg = setResponseMsg(responseCode);
 
