@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.json.JSONObject;
 
 
@@ -67,21 +68,20 @@ public class SignUpController {
             boolean success = sendPostRequest(firstName, lastName, email, password, confPassword);
             if (success) {
                 // Load the new FXML file
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml"));
-                Parent root = loader.load();
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/Profile.fxml")); // Adjust path as needed
+                Stage currentStage = (Stage) signUpField.getScene().getWindow();
+                currentStage.close(); // Close the current stage if needed
 
-                // Get the current stage
-
-                Stage stage = (Stage) signUpField.getScene().getWindow();
-
-                // Set the new scene
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
+                // Create a new stage with the decorated style
+                Stage newStage = new Stage();
+                Scene newScene = new Scene(root);
+                newStage.setScene(newScene);
+                newStage.setTitle("User Profile");
+                newStage.initStyle(StageStyle.DECORATED); // Standard window decorations for the new stage
+                newStage.show();
+            }} catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private boolean sendPostRequest(String firstName, String lastName,String email, String password, String confPassword) throws Exception {

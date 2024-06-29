@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -42,17 +43,17 @@ public class SignInController {
        boolean success = sendRequest(email,pass);
         if (success) {
             // Load the new FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml"));
-            Parent root = loader.load();
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Profile.fxml")); // Adjust path as needed
+            Stage currentStage = (Stage) signInButton.getScene().getWindow();
+            currentStage.close(); // Close the current stage if needed
 
-            // Get the current stage
-
-            Stage stage = (Stage) signInButton.getScene().getWindow();
-
-            // Set the new scene
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            // Create a new stage with the decorated style
+            Stage newStage = new Stage();
+            Scene newScene = new Scene(root);
+            newStage.setScene(newScene);
+            newStage.setTitle("User Profile");
+            newStage.initStyle(StageStyle.DECORATED); // Standard window decorations for the new stage
+            newStage.show();
         }
 
     }
