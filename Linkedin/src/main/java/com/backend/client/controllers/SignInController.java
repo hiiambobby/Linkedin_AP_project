@@ -2,9 +2,13 @@ package com.backend.client.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -18,13 +22,14 @@ import java.util.Optional;
 
 public class SignInController {
     @FXML
-    private Button SignUpButton;
+    private Button signInButton;
     @FXML
     private TextField emailField;
     @FXML
     private TextField passField;
     @FXML
     private Label msgId;
+
 
     public void handleSignIn(ActionEvent event) throws IOException {
        String email = emailField.getText();
@@ -34,12 +39,25 @@ public class SignInController {
            msgId.setText("All fields required!");
            return;
        }
-       sendRequest(email,pass);
+       boolean success = sendRequest(email,pass);
+        if (success) {
+            // Load the new FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml"));
+            Parent root = loader.load();
 
+            // Get the current stage
+
+            Stage stage = (Stage) signInButton.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
 
     }
 
-    private void sendRequest(String email, String pass) throws IOException {
+    private boolean sendRequest(String email, String pass) throws IOException {
         //logics to send request to http
         URL url = new URL("http://localhost:8000/login"); // Replace with your server URL
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -64,11 +82,12 @@ public class SignInController {
         System.out.println("POST Response Code :: " + responseCode);
         String msg = setResponseMsg(responseCode);
 
-        if (responseCode == HttpURLConnection.HTTP_CREATED) { // success
-            System.out.println("you are logged in...");
+        if (responseCode == HttpURLConnection.HTTP_OK) { // success
+            return true;
         } else {
             System.out.println(msg);
             msgId.setText(msg);
+            return false;
         }
     }
 
@@ -80,7 +99,7 @@ public class SignInController {
             case 500:
                 return "something went wrong. pls try again later...";
             default:
-                return "unknown error!";
+                return "Unexpected response code: " + responseCode;
         }
     }
 }

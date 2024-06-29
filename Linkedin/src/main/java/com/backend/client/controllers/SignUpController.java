@@ -7,8 +7,13 @@ import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 
 
@@ -24,11 +29,12 @@ public class SignUpController {
     private TextField emailField;
     @FXML
     private TextField confPassField;
+    @FXML
+    private Button signUpField;
 
     @FXML
     private Label msgId;
 
-    String firstName,lastName,password,confirmPass,email;
     public void submit(ActionEvent actionEvent) {
         try {
             String firstName = firstNameField.getText();
@@ -36,6 +42,7 @@ public class SignUpController {
             String password = passwordField.getText();
             String email = emailField.getText();
             String confPassword = confPassField.getText();
+
             if (firstName.length() > 20) {
                 msgId.setText("First name cannot be longer than 20 characters");
                 msgId.setStyle("-fx-text-fill: red;");
@@ -47,24 +54,37 @@ public class SignUpController {
                 msgId.setStyle("-fx-text-fill: red;");
                 return;
             }
-            if(firstName.length() == 0 || lastName.length() == 0|| email.length() == 0 ||password.length() == 0)
-            {
+
+            if (firstName.length() == 0 || lastName.length() == 0 || email.length() == 0 || password.length() == 0) {
                 msgId.setText("All fields are required!");
                 return;
-            }
-            else if(!password.equals(confPassword))
-            { msgId.setText("Password do not match");
+            } else if (!password.equals(confPassword)) {
+                msgId.setText("Passwords do not match");
                 return;
             }
 
             // Make the HTTP request
-            sendPostRequest(firstName, lastName,email, password, confPassword);
+            boolean success = sendPostRequest(firstName, lastName, email, password, confPassword);
+            if (success) {
+                // Load the new FXML file
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml"));
+                Parent root = loader.load();
+
+                // Get the current stage
+
+                Stage stage = (Stage) signUpField.getScene().getWindow();
+
+                // Set the new scene
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void sendPostRequest(String firstName, String lastName,String email, String password, String confPassword) throws Exception {
+    private boolean sendPostRequest(String firstName, String lastName,String email, String password, String confPassword) throws Exception {
         URL url = new URL("http://localhost:8000/signup"); // Replace with your server URL
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -95,17 +115,25 @@ public class SignUpController {
         String msg = setResponseMsg(responseCode);
 
         if (responseCode == HttpURLConnection.HTTP_CREATED) { // success
-            System.out.println("User created successfully.");
+            String response = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            JSONObject jsonResponse = new JSONObject(response);
+            String token = jsonResponse.getString("token");
+
+            TokenManager.saveToken(token);
+            msgId.setText("User created successfully.");
+            msgId.setStyle("-fx-text-fill: green;");
+            return true;
         } else {
             System.out.println(msg);
             msgId.setText(msg);
+            return false;
         }
-
     }
-
 
     public String setResponseMsg(int code) {
         switch (code) {
+            case 201:
+                return "User created successfully";
             case 226:
                 return "User already exists! login to continue";
             case 451:
@@ -114,8 +142,10 @@ public class SignUpController {
                 return "Password should be 8 words or longer!";
             case 409:
                 return "Password do not match";
+            case 500:
+                return "Server error";
             default:
-                return "Error...";
+                return "Unexpected response code: " + code;
 
         }
     }

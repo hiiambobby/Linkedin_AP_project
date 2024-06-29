@@ -38,7 +38,7 @@
                 <Insets left="15.0" right="15.0" top="20.0" />
             </VBox.margin>
         </HBox>
-        <Button fx:id="SignUpButton" onAction="#handleSignIn" styleClass="blue-btn" text="Sign In" textFill="WHITE">
+        <Button fx:id="signInButton" onAction="#handleSignIn" styleClass="blue-btn" text="Sign In" textFill="WHITE">
             <font>
                 <Font size="17.0" />
             </font>
