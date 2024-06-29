@@ -16,7 +16,7 @@
                <font>
                   <Font name="Arial Rounded MT Bold" size="12.0" />
                </font></Label>
-                <TextField fx:id="urlId" prefHeight="26.0" prefWidth="447.0" translateX="6.0" translateY="10.0" />
+                <TextField fx:id="urlId" prefHeight="26.0" prefWidth="447.0" translateX="15.0" translateY="10.0" />
             </children>
         </HBox>
         <HBox prefHeight="70.0" prefWidth="580.0" spacing="10.0">
@@ -25,7 +25,7 @@
                <font>
                   <Font name="Arial Rounded MT Bold" size="12.0" />
                </font></Label>
-                <TextField fx:id="emailId" prefHeight="26.0" prefWidth="447.0" translateX="4.0" translateY="10.0" />
+                <TextField fx:id="emailId" prefHeight="26.0" prefWidth="447.0" translateX="11.0" translateY="10.0" />
             </children>
         </HBox>
         <HBox prefHeight="65.0" prefWidth="600.0" spacing="10.0">
@@ -52,7 +52,7 @@
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></Label>
-                <TextField fx:id="addrId" prefHeight="58.0" prefWidth="447.0" translateX="40.0" />
+                <TextField fx:id="addrId" prefHeight="58.0" prefWidth="447.0" translateX="43.0" />
             </children>
         </HBox>
         <HBox prefHeight="75.0" prefWidth="580.0" spacing="10.0">
@@ -61,11 +61,15 @@
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></Label>
-                <ComboBox fx:id="visibilityId" prefHeight="14.0" prefWidth="50.0" translateX="90.0" />
-                <ComboBox fx:id="monthId" prefHeight="20.0" prefWidth="98.0" promptText="Month" translateX="92.0" />
-                <ComboBox fx:id="dayId" prefHeight="20.0" prefWidth="98.0" promptText="Day" translateX="100.0" />
+                <ComboBox fx:id="monthId" prefHeight="26.0" prefWidth="220.0" promptText="Month" translateX="40.0" />
+                <ComboBox fx:id="dayId" prefHeight="26.0" prefWidth="220.0" promptText="Day" translateX="40.0" />
             </children>
         </HBox>
+      <HBox prefHeight="29.0" prefWidth="600.0">
+         <children>
+                <ComboBox fx:id="visibilityId" prefHeight="26.0" prefWidth="150.0" translateX="100.0" />
+         </children>
+      </HBox>
         <HBox prefHeight="71.0" prefWidth="580.0" spacing="10.0">
             <children>
                 <Label text="Instant Messaging" translateX="10.0">
@@ -76,7 +80,7 @@
             </children>
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefWidth="580.0" spacing="10.0">
-            <Button fx:id="saveBtn" onAction="#Save" styleClass="blue-btn" prefHeight="34.0" prefWidth="54.0" text="Save" translateX="-10.0" translateY="-5.0">
+            <Button fx:id="saveBtn" onAction="#Save" prefHeight="30.0" prefWidth="78.0" styleClass="blue-btn" text="Save" translateX="-10.0" translateY="-5.0">
           </Button>
         </HBox>
     </children>

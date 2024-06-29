@@ -37,6 +37,8 @@ public class ProfileController {
 
         // Create a new stage with the decorated style
         Stage newStage = new Stage();
+        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+        newStage.getIcons().add(icon);
         Scene newScene = new Scene(root);
         newScene.setFill(Color.TRANSPARENT);
         newStage.setScene(newScene);

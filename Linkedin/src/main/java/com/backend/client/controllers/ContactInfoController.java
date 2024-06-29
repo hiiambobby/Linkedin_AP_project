@@ -54,24 +54,26 @@ public class ContactInfoController implements Initializable {
         stage.show();
     }
 
+    /***
+     *
+     * @param url
+     * @param resourceBundle
+     * options of combo boxes are set here
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ////phoneType boxes
         String[] phoneTypes = {"Mobile", "Home", "Work"};
         phoneType.getItems().addAll(phoneTypes);
-        phoneType.setOnAction(event -> {
-            String data = phoneType.getSelectionModel().toString();
-            numberId.setText(data);
-        });
+        /////birthday boxes
         monthId.setItems(months);
-
-        // Set default month
         monthId.getSelectionModel().selectFirst();
-
-        // Update days ComboBox based on selected month
         monthId.valueProperty().addListener((obs, oldMonth, newMonth) -> updateDays());
-
-        // Initial population of days based on default month
         updateDays();
+        ////visibility of birthday
+        String[] options = {"Only you","Your connections","Your network","All LinkedIn members"};
+        visibilityId.getItems().addAll(options);
+        visibilityId.getSelectionModel().selectFirst();
     }
 
     private void updateDays() {
