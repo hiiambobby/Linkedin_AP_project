@@ -16,7 +16,7 @@ public class ProfileController {
     @FXML
     private Button contactInfoBtn;
 
-    public void openContactInfo(ActionEvent event) throws IOException {
+    public void ContactInfo(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/ContactInfo.fxml"));
         stage.setScene(new Scene(root));
