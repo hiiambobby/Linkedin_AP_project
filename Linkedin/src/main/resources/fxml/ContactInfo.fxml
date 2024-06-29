@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="63.0" prefWidth="350.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="77.0" text="Profile URL" translateX="10.0" translateY="10.0" />
+            <TextField prefHeight="26.0" prefWidth="247.0" translateX="20.0" translateY="30.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="70.0" prefWidth="600.0">
+         <children>
+            <HBox prefHeight="30.0" prefWidth="348.0">
+               <children>
+                  <Label prefHeight="18.0" prefWidth="81.0" text="Email" translateX="20.0" translateY="10.0" />
+                  <TextField prefHeight="26.0" prefWidth="241.0" translateX="19.0" translateY="25.0" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="65.0" prefWidth="350.0">
+         <children>
+            <Label text="Phone Number" translateX="20.0" />
+            <TextField prefHeight="26.0" prefWidth="242.0" translateX="20.0" translateY="30.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="52.0" prefWidth="350.0">
+         <children>
+            <Label text="Phone Type" translateX="20.0" />
+            <ComboBox prefWidth="150.0" promptText="Please select" translateX="40.0" translateY="25.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="81.0" prefWidth="350.0">
+         <children>
+            <Label text="Address" translateX="20.0" />
+            <TextField prefHeight="58.0" prefWidth="270.0" translateX="20.0" translateY="24.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="75.0" prefWidth="354.0">
+         <children>
+            <Label text="Birthday" translateX="20.0" />
+            <ComboBox prefHeight="14.0" prefWidth="50.0" translateY="50.0" />
+            <ComboBox prefHeight="20.0" prefWidth="98.0" promptText="Month" translateX="10.0" translateY="20.0" />
+            <ComboBox prefHeight="20.0" prefWidth="98.0" promptText="Day" translateX="35.0" translateY="20.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="71.0" prefWidth="379.0">
+         <children>
+            <Label text="+Instant Messagin" translateX="20.0" translateY="10.0" />
+            <TextField prefHeight="26.0" prefWidth="242.0" translateX="20.0" translateY="10.0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
