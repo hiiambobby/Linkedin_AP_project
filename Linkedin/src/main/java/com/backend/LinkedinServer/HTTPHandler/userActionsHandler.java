@@ -84,10 +84,6 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
         String additionalName = jsonObject.getString("additionalName");
         String country = jsonObject.getString("country");
         String city = jsonObject.getString("city");
-//        if (firstName == null || lastName == null || email == null || password == null) {
-//            sendResponse(exchange, 304, "please input all fields"); //NOT_MODIFIED
-//            return;
-//        }
 
         if (!isValidEmail(email)) {
             sendResponse(exchange, UNAVAILABLE_FOR_LEGAL_REASONS, "Invalid email format");
@@ -110,10 +106,25 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
             return;
         }
 
-
         userController.createUser(id, firstName, lastName, additionalName, email, password, country, city);
 
-        sendResponse(exchange, 201, "User created successfully");
+        // Generate JWT token
+        String token;
+        try {
+            token = JWT.generateToken(email); // Make sure you have a JWTUtil class that handles token generation
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Error generating token"); //INTERNAL_SERVER_ERROR
+            return;
+        }
+
+        // Prepare JSON response with token
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("message", "User created successfully");
+        responseJson.put("token", token);
+
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        sendResponse(exchange, 201, responseJson.toString());
     }
 
     public void handleLogin(HttpExchange exchange, JSONObject jsonObject) throws IOException, SQLException {
@@ -156,22 +167,6 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
         }
     }
 
-//    private String handlePost(HttpExchange exchange) throws IOException, SQLException {
-//        JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
-//        String id = generateRandomId(); // Implement this method to generate a random ID
-//        String firstName = jsonObject.getString("firstName");
-//        String lastName = jsonObject.getString("lastName");
-//        String additionalName = jsonObject.getString("additionalName");
-//        String email = jsonObject.getString("email");
-//        String password = jsonObject.getString("password");
-//        String country = jsonObject.getString("country");
-//        String city = jsonObject.getString("city");
-//
-//        if(userController.checkUserExists(email,password))
-//            return "user exists";
-//        userController.createUser(id,firstName, lastName, additionalName, email, password, country, city);
-//        return "User created successfully";
-//    }
 
     private String handlePut(HttpExchange exchange) throws IOException, SQLException {
         JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));

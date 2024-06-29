@@ -52,6 +52,11 @@ public class SignUpController {
                 msgId.setText("All fields are required!");
                 return;
             }
+            else if(!password.equals(confPassword))
+            { msgId.setText("Password do not match");
+                return;
+            }
+
             // Make the HTTP request
             sendPostRequest(firstName, lastName,email, password, confPassword);
         } catch (Exception e) {

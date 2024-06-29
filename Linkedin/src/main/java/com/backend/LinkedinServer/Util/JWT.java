@@ -20,7 +20,7 @@ public class JWT {
                 .signWith(KEY)
                 .compact();
     }
-    public static String validateTokenAndGetSubject(String token) {
+    public static String validateToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(KEY)
                 .build()

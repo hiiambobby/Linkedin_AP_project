@@ -21,6 +21,7 @@ public class HtppServer {
             server.createContext("/login", new userActionsHandler());
             server.createContext("/signup", new userActionsHandler());
             server.createContext("/user", new userActionsHandler());
+            server.createContext("/user", new userActionsHandler());
             //server.createContext("/contactInfo", new ContactInfoHandler());
 
             server.start();
