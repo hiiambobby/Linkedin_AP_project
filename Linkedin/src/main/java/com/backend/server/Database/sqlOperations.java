@@ -1,4 +1,4 @@
-package com.backend.LinkedinServer.Database;
+package com.backend.server.Database;
 
 public interface sqlOperations {
     static void createTable(){}

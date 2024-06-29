@@ -1,12 +1,10 @@
-package com.backend.LinkedinServer.Controller;
+package com.backend.server.Controller;
 
-import com.backend.LinkedinServer.Database.ContactInfoDAO;
-import com.backend.LinkedinServer.Database.UserDAO;
-import com.backend.LinkedinServer.Model.ContactInfo;
-import com.backend.LinkedinServer.Model.User;
+import com.backend.server.Database.ContactInfoDAO;
+import com.backend.server.Database.UserDAO;
+import com.backend.server.Model.User;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class UserController {

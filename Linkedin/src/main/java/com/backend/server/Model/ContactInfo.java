@@ -1,10 +1,8 @@
-package com.backend.LinkedinServer.Model;
+package com.backend.server.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.json.JSONPropertyName;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class ContactInfo {
     @JsonProperty("profileUrl")

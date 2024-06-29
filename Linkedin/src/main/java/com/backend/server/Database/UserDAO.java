@@ -1,7 +1,7 @@
-package com.backend.LinkedinServer.Database;
+package com.backend.server.Database;
 
-import com.backend.LinkedinServer.Model.User;
-import com.backend.LinkedinServer.MySql;
+import com.backend.server.Model.User;
+import com.backend.server.MySql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -8,9 +8,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="blue-panel" stylesheets="@/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -31,6 +32,11 @@
                   </ImageView>
                   <Text layoutX="116.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
                   <Text layoutX="116.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                  <Button layoutX="533.0" layoutY="56.0" mnemonicParsing="false" onAction="#logOut" fx:id="logOut" prefHeight="17.0" prefWidth="60.0" text="Log Out">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
             <Separator prefWidth="200.0" />

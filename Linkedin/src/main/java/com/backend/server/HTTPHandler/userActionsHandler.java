@@ -1,8 +1,8 @@
-package com.backend.LinkedinServer.HTTPHandler;
+package com.backend.server.HTTPHandler;
 
-import com.backend.LinkedinServer.Controller.UserController;
-import com.backend.LinkedinServer.Model.User;
-import com.backend.LinkedinServer.Util.JWT;
+import com.backend.server.Controller.UserController;
+import com.backend.server.Model.User;
+import com.backend.server.Util.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -10,12 +10,9 @@ import org.json.JSONObject;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.UUID;
-import java.util.regex.Pattern;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.regex.Matcher;
 
 
 public class userActionsHandler implements HttpHandler,HttpStatusCode {

@@ -1,7 +1,6 @@
-package com.backend.LinkedinServer.Model;
+package com.backend.server.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.json.JSONPropertyName;
 
 public class Header {
     @JsonProperty("userId")

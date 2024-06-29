@@ -1,4 +1,4 @@
-package com.backend.LinkedinServer;
+package com.backend.server;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

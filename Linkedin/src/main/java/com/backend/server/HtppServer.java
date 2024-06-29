@@ -1,14 +1,11 @@
-package com.backend.LinkedinServer;
+package com.backend.server;
 
 
-import com.backend.LinkedinServer.HTTPHandler.*;
+import com.backend.server.HTTPHandler.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 
-import java.net.InetSocketAddress;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class HtppServer {

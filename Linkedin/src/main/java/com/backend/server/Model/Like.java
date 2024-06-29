@@ -1,4 +1,4 @@
-package com.backend.LinkedinServer.Model;
+package com.backend.server.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

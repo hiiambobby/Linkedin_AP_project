@@ -1,4 +1,4 @@
-package com.backend.LinkedinServer.HTTPHandler;
+package com.backend.server.HTTPHandler;
 
 public interface HttpStatusCode {;
 

@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ public class SignInController {
     public void handleSignIn(ActionEvent event) throws IOException {
        String email = emailField.getText();
        String pass = passField.getText();
-       if(email.length() == 0||pass.length() == 0)
+       if(email.isEmpty() || pass.isEmpty())
        {
            msgId.setText("All fields required!");
            return;
@@ -49,6 +50,8 @@ public class SignInController {
 
             // Create a new stage with the decorated style
             Stage newStage = new Stage();
+            Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+            newStage.getIcons().add(icon);
             Scene newScene = new Scene(root);
             newStage.setScene(newScene);
             newStage.setTitle("User Profile");

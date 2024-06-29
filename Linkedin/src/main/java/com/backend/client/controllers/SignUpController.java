@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONObject;
@@ -74,6 +75,8 @@ public class SignUpController {
 
                 // Create a new stage with the decorated style
                 Stage newStage = new Stage();
+                Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+                newStage.getIcons().add(icon);
                 Scene newScene = new Scene(root);
                 newStage.setScene(newScene);
                 newStage.setTitle("User Profile");

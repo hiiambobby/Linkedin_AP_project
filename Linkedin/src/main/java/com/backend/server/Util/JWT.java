@@ -1,4 +1,4 @@
-package com.backend.LinkedinServer.Util;
+package com.backend.server.Util;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ContactInfoController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" stylesheets="@/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ContactInfoController">
     <children>
         <HBox prefHeight="63.0" prefWidth="580.0" spacing="10.0">
             <children>
@@ -68,7 +68,7 @@
         </HBox>
         <HBox prefHeight="71.0" prefWidth="580.0" spacing="10.0">
             <children>
-                <Label text="+Instant Messaging" translateX="10.0">
+                <Label text="Instant Messaging" translateX="10.0">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font></Label>
@@ -76,10 +76,8 @@
             </children>
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefWidth="580.0" spacing="10.0">
-            <Button fx:id="saveBtn" onAction="#Save" prefHeight="34.0" prefWidth="54.0" text="Save" translateX="-10.0" translateY="-5.0">
-            <font>
-               <Font name="Arial Rounded MT Bold" size="12.0" />
-            </font></Button>
+            <Button fx:id="saveBtn" onAction="#Save" styleClass="blue-btn" prefHeight="34.0" prefWidth="54.0" text="Save" translateX="-10.0" translateY="-5.0">
+          </Button>
         </HBox>
     </children>
 </VBox>
