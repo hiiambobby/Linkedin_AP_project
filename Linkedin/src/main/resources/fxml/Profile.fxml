@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -17,12 +14,12 @@
                <children>
                   <ImageView fitHeight="85.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../defaultBackgroundPicture.png" />
+                        <Image url="@../img/defaultBackgroundPicture.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="29.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../emptyProfilePic.jpg" />
+                        <Image url="@../img/emptyProfilePic.jpg" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />

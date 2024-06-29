@@ -26,7 +26,7 @@ public class HtppServer {
 
             server.start();
 
-            System.out.println("Hi i am hearing u on port 80000 =) ...");
+            System.out.println("Hi i am hearing u on port 8000 =) ...");
         }
         catch (IOException e)
         {
