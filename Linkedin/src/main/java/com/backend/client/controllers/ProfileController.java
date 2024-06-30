@@ -19,6 +19,8 @@ public class ProfileController {
     @FXML
     private Button contactInfoBtn;
     @FXML
+    private Button primaryInfoBtn;
+    @FXML
     private Button logOut;
 
 
@@ -44,6 +46,17 @@ public class ProfileController {
         popupStage.initModality(Modality.APPLICATION_MODAL);
 
         // Show the popup window
+        popupStage.show();
+
+    }
+    public void PrimaryInfo(ActionEvent event) throws IOException {
+        // Load the FXML for the Contact Info scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PrimaryInfo.fxml"));
+        Parent root = loader.load();
+        Stage popupStage = new Stage();
+        popupStage.setScene(new Scene(root));
+        popupStage.setTitle("Primary Info");
+        popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.show();
 
     }
