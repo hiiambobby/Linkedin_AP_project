@@ -36,7 +36,4 @@ http://localhost:8000/signup
 }
 
 
-///token for hiiiambobby email
-eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoaWlpYW1ib2JieUBnbWFpbC5jb20iLCJpYXQiOjE3MTk3MzUyODgsImV4cCI6MTcxOTczODg4OH0.mNto8jCCLGmLGnMaaGx7PyAttBqPUa1ktccgFdOn_bE
-    "token": "    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWJhM3N0QGdtYWlsLmNvbSIsImlhdCI6MTcxOTczNjYxNSwiZXhwIjoxNzE5NzQwMjE1fQ.ya7zW6xBFMFFEtFVBUCdxW4g1vepVTQO6O8usJ5buDA"
-"
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoaWlpYW1ib2JieUBnbWFpbC5jb20iLCJpYXQiOjE3MTk3NzIxMzQsImV4cCI6MTcxOTc3NTczNH0.7QO8FLlMGtSDwkmk2ADkND8W1zjhOnQET-O8XMkFWkQ"

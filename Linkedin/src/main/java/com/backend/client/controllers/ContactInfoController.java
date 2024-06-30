@@ -63,8 +63,9 @@ public class ContactInfoController implements Initializable {
         try {
             URL url = new URL("http://localhost:8000/contactInfo");
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
 
             // Retrieve the token from TokenManager
             String tokenLong = TokenManager.getToken();
@@ -77,22 +78,22 @@ public class ContactInfoController implements Initializable {
 
             conn.setDoOutput(true);
 
-            // Write the JSON data to the output stream
+            String json = jsonObject.toString();
             try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
+                byte[] input = json.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
             int responseCode = conn.getResponseCode();
 
-            // Log request details (optional)
-            System.out.println("Request URL: " + url);
-            System.out.println("Request Method: " + conn.getRequestMethod());
-            System.out.println("Request Headers: " + conn.getRequestProperties());
-            System.out.println("Response Code: " + responseCode);
+//            // Log request details (optional)
+//            System.out.println("Request URL: " + url);
+//            System.out.println("Request Method: " + conn.getRequestMethod());
+//            System.out.println("Request Headers: " + conn.getRequestProperties());
+//            System.out.println("Response Code: " + responseCode);
 
             // Handle response
-            if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Contact info saved successfully.");
                 saved(event); // Assuming this method exists to handle UI updates
             } else {
@@ -116,6 +117,7 @@ public class ContactInfoController implements Initializable {
             }
         }
     }
+
 
 
     private void saved(ActionEvent event) throws IOException {

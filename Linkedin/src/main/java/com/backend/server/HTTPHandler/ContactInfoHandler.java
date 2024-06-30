@@ -119,18 +119,24 @@ public class ContactInfoHandler implements HttpHandler {
 
     private String handlePut(HttpExchange exchange, String userId, JSONObject jsonObject) throws IOException, SQLException {
         // Implement logic to update contact info
-        String profileUrl= jsonObject.getString("profileUrl");
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        String phoneType = jsonObject.getString("phoneType");
-        String address = jsonObject.getString("address");
-        String month = jsonObject.getString("month");
-        int day = jsonObject.getInt("day");
-        String visibility = jsonObject.getString("visibility");
-        String instantMessaging = jsonObject.getString("instantMessaging");
+        String profileUrl = jsonObject.optString("profileUrl", "");
+        String phoneNumber = jsonObject.optString("phoneNumber", "");
+        String phoneType = jsonObject.optString("phoneType", "");
+        String month = jsonObject.optString("month", "");
+        int day = jsonObject.optInt("day", 0);
+        String visibility = jsonObject.optString("visibility", "");
+        String address = jsonObject.optString("address", "");
+        String instantMessaging = jsonObject.optString("instantMessaging", "");
 
         contactInfoController.updateContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
 
-        return "{\"message\":\"Contact info updated successfully\"}";
+        if (contactInfoController.getContactInfo(userId) != null) {
+            contactInfoController.updateContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
+            return "{\"message\":\"Contact info updated successfully\"}";
+        } else {
+            contactInfoController.saveContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
+            return "{\"message\":\"Contact info created successfully\"}";
+        }
     }
 
     private String handleDelete(HttpExchange exchange, String userId) throws IOException, SQLException {
