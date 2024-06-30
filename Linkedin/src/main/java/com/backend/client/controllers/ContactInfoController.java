@@ -9,13 +9,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Month;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -47,12 +51,66 @@ public class ContactInfoController implements Initializable {
     );
 
 
-    public void Save(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Profile.fxml")));
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void Save(ActionEvent event) {
+        // Collect data from the UI components
+        JSONObject jsonObject = getJsonObject();
+
+        try {
+            // Send data to the backend using HTTP POST request
+            URL url = new URL("http://localhost:8080/contactinfo"); // Adjust the URL to match your backend endpoint
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            try (java.io.OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Contact info saved successfully.");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
+        }
     }
+
+    private JSONObject getJsonObject() {
+        String profileUrl = urlId.getText();
+        String phoneNumber = numberId.getText();
+        String phoneTypeSelected = phoneType.getValue();
+        String month = monthId.getValue();
+        int day = dayId.getValue();
+        String visibility = visibilityId.getValue();
+        String address = addrId.getText();
+        String instantMessaging = instantMessage.getText();
+
+        // Create JSON object to send to the server
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("profileUrl", profileUrl);
+        jsonObject.put("phoneNumber", phoneNumber);
+        jsonObject.put("phoneType", phoneTypeSelected);
+        jsonObject.put("month", month);
+        jsonObject.put("day", day);
+        jsonObject.put("visibility", visibility);
+        jsonObject.put("address", address);
+        jsonObject.put("instantMessaging", instantMessaging);
+        return jsonObject;
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     /***
      *
