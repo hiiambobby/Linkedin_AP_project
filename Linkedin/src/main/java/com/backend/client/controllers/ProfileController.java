@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.IOException;
@@ -22,12 +23,28 @@ public class ProfileController {
 
 
     public void ContactInfo(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        // Load the FXML for the Contact Info scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ContactInfo.fxml"));
+        Parent root = loader.load();
+
+        // Create a new Stage for the popup window
+        Stage popupStage = new Stage();
+
+        // Set the scene for the popup stage
+        popupStage.setScene(new Scene(root));
+
+        // Set an icon for the popup window (optional)
         Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
-        stage.getIcons().add(icon);
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/ContactInfo.fxml"));
-        stage.setScene(new Scene(root));
-        stage.show();
+        popupStage.getIcons().add(icon);
+
+        // Set the title for the popup window (optional)
+        popupStage.setTitle("Contact Info");
+
+        // Set the modality to make sure the popup blocks interaction with the main window
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+
+        // Show the popup window
+        popupStage.show();
 
     }
     public void logOut(ActionEvent event) throws IOException {
