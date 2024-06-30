@@ -1,27 +1,24 @@
 package com.backend.client.controllers;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.prefs.Preferences;
 
 public class TokenManager {
-    private static final String TOKEN_FILE = "token.txt";
 
-    public static void saveToken(String token) {
-        try (FileWriter fileWriter = new FileWriter(TOKEN_FILE)) {
-            fileWriter.write(token);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private static final Preferences prefs = Preferences.userNodeForPackage(TokenManager.class);
+    private static final String TOKEN_KEY = "authToken";
+
+    // Store the token
+    public static void storeToken(String token) {
+        prefs.put(TOKEN_KEY, token);
     }
 
-    public static String loadToken() {
-        try {
-            return new String(Files.readAllBytes(Paths.get(TOKEN_FILE)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    // Retrieve the token
+    public static String getToken() {
+        return prefs.get(TOKEN_KEY, null);
+    }
+
+    // Clear the token (e.g., on logout)
+    public static void clearToken() {
+        prefs.remove(TOKEN_KEY);
     }
 }

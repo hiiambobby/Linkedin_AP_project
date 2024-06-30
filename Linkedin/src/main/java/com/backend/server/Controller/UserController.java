@@ -9,10 +9,10 @@ import java.util.List;
 
 public class UserController {
     private UserDAO userDAO;
-    private ContactInfoDAO contactInfoDAO;
+    //private ContactInfoDAO contactInfoDAO;
 
     public UserController() throws SQLException {
-        this.contactInfoDAO = new ContactInfoDAO();
+        //this.contactInfoDAO = new ContactInfoDAO();
         this.userDAO = new UserDAO(); // Initialize UserDAO instance
     }
 

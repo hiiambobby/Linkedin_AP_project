@@ -6,6 +6,7 @@ import com.backend.server.Util.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import java.util.prefs.Preferences;
 import org.json.JSONObject;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -16,6 +17,8 @@ import java.sql.SQLException;
 
 
 public class userActionsHandler implements HttpHandler,HttpStatusCode {
+
+    private Preferences prefs = Preferences.userNodeForPackage(userActionsHandler.class);
 
     private final UserController userController;
     private final ObjectMapper objectMapper;
@@ -115,6 +118,8 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
             return;
         }
 
+        // Save the token in preferences
+        prefs.put("authToken", token);
         // Prepare JSON response with token
         JSONObject responseJson = new JSONObject();
         responseJson.put("message", "User created successfully");

@@ -8,33 +8,36 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" stylesheets="@/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ContactInfoController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" stylesheets="@/contactInfoStyles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ContactInfoController">
     <children>
         <HBox prefHeight="63.0" prefWidth="580.0" spacing="10.0">
             <children>
                 <Label prefHeight="18.0" prefWidth="77.0" text="Profile URL" translateX="10.0" translateY="6.0">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="12.0" />
-               </font></Label>
-                <TextField fx:id="urlId" prefHeight="26.0" prefWidth="447.0" translateX="15.0" translateY="10.0" />
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="urlId" prefHeight="26.0" prefWidth="447.0" translateX="15.0" translateY="10.0" styleClass="text-field"/>
             </children>
         </HBox>
         <HBox prefHeight="70.0" prefWidth="580.0" spacing="10.0">
             <children>
                 <Label prefHeight="18.0" prefWidth="81.0" text="Email" translateX="10.0" translateY="10.0">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="12.0" />
-               </font></Label>
-                <TextField fx:id="emailId" prefHeight="26.0" prefWidth="447.0" translateX="11.0" translateY="10.0" />
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="emailId" prefHeight="26.0" prefWidth="447.0" translateX="11.0" translateY="10.0" styleClass="text-field"/>
             </children>
         </HBox>
         <HBox prefHeight="65.0" prefWidth="600.0" spacing="10.0">
             <children>
                 <Label text="Phone Number" translateX="10.0" translateY="8.0">
-                <font>
-                    <Font name="Arial Rounded MT Bold" size="12.0" />
-                </font></Label>
-                <TextField fx:id="numberId" prefHeight="26.0" prefWidth="447.0" translateX="6.0" translateY="10.0" />
+                    <font>
+                        <Font name="Arial Rounded MT Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="numberId" prefHeight="26.0" prefWidth="447.0" translateX="6.0" translateY="10.0" styleClass="text-field"/>
             </children>
         </HBox>
         <HBox prefHeight="52.0" prefWidth="580.0" spacing="10.0">
@@ -42,8 +45,9 @@
                 <Label text="Phone Type" translateX="10.0">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
-                    </font></Label>
-                <ComboBox fx:id="phoneType" prefHeight="32.0" prefWidth="446.0" promptText="Please select" translateX="22.0" translateY="4.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="phoneType" prefHeight="32.0" prefWidth="446.0" promptText="Please select" translateX="22.0" translateY="4.0" styleClass="combo-box"/>
             </children>
         </HBox>
         <HBox prefHeight="81.0" prefWidth="580.0" spacing="10.0">
@@ -51,8 +55,9 @@
                 <Label text="Address" translateX="10.0">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
-                    </font></Label>
-                <TextField fx:id="addrId" prefHeight="58.0" prefWidth="447.0" translateX="43.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="addrId" prefHeight="58.0" prefWidth="447.0" translateX="43.0" styleClass="text-field"/>
             </children>
         </HBox>
         <HBox prefHeight="75.0" prefWidth="580.0" spacing="10.0">
@@ -60,28 +65,29 @@
                 <Label text="Birthday" translateX="10.0" translateY="5.0">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
-                    </font></Label>
-                <ComboBox fx:id="monthId" prefHeight="26.0" prefWidth="220.0" promptText="Month" translateX="40.0" />
-                <ComboBox fx:id="dayId" prefHeight="26.0" prefWidth="220.0" promptText="Day" translateX="40.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="monthId" prefHeight="26.0" prefWidth="220.0" promptText="Month" translateX="40.0" styleClass="combo-box"/>
+                <ComboBox fx:id="dayId" prefHeight="26.0" prefWidth="220.0" promptText="Day" translateX="40.0" styleClass="combo-box"/>
             </children>
         </HBox>
-      <HBox prefHeight="29.0" prefWidth="600.0">
-         <children>
-                <ComboBox fx:id="visibilityId" prefHeight="26.0" prefWidth="150.0" translateX="100.0" />
-         </children>
-      </HBox>
+        <HBox prefHeight="29.0" prefWidth="600.0">
+            <children>
+                <ComboBox fx:id="visibilityId" prefHeight="26.0" prefWidth="150.0" translateX="100.0" styleClass="combo-box"/>
+            </children>
+        </HBox>
         <HBox prefHeight="71.0" prefWidth="580.0" spacing="10.0">
             <children>
                 <Label text="Instant Messaging" translateX="10.0">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
-                    </font></Label>
-                <TextField fx:id="instantMessage" prefHeight="26.0" prefWidth="447.0" translateX="5.0" translateY="10.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="instantMessage" prefHeight="26.0" prefWidth="447.0" translateX="5.0" translateY="10.0" styleClass="text-field"/>
             </children>
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefWidth="580.0" spacing="10.0">
-            <Button fx:id="saveBtn" onAction="#Save" prefHeight="30.0" prefWidth="78.0" styleClass="blue-btn" text="Save" translateX="-10.0" translateY="-5.0">
-          </Button>
+            <Button fx:id="saveBtn" onAction="#Save" prefHeight="30.0" prefWidth="78.0" styleClass="blue-btn" text="Save" translateX="-10.0" translateY="-5.0"/>
         </HBox>
     </children>
 </VBox>

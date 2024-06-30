@@ -1,5 +1,6 @@
 package com.backend.client.controllers;
 
+import com.backend.server.Util.JWT;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,14 +18,19 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Month;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class ContactInfoController implements Initializable {
+    private Preferences prefs = Preferences.userNodeForPackage(SignInController.class);
+
+
     @FXML
     private Button saveBtn;
     @FXML
@@ -52,18 +58,24 @@ public class ContactInfoController implements Initializable {
 
 
     public void Save(ActionEvent event) {
-        // Collect data from the UI components
         JSONObject jsonObject = getJsonObject();
 
         try {
-            // Send data to the backend using HTTP POST request
-            URL url = new URL("http://localhost:8080/contactinfo"); // Adjust the URL to match your backend endpoint
+            URL url = new URL("http://localhost:8000/contactInfo");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
+
+            // Retrieve the token from TokenManager
+            String token = TokenManager.getToken();
+            System.out.println(token);
+            if (token != null) {
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+            }
+
             conn.setDoOutput(true);
 
-            try (java.io.OutputStream os = conn.getOutputStream()) {
+            try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
@@ -72,13 +84,12 @@ public class ContactInfoController implements Initializable {
             if (responseCode == HttpURLConnection.HTTP_CREATED) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Contact info saved successfully.");
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info."+responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
-        }
-    }
+        }}
 
     private JSONObject getJsonObject() {
         String profileUrl = urlId.getText();
@@ -132,6 +143,9 @@ public class ContactInfoController implements Initializable {
         String[] options = {"Only you","Your connections","Your network","All LinkedIn members"};
         visibilityId.getItems().addAll(options);
         visibilityId.getSelectionModel().selectFirst();
+        /////set the email text field
+//        String token = JWT.validateToken(TokenManager.getToken());
+//        emailId.setText(token);
     }
 
     private void updateDays() {

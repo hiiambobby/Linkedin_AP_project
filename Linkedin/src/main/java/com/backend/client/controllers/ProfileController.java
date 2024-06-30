@@ -31,6 +31,7 @@ public class ProfileController {
 
     }
     public void logOut(ActionEvent event) throws IOException {
+        TokenManager.clearToken();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml")); // Adjust path as needed
         Stage currentStage = (Stage) logOut.getScene().getWindow();
         currentStage.close(); // Close the current stage if needed

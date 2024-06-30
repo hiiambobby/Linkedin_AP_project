@@ -3,10 +3,7 @@ package com.backend.server.Database;
 import com.backend.server.Model.ContactInfo;
 import com.backend.server.MySql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ContactInfoDAO {
 
@@ -14,7 +11,26 @@ public class ContactInfoDAO {
 
     public ContactInfoDAO() throws SQLException {
         this.connection = MySql.getConnection(); // Assumes you have a DatabaseConnection class for obtaining connections
+        createTable();
     }
+
+    private void createTable() throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS contact_info ("
+                + "user_id VARCHAR(255) PRIMARY KEY,"
+                + "profile_url VARCHAR(255),"
+                + "phone_number VARCHAR(20),"
+                + "phone_type VARCHAR(20),"
+                + "month VARCHAR(20),"
+                + "day INT,"
+                + "visibility VARCHAR(50),"
+                + "address VARCHAR(255),"
+                + "instant_messaging VARCHAR(255)"
+                + ")";
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(createTableSQL);
+        }
+    }
+
 
     // Create a new contact information entry
     public void createContactInfo(ContactInfo contactInfo) throws SQLException {

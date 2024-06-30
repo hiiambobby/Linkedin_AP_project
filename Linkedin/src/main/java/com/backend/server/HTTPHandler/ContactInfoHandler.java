@@ -39,23 +39,23 @@ public class ContactInfoHandler implements HttpHandler {
                 return;
             }
 
-            if (path.equals("/contactinfo") && method.equalsIgnoreCase("POST")) {
+            if (path.equals("/contactInfo") && method.equalsIgnoreCase("POST")) {
                 JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
                 handlePost(exchange, userId, jsonObject);
-            } else if (path.equals("/contactinfo") && method.equalsIgnoreCase("GET")) {
+            } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("GET")) {
                 response = handleGet(exchange, userId);
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
-            } else if (path.equals("/contactinfo") && method.equalsIgnoreCase("PUT")) {
+            } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("PUT")) {
                 JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
                 response = handlePut(exchange, userId, jsonObject);
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
-            } else if (path.equals("/contactinfo") && method.equalsIgnoreCase("DELETE")) {
+            } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("DELETE")) {
                 response = handleDelete(exchange, userId);
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
@@ -136,6 +136,7 @@ public class ContactInfoHandler implements HttpHandler {
             String token = authorizationHeader.substring(7);
             try {
                 // Validate the token and extract the user ID (email)
+                System.out.println(token);
                 return JWT.validateToken(token);
             } catch (Exception e) {
                 // Handle invalid token case

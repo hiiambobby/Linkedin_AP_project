@@ -1,0 +1,15 @@
+.text-field{
+    -fx-text-fill: black; /* Set the text color to black */
+    -fx-font-size: 12px;  /* Optional: Set the font size */
+}
+
+.combo-box {
+    -fx-text-fill: black; /* Set the text color to black */
+    -fx-font-size: 12px;  /* Optional: Set the font size */
+}
+.blue-btn {
+    -fx-background-color: #2196f3; /* Blue background color */
+    -fx-background-radius: 5; /* Rounded corners */
+    -fx-text-fill: white; /* White text color */
+    -fx-font-size: 17px; /* Font size */
+}

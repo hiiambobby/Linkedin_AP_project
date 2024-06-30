@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONObject;
+import java.util.prefs.Preferences;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,9 +21,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Optional;
 
 public class SignInController {
+
     @FXML
     private Button signInButton;
     @FXML
@@ -44,7 +47,7 @@ public class SignInController {
        boolean success = sendRequest(email,pass);
         if (success) {
             // Load the new FXML file
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Profile.fxml")); // Adjust path as needed
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Profile.fxml"))); // Adjust path as needed
             Stage currentStage = (Stage) signInButton.getScene().getWindow();
             currentStage.close(); // Close the current stage if needed
 
@@ -86,7 +89,11 @@ public class SignInController {
         System.out.println("POST Response Code :: " + responseCode);
         String msg = setResponseMsg(responseCode);
 
-        if (responseCode == HttpURLConnection.HTTP_OK) { // success
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            String token = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+           // Save the token in preferences
+            TokenManager.storeToken(token);
+            System.out.println(token);
             return true;
         } else {
             System.out.println(msg);
@@ -96,14 +103,10 @@ public class SignInController {
     }
 
     private String setResponseMsg(int responseCode) {
-        switch (responseCode)
-        {
-            case 401:
-                return "user not found.";
-            case 500:
-                return "something went wrong. pls try again later...";
-            default:
-                return "Unexpected response code: " + responseCode;
-        }
+        return switch (responseCode) {
+            case 401 -> "user not found.";
+            case 500 -> "something went wrong. pls try again later...";
+            default -> "Unexpected response code: " + responseCode;
+        };
     }
 }

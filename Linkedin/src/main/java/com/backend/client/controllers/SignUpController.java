@@ -122,7 +122,7 @@ public class SignUpController {
             JSONObject jsonResponse = new JSONObject(response);
             String token = jsonResponse.getString("token");
 
-            TokenManager.saveToken(token);
+            TokenManager.storeToken(token);
             msgId.setText("User created successfully.");
             msgId.setStyle("-fx-text-fill: green;");
             return true;
