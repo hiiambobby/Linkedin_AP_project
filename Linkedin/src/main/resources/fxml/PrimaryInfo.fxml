@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane hgap="20.0" prefHeight="353.0" prefWidth="600.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="294.39996337890625" minWidth="10.0" prefWidth="109.4" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="451.1999877929687" minWidth="10.0" prefWidth="450.4" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Name" />
+            <Label text="Last Name" GridPane.rowIndex="1" />
+            <Label text="Additional Name" GridPane.rowIndex="2" />
+            <Label text="Background Photo" GridPane.rowIndex="3" />
+            <Label text="Country" GridPane.rowIndex="6" />
+            <Label text="Head Title" GridPane.rowIndex="5" />
+            <Label text="City" GridPane.rowIndex="7" />
+            <Label text="Profession" GridPane.rowIndex="8" />
+            <TextField GridPane.columnIndex="1" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label text="Profile Picture" GridPane.rowIndex="4" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField promptText="Enter the path to the background photo( e.g. D:\image.jpg)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField promptText="Enter the path to the profile picture( e.g. D:\image.jpg)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         </children>
+         <padding>
+            <Insets right="20.0" top="10.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </GridPane>
+      <Button layoutX="537.0" layoutY="360.0" mnemonicParsing="false" text="Save">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button layoutX="472.0" layoutY="360.0" mnemonicParsing="false" text="Cancel">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>
