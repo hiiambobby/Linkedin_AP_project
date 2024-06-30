@@ -8,8 +8,8 @@ public class ContactInfo {
     @JsonProperty("profileUrl")
     private String profileUrl;
 
-    @JsonProperty("email")
-    private String email;
+//    @JsonProperty("email")
+//    private String email;
 
     @JsonProperty("phoneNumber")
     private String phoneNumber;
@@ -21,14 +21,18 @@ public class ContactInfo {
     private String address;
 
 
-    @JsonProperty("birthday")
-    private LocalDate birthday; //not sure
+    @JsonProperty("birthdayMonth")
+    private String month;
+    @JsonProperty("birthdayDay")
+    private int day;
 
     @JsonProperty("instantMessaging")
     private String instantMessaging;
 
     @JsonProperty("userId")
     private String userId;
+    @JsonProperty("visibility")
+    private String visibility;
 
     // Default constructor
     public ContactInfo() {
@@ -36,21 +40,22 @@ public class ContactInfo {
     }
 
 
-    public ContactInfo(String userId,String profileUrl,String email,String phoneNumber, String phoneType, String address,String instantMessaging,LocalDate birthday) {
+    public ContactInfo(String userId,String profileUrl,String phoneNumber, String phoneType,String month,int day,String visibility, String address,String instantMessaging) {
         this.userId = userId;
         this.profileUrl = profileUrl;
         this.address = address;
-        this.email = email;
         this.phoneNumber = phoneNumber;
         this.phoneType = phoneType;
         this.instantMessaging = instantMessaging;
-        this.birthday = birthday;
+        this.day = day;
+        this.month = month;
+        this.visibility = visibility;
     }
 
     public ContactInfo(String userId, String profileUrl,String email) {
         this.userId = userId;
         this.profileUrl = profileUrl;
-        this.email = email;
+//        this.email = email;
     }
 
     public void setUserId(String userId) {
@@ -93,12 +98,28 @@ public class ContactInfo {
         return profileUrl;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setDay(int day) {
+        this.day = day;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public int getDay() {
+        return day;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getMonth() {
+        return month;
     }
 
     public void setInstantMessaging(String instantMessaging) {
@@ -109,25 +130,27 @@ public class ContactInfo {
         return instantMessaging;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
 
     @Override
     public String toString() {
         return "ContactInfo{" +
                 ", userId='" + userId + '\'' +
+//                ", email='" + email + '\'' +
                 ", profileUrl='" + profileUrl + '\'' +
-                ", email='" + email + '\'' +
                 ",  phoneNumber='" + phoneNumber + '\'' + //common with user
                 ", phoneType=" + phoneType +
+                ", birthMonth" + month +
+                ", birthDay" + day +
+                ", visibility=" + visibility+
                 ", address=" + address +
                 ", instantMessaging=" + instantMessaging +
-                ", birthday=" + birthday +
                 '}';
     }
 }
