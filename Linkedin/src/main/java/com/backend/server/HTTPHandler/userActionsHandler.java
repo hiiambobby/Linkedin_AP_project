@@ -118,8 +118,6 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
             return;
         }
 
-        // Save the token in preferences
-        prefs.put("authToken", token);
         // Prepare JSON response with token
         JSONObject responseJson = new JSONObject();
         responseJson.put("message", "User created successfully");

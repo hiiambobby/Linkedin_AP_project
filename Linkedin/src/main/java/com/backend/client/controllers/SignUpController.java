@@ -1,8 +1,10 @@
 package com.backend.client.controllers;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Optional;
 
 import javafx.event.ActionEvent;
@@ -10,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -57,7 +60,7 @@ public class SignUpController {
                 return;
             }
 
-            if (firstName.length() == 0 || lastName.length() == 0 || email.length() == 0 || password.length() == 0) {
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 msgId.setText("All fields are required!");
                 return;
             } else if (!password.equals(confPassword)) {
@@ -69,7 +72,7 @@ public class SignUpController {
             boolean success = sendPostRequest(firstName, lastName, email, password, confPassword);
             if (success) {
                 // Load the new FXML file
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/Profile.fxml")); // Adjust path as needed
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Profile.fxml"))); // Adjust path as needed
                 Stage currentStage = (Stage) signUpField.getScene().getWindow();
                 currentStage.close(); // Close the current stage if needed
 
@@ -89,7 +92,9 @@ public class SignUpController {
 
     private boolean sendPostRequest(String firstName, String lastName,String email, String password, String confPassword) throws Exception {
         URL url = new URL("http://localhost:8000/signup"); // Replace with your server URL
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection conn = null;
+        try {
+        conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "application/json; utf-8");
         conn.setRequestProperty("Accept", "application/json");
@@ -119,9 +124,9 @@ public class SignUpController {
 
         if (responseCode == HttpURLConnection.HTTP_CREATED) { // success
             String response = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            JSONObject jsonResponse = new JSONObject(response);
-            String token = jsonResponse.getString("token");
-
+            //JSONObject jsonResponse = new JSONObject(response);
+            String token = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            // Save the token in preferences
             TokenManager.storeToken(token);
             msgId.setText("User created successfully.");
             msgId.setStyle("-fx-text-fill: green;");
@@ -131,26 +136,22 @@ public class SignUpController {
             msgId.setText(msg);
             return false;
         }
-    }
-
-    public String setResponseMsg(int code) {
-        switch (code) {
-            case 201:
-                return "User created successfully";
-            case 226:
-                return "User already exists! login to continue";
-            case 451:
-                return "Please enter a valid email";
-            case 411:
-                return "Password should be 8 words or longer!";
-            case 409:
-                return "Password do not match";
-            case 500:
-                return "Server error";
-            default:
-                return "Unexpected response code: " + code;
-
+    } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
+    }
+    public String setResponseMsg(int code) {
+        return switch (code) {
+            case 201 -> "User created successfully";
+            case 226 -> "User already exists! login to continue";
+            case 451 -> "Please enter a valid email";
+            case 411 -> "Password should be 8 words or longer!";
+            case 409 -> "Password do not match";
+            case 500 -> "Server error";
+            default -> "Unexpected response code: " + code;
+        };
     }
 
 }

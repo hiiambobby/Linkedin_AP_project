@@ -21,9 +21,9 @@ public class ContactInfo {
     private String address;
 
 
-    @JsonProperty("birthdayMonth")
+    @JsonProperty("birthMonth")
     private String month;
-    @JsonProperty("birthdayDay")
+    @JsonProperty("birthDay")
     private int day;
 
     @JsonProperty("instantMessaging")

@@ -67,40 +67,50 @@ public class SignInController {
     private boolean sendRequest(String email, String pass) throws IOException {
         //logics to send request to http
         URL url = new URL("http://localhost:8000/login"); // Replace with your server URL
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json; utf-8");
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setDoOutput(true);
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
 
-        JSONObject jsonInput = new JSONObject();
+            JSONObject jsonInput = new JSONObject();
 
-        jsonInput.put("email", email);
-        jsonInput.put("password", pass);
+            jsonInput.put("email", email);
+            jsonInput.put("password", pass);
 
 
-        String jsonInputString = jsonInput.toString();
+            String jsonInputString = jsonInput.toString();
 
-        try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+            int responseCode = conn.getResponseCode();
+            System.out.println("POST Response Code :: " + responseCode);
+            String msg = setResponseMsg(responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                String token = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+                // Save the token in preferences
+                TokenManager.storeToken(token);
+                System.out.println(token);
+                return true;
+            } else {
+                System.out.println(msg);
+                msgId.setText(msg);
+                return false;
+            }
+        }  finally {
+            if (conn != null) {
+                conn.disconnect();
+                System.out.println("closed");
+            }
         }
-        int responseCode = conn.getResponseCode();
-        System.out.println("POST Response Code :: " + responseCode);
-        String msg = setResponseMsg(responseCode);
-
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            String token = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-           // Save the token in preferences
-            TokenManager.storeToken(token);
-            System.out.println(token);
-            return true;
-        } else {
-            System.out.println(msg);
-            msgId.setText(msg);
-            return false;
         }
-    }
+
+
 
     private String setResponseMsg(int responseCode) {
         return switch (responseCode) {

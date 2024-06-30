@@ -71,15 +71,16 @@ public class ContactInfoHandler implements HttpHandler {
     }
 
     private void handlePost(HttpExchange exchange, String userId, JSONObject jsonObject) throws IOException, SQLException {
-        // Implement logic to save contact info
-        String profileUrl= jsonObject.getString("profileUrl");
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        String phoneType = jsonObject.getString("phoneType");
-        String address = jsonObject.getString("address");
-        String month = jsonObject.getString("month");
-        int day = jsonObject.getInt("day");
-        String instantMessaging = jsonObject.getString("instantMessaging");
-        String visibility = jsonObject.getString("visibility");
+      try{  // Implement logic to save contact info
+        String profileUrl = jsonObject.optString("profileUrl", "");
+        String phoneNumber = jsonObject.optString("phoneNumber", "");
+        String phoneType = jsonObject.optString("phoneType", "");
+        String month = jsonObject.optString("birthMonth", ""); // Expecting a String
+        int day = jsonObject.optInt("birthDay", 0); // Expecting an int
+        String visibility = jsonObject.optString("visibility", "");
+        String address = jsonObject.optString("address", "");
+        String instantMessaging = jsonObject.optString("instantMessaging", "");
+
 
         contactInfoController.saveContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
 
@@ -88,16 +89,32 @@ public class ContactInfoHandler implements HttpHandler {
 
         exchange.getResponseHeaders().set("Content-Type", "application/json");
         sendResponse(exchange, 201, responseJson.toString());
-    }
+    } catch (Exception e) {
+          e.printStackTrace();
+          JSONObject errorResponse = new JSONObject();
+          errorResponse.put("error", "Internal Server Error");
+          exchange.getResponseHeaders().set("Content-Type", "application/json");
+          sendResponse(exchange, 500, errorResponse.toString());
+      }}
 
     private String handleGet(HttpExchange exchange, String userId) throws IOException, SQLException {
-        // Implement logic to get contact info
+        // Create an ObjectMapper instance for JSON serialization
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Retrieve the contact info from the database or other data source
         ContactInfo contactInfo = contactInfoController.getContactInfo(userId);
+
+        // Prepare the response
+        String response;
         if (contactInfo != null) {
-            return objectMapper.writeValueAsString(contactInfo);
+            // Serialize ContactInfo object to JSON
+            response = objectMapper.writeValueAsString(contactInfo);
         } else {
-            return "{\"message\":\"Contact info not found\"}";
+            // Return an error message if contact info is not found
+            response = "{\"message\":\"Contact info not found\"}";
         }
+
+        return response;
     }
 
     private String handlePut(HttpExchange exchange, String userId, JSONObject jsonObject) throws IOException, SQLException {
@@ -108,8 +125,8 @@ public class ContactInfoHandler implements HttpHandler {
         String address = jsonObject.getString("address");
         String month = jsonObject.getString("month");
         int day = jsonObject.getInt("day");
-        String instantMessaging = jsonObject.getString("instantMessaging");
         String visibility = jsonObject.getString("visibility");
+        String instantMessaging = jsonObject.getString("instantMessaging");
 
         contactInfoController.updateContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
 
@@ -129,7 +146,6 @@ public class ContactInfoHandler implements HttpHandler {
         os.close();
     }
 
-    // Extract user ID (email) from the JWT token
     private String extractUserIdFromToken(HttpExchange exchange) {
         String authorizationHeader = exchange.getRequestHeaders().getFirst("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {

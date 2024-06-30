@@ -14,12 +14,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Month;
@@ -28,8 +29,6 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 public class ContactInfoController implements Initializable {
-    private Preferences prefs = Preferences.userNodeForPackage(SignInController.class);
-
 
     @FXML
     private Button saveBtn;
@@ -57,62 +56,99 @@ public class ContactInfoController implements Initializable {
     );
 
 
-    public void Save(ActionEvent event) {
+    public void Save(ActionEvent event) throws MalformedURLException {
         JSONObject jsonObject = getJsonObject();
+        URL url = new URL("http://localhost:8000/contactInfo");
+        HttpURLConnection conn = null;
 
         try {
-            URL url = new URL("http://localhost:8000/contactInfo");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
 
-            // Retrieve the token from TokenManager
-            String token = TokenManager.getToken();
-            System.out.println(token);
-            if (token != null) {
+
+            String tokenLong = TokenManager.getToken();
+            String token = TokenManager.extractTokenFromResponse(tokenLong);
+
+            System.out.println("Token: " + token);
+            if (token != null && !token.isEmpty()) {
                 conn.setRequestProperty("Authorization", "Bearer " + token);
+            } else {
+                System.out.println("No token available.");
             }
 
-            conn.setDoOutput(true);
+           conn.setDoOutput(true);
 
+            // Write the JSON data to the output stream
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
             int responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+
+            // Log request details
+            System.out.println("Request URL: " + url);
+            System.out.println("Request Method: " + conn.getRequestMethod());
+            System.out.println("Request Headers: " + conn.getRequestProperties());
+            System.out.println("Response Code: " + responseCode);
+
+            // Log any error stream
+            InputStream errorStream = conn.getErrorStream();
+            if (errorStream != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+
+            if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Contact info saved successfully.");
+                saved(event);
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info."+responseCode);
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info. Response code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
-        }}
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+    }
+
+
+    private void saved(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+        stage.getIcons().add(icon);
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Profile.fxml")));
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 
     private JSONObject getJsonObject() {
-        String profileUrl = urlId.getText();
-        String phoneNumber = numberId.getText();
-        String phoneTypeSelected = phoneType.getValue();
-        String month = monthId.getValue();
-        int day = dayId.getValue();
-        String visibility = visibilityId.getValue();
-        String address = addrId.getText();
-        String instantMessaging = instantMessage.getText();
-
         // Create JSON object to send to the server
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("profileUrl", profileUrl);
-        jsonObject.put("phoneNumber", phoneNumber);
-        jsonObject.put("phoneType", phoneTypeSelected);
-        jsonObject.put("month", month);
-        jsonObject.put("day", day);
-        jsonObject.put("visibility", visibility);
-        jsonObject.put("address", address);
-        jsonObject.put("instantMessaging", instantMessaging);
+        try {
+            jsonObject.put("profileUrl", urlId.getText() != null ? urlId.getText() : "");
+            jsonObject.put("phoneNumber", numberId.getText() != null ? numberId.getText() : "");
+            jsonObject.put("phoneType", phoneType.getValue() != null ? phoneType.getValue() : "");
+            jsonObject.put("birthMonth", monthId.getValue() != null ? monthId.getValue() : ""); // Corrected to match expected retrieval type
+            jsonObject.put("birthDay", dayId.getValue() != null ? dayId.getValue() : 0); // Default to 0 for numeric
+            jsonObject.put("visibility", visibilityId.getValue() != null ? visibilityId.getValue() : "");
+            jsonObject.put("address", addrId.getText() != null ? addrId.getText() : "");
+            jsonObject.put("instantMessaging", instantMessage.getText() != null ? instantMessage.getText() : "");
+            System.out.println(visibilityId.getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return jsonObject;
+
     }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -143,9 +179,8 @@ public class ContactInfoController implements Initializable {
         String[] options = {"Only you","Your connections","Your network","All LinkedIn members"};
         visibilityId.getItems().addAll(options);
         visibilityId.getSelectionModel().selectFirst();
-        /////set the email text field
-//        String token = JWT.validateToken(TokenManager.getToken());
-//        emailId.setText(token);
+      /////load the prev datas
+        loadContactInfo();
     }
 
     private void updateDays() {
@@ -176,4 +211,67 @@ public class ContactInfoController implements Initializable {
             return 31; // Default to 31 days if month is invalid (shouldn't happen)
         }
     }
+
+    public void discard(ActionEvent event) throws IOException {
+        saved(event);
+    }
+
+    // In ContactInfoController.java
+    public void loadContactInfo() {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL("http://localhost:8000/contactInfo");
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            // Retrieve the token from TokenManager
+            String tokenLong = TokenManager.getToken();
+            String token = TokenManager.extractTokenFromResponse(tokenLong);
+            if (token != null && !token.isEmpty()) {
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+            }
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Read the response
+                InputStream inputStream = conn.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                // Parse the JSON response
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                populateFields(jsonResponse);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to load contact info. Response code: " + responseCode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while loading contact info.");
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+    }
+
+    private void populateFields(JSONObject jsonObject) {
+        // Set the values in the text fields and combo boxes
+        urlId.setText(jsonObject.optString("profileUrl", ""));
+        numberId.setText(jsonObject.optString("phoneNumber", ""));
+        phoneType.setValue(jsonObject.optString("phoneType", ""));
+        monthId.setValue(jsonObject.optString("birthMonth", ""));
+        dayId.setValue(jsonObject.optInt("birthDay", 1)); // Default to 1 if not available
+        visibilityId.setValue(jsonObject.optString("visibility", ""));
+        addrId.setText(jsonObject.optString("address", ""));
+        instantMessage.setText(jsonObject.optString("instantMessaging", ""));
+    }
+
+
+
+
 }
