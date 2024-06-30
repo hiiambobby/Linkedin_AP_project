@@ -56,28 +56,26 @@ public class ContactInfoController implements Initializable {
     );
 
 
-    public void Save(ActionEvent event) throws MalformedURLException {
-        JSONObject jsonObject = getJsonObject();
-        URL url = new URL("http://localhost:8000/contactInfo");
-        HttpURLConnection conn = null;
+    public void Save(ActionEvent event) {
+        JSONObject jsonObject = getJsonObject(); // Assuming you have a method to create JSONObject
 
+        HttpURLConnection conn = null;
         try {
-             conn = (HttpURLConnection) url.openConnection();
+            URL url = new URL("http://localhost:8000/contactInfo");
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
 
-
+            // Retrieve the token from TokenManager
             String tokenLong = TokenManager.getToken();
             String token = TokenManager.extractTokenFromResponse(tokenLong);
-
-            System.out.println("Token: " + token);
             if (token != null && !token.isEmpty()) {
                 conn.setRequestProperty("Authorization", "Bearer " + token);
             } else {
                 System.out.println("No token available.");
             }
 
-           conn.setDoOutput(true);
+            conn.setDoOutput(true);
 
             // Write the JSON data to the output stream
             try (OutputStream os = conn.getOutputStream()) {
@@ -87,26 +85,26 @@ public class ContactInfoController implements Initializable {
 
             int responseCode = conn.getResponseCode();
 
-            // Log request details
+            // Log request details (optional)
             System.out.println("Request URL: " + url);
             System.out.println("Request Method: " + conn.getRequestMethod());
             System.out.println("Request Headers: " + conn.getRequestProperties());
             System.out.println("Response Code: " + responseCode);
 
-            // Log any error stream
-            InputStream errorStream = conn.getErrorStream();
-            if (errorStream != null) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-            }
-
+            // Handle response
             if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Contact info saved successfully.");
-                saved(event);
+                saved(event); // Assuming this method exists to handle UI updates
             } else {
+                // Read and log any error stream
+                InputStream errorStream = conn.getErrorStream();
+                if (errorStream != null) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                }
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info. Response code: " + responseCode);
             }
         } catch (IOException e) {
