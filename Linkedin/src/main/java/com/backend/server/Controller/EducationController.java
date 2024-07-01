@@ -1,43 +1,39 @@
-//package com.backend.LinkedinServer.Controller;
-//
-//import com.backend.LinkedinServer.Model.Education;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class EducationController{
-//private final List<Education> educations;
-//
-//public EducationController() {
-//    educations = new ArrayList<>();
-//    // Add initial contact infos here if needed
-//}
-//
-//public List<Education> getAllContactInfos() {
-//    return educations;
-//}
-//
-//public Education getContactInfoByPhoneNumber(String phoneNumber) {
-//    return educations.stream()
-//            .filter(contactInfo -> contactInfo.getPhoneNumber().equals(phoneNumber))
-//            .findFirst()
-//            .orElse(null);
-//}
-//
-//public void createContactInfo(Education contactInfo) {
-//    educations.add(contactInfo);
-//}
-//
-//public void updateContactInfo(String phoneNumber, Education updatedContactInfo) {
-//    for (int i = 0; i < educations.size(); i++) {
-//        if (educations.get(i).getPhoneNumber().equals(phoneNumber)) {
-//            educations.set(i, updatedContactInfo);
-//            return;
-//        }
-//    }
-//}
-//
-//public void deleteContactInfo(String school) {
-//    educations.removeIf(education -> education.getSchool().equals(school));
-//}
-//}
+package com.backend.server.Controller;
+
+import com.backend.server.Database.EducationDAO;
+import com.backend.server.Model.Education;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public class EducationController {
+    private EducationDAO educationDAO;
+
+
+    public EducationController() throws SQLException {
+        this.educationDAO = new EducationDAO();
+    }
+
+
+
+    public Education getEducationById(String id) throws SQLException {
+        return educationDAO.getEducationById(id);
+    }
+
+    public List<Education> getEducationsByUserId(String userId) throws SQLException {
+        return educationDAO.getEducationsByUserId(userId);
+    }
+
+    public void addEducation(Education education) throws SQLException {
+        educationDAO.addEducation(education);
+    }
+
+    public void updateEducation(Education education) throws SQLException, JsonProcessingException {
+        educationDAO.updateEducation(education);
+    }
+
+    public void deleteEducation(String id) throws SQLException {
+        educationDAO.deleteEducation(id);
+    }
+}

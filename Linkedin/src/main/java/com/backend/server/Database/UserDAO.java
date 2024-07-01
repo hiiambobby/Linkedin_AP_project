@@ -22,11 +22,11 @@ public class UserDAO implements sqlOperations{
 
     public void createTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS users ("
-                + "id VARCHAR(36) PRIMARY KEY, "
+                + "id VARCHAR(36), "
                 + "first_name VARCHAR(20), "
                 + "last_name VARCHAR(40), "
                 + "additional_name VARCHAR(255), "
-                + "email VARCHAR(255), "
+                + "email VARCHAR(255) PRIMARY KEY, "
                 + "password VARCHAR(255), "
                 + "country VARCHAR(255), "
                 + "city VARCHAR(255))"; // Add closing parenthesis here
@@ -54,7 +54,7 @@ public class UserDAO implements sqlOperations{
     }
 
     public User getUserById(String id) throws SQLException {
-        String sql = "SELECT * FROM users WHERE id = ?";
+        String sql = "SELECT * FROM users WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, id);
             ResultSet rs = stmt.executeQuery();

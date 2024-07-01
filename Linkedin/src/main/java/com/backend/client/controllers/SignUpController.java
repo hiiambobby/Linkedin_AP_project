@@ -1,4 +1,6 @@
 package com.backend.client.controllers;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -23,6 +25,7 @@ import org.json.JSONObject;
 
 
 public class SignUpController {
+    private static final String USER_DATA_FILE = "userData.txt";
 
     @FXML
     private TextField firstNameField;
@@ -71,6 +74,7 @@ public class SignUpController {
             // Make the HTTP request
             boolean success = sendPostRequest(firstName, lastName, email, password, confPassword);
             if (success) {
+                fetchAndSaveUserData();
                 // Load the new FXML file
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Profile.fxml"))); // Adjust path as needed
                 Stage currentStage = (Stage) signUpField.getScene().getWindow();
@@ -139,6 +143,45 @@ public class SignUpController {
             }
         }
     }
+    private static void fetchAndSaveUserData() throws IOException {
+        String token = TokenManager.getToken();
+        if (token == null) {
+            System.out.println("No token available");
+            return;
+        }
+
+        URL url = new URL("http://localhost:8000/user"); // Replace with your server URL
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("GET Response Code :: " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                String response = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+                saveUserDataToFile(response);
+            } else {
+                System.out.println("Error: " + conn.getResponseMessage());
+            }
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+                System.out.println("Connection closed");
+            }
+        }
+    }
+
+    private static void saveUserDataToFile(String data) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE))) {
+            writer.write(data);
+            System.out.println("User data saved to " + USER_DATA_FILE);
+        }
+    }
+
     public String setResponseMsg(int code) {
         return switch (code) {
             case 201 -> "User created successfully";
