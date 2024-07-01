@@ -108,10 +108,9 @@ public class userActionsHandler implements HttpHandler,HttpStatusCode {
 
         userController.createUser(id, firstName, lastName, additionalName, email, password, country, city);
 
-        // Generate JWT token
         String token;
         try {
-            token = JWT.generateToken(email); // Make sure you have a JWTUtil class that handles token generation
+            token = JWT.generateToken(email);
         } catch (Exception e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Error generating token"); //INTERNAL_SERVER_ERROR

@@ -123,10 +123,7 @@ public class SignUpController {
         String msg = setResponseMsg(responseCode);
 
         if (responseCode == HttpURLConnection.HTTP_CREATED) { // success
-            String response = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            //JSONObject jsonResponse = new JSONObject(response);
             String token = new String(conn.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            // Save the token in preferences
             TokenManager.storeToken(token);
             msgId.setText("User created successfully.");
             msgId.setStyle("-fx-text-fill: green;");

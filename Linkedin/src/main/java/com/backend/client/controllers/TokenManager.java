@@ -4,13 +4,18 @@ import org.json.JSONObject;
 
 import java.util.prefs.Preferences;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+
+
 public class TokenManager {
 
     private static final Preferences prefs = Preferences.userNodeForPackage(TokenManager.class);
     private static final String TOKEN_KEY = "authToken";
 
     /**
-     * Store the token in the Preferences storage.
+     * Store the token in Preferences storage.
      *
      * @param token The token to store.
      */
@@ -43,6 +48,35 @@ public class TokenManager {
     }
 
     /**
+     * Decode the JWT token and extract the email.
+     *
+     * @param token The JWT token.
+     * @return The email extracted from the token, or null if not found.
+     */
+    public static String getEmailFromToken(String token) {
+        try {
+            DecodedJWT decodedJWT = JWT.decode(token);
+            return decodedJWT.getClaim("email").asString();
+        } catch (JWTDecodeException e) {
+            System.err.println("Failed to decode JWT token: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve the stored token and extract the email from it.
+     *
+     * @return The email extracted from the stored token, or null if not found.
+     */
+    public static String getEmailFromStoredToken() {
+        String token = getToken();
+        if (token != null) {
+            return getEmailFromToken(token);
+        }
+        return null;
+    }
+
+    /**
      * Extract token from a JSON response string.
      *
      * @param jsonResponse JSON response containing the token.
@@ -58,4 +92,3 @@ public class TokenManager {
         }
     }
 }
-

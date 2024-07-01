@@ -52,23 +52,24 @@
         </HBox>
         <HBox prefHeight="81.0" prefWidth="580.0" spacing="10.0">
             <children>
-                <Label text="Address" translateX="10.0">
+            <Label  fx:id="error1" prefHeight="27.0" prefWidth="88.0" translateX="9.0" translateY="20.0" />
+                <Label prefHeight="15.0" prefWidth="56.0" text="Address" translateX="-88.0">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font>
                 </Label>
-                <TextField fx:id="addrId" prefHeight="58.0" prefWidth="447.0" styleClass="text-field" translateX="43.0" />
+                <TextField fx:id="addrId" prefHeight="58.0" prefWidth="447.0" styleClass="text-field" translateX="-55.0" />
             </children>
         </HBox>
         <HBox prefHeight="75.0" prefWidth="580.0" spacing="10.0">
             <children>
-                <Label text="Birthday" translateX="10.0" translateY="5.0">
+                <Label text="Birthday" translateX="10.0" translateY="10.0">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="12.0" />
                     </font>
                 </Label>
-                <ComboBox fx:id="monthId" prefHeight="26.0" prefWidth="220.0" promptText="Month" styleClass="combo-box" translateX="40.0" />
-                <ComboBox fx:id="dayId" prefHeight="26.0" prefWidth="220.0" promptText="Day" styleClass="combo-box" translateX="40.0" />
+                <ComboBox fx:id="monthId" prefHeight="26.0" prefWidth="220.0" promptText="Month" styleClass="combo-box" translateX="40.0" translateY="10.0" />
+                <ComboBox fx:id="dayId" prefHeight="26.0" prefWidth="220.0" promptText="Day" styleClass="combo-box" translateX="40.0" translateY="10.0" />
             </children>
         </HBox>
         <HBox prefHeight="29.0" prefWidth="600.0">

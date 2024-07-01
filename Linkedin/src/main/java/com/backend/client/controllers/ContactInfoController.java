@@ -10,11 +10,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
@@ -26,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Month;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.prefs.Preferences;
 
 public class ContactInfoController implements Initializable {
@@ -40,6 +39,8 @@ public class ContactInfoController implements Initializable {
     private TextField numberId;
     @FXML
     private TextField addrId;
+    @FXML
+    private Label error1;
     @FXML
     private TextField instantMessage;
     @FXML
@@ -70,6 +71,7 @@ public class ContactInfoController implements Initializable {
             // Retrieve the token from TokenManager
             String tokenLong = TokenManager.getToken();
             String token = TokenManager.extractTokenFromResponse(tokenLong);
+
             if (token != null && !token.isEmpty()) {
                 conn.setRequestProperty("Authorization", "Bearer " + token);
             } else {
@@ -78,7 +80,9 @@ public class ContactInfoController implements Initializable {
 
             conn.setDoOutput(true);
 
+            assert jsonObject != null;
             String json = jsonObject.toString();
+            System.out.println(jsonObject);
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = json.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
@@ -86,11 +90,6 @@ public class ContactInfoController implements Initializable {
 
             int responseCode = conn.getResponseCode();
 
-//            // Log request details (optional)
-//            System.out.println("Request URL: " + url);
-//            System.out.println("Request Method: " + conn.getRequestMethod());
-//            System.out.println("Request Headers: " + conn.getRequestProperties());
-//            System.out.println("Response Code: " + responseCode);
 
             // Handle response
             if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -121,16 +120,13 @@ public class ContactInfoController implements Initializable {
 
 
     private void saved(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
-        stage.getIcons().add(icon);
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Profile.fxml")));
-        stage.setScene(new Scene(root));
-        stage.show();
+        Stage popupStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        popupStage.close();
     }
 
     private JSONObject getJsonObject() {
         // Create JSON object to send to the server
+        if(checkLength(addrId.getText(),numberId.getText(),instantMessage.getText())){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("profileUrl", urlId.getText() != null ? urlId.getText() : "");
@@ -141,14 +137,42 @@ public class ContactInfoController implements Initializable {
             jsonObject.put("visibility", visibilityId.getValue() != null ? visibilityId.getValue() : "");
             jsonObject.put("address", addrId.getText() != null ? addrId.getText() : "");
             jsonObject.put("instantMessaging", instantMessage.getText() != null ? instantMessage.getText() : "");
-            System.out.println(visibilityId.getValue());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return jsonObject;
+        return jsonObject;}
+        return null;
 
     }
+//    public void emailAndUrl(String token)
+//    {
+//        String email = JWT.validateToken(token);
+//        emailId.setText(email);
+//    }
 
+    private boolean checkLength(String addr,String phoneNum,String instant) {
+        if (addr.length() > 220){
+            error1.setText("max length = 220");
+            error1.setTextFill(Color.RED);
+            return false;
+    }
+        if(phoneNum.length() > 40)
+        {
+            numberId.setText("Enter a valid phone number");
+            numberId.setStyle("-fx-text-fill: red;");
+            return false;
+
+        }
+        if(instant.length() > 40)
+        {
+            instantMessage.setText("max length = 40");
+            instantMessage.setStyle("-fx-text-fill: red;");
+            return false;
+        }
+        return true;
+
+    }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -260,8 +284,22 @@ public class ContactInfoController implements Initializable {
     }
 
     private void populateFields(JSONObject jsonObject) {
+        // Retrieve the email from the stored token
+        String email = TokenManager.getEmailFromStoredToken();
+        System.out.println("Retrieved email: " + email);
+
+        // Generate the URL
+        String url = "http://www.example.com/" + generateRandomId();
+
         // Set the values in the text fields and combo boxes
-        urlId.setText(jsonObject.optString("profileUrl", ""));
+        urlId.setText(url);
+        urlId.setEditable(false);  // Make the URL field uneditable
+
+        // Check if email is null or empty before setting it
+        emailId.setText(jsonObject.optString("userId", ""));
+        emailId.setEditable(false);  // Make the email field uneditable
+
+        // Set other fields based on JSON object
         numberId.setText(jsonObject.optString("phoneNumber", ""));
         phoneType.setValue(jsonObject.optString("phoneType", ""));
         monthId.setValue(jsonObject.optString("birthMonth", ""));
@@ -269,6 +307,10 @@ public class ContactInfoController implements Initializable {
         visibilityId.setValue(jsonObject.optString("visibility", ""));
         addrId.setText(jsonObject.optString("address", ""));
         instantMessage.setText(jsonObject.optString("instantMessaging", ""));
+    }
+
+    private String generateRandomId() {
+        return UUID.randomUUID().toString().substring(0, 16);
     }
 
 
