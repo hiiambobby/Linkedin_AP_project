@@ -199,7 +199,7 @@ public class ContactInfoController implements Initializable {
         String[] options = {"Only you","Your connections","Your network","All LinkedIn members"};
         visibilityId.getItems().addAll(options);
         visibilityId.getSelectionModel().selectFirst();
-      /////load the prev datas
+      /////load the prev data
         loadContactInfo();
     }
 
@@ -237,7 +237,14 @@ public class ContactInfoController implements Initializable {
     }
 
     // In ContactInfoController.java
-    public void loadContactInfo() {
+    private void loadContactInfo() {
+        JSONObject jsonResponse = getcontactInfoJSONObject();
+        if(jsonResponse != null){
+            populateFields(jsonResponse);
+        }
+    }
+
+    public JSONObject getcontactInfoJSONObject(){
         HttpURLConnection conn = null;
         try {
             URL url = new URL("http://localhost:8000/contactInfo");
@@ -265,7 +272,7 @@ public class ContactInfoController implements Initializable {
 
                 // Parse the JSON response
                 JSONObject jsonResponse = new JSONObject(response.toString());
-                populateFields(jsonResponse);
+                return jsonResponse;
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to load contact info. Response code: " + responseCode);
             }
@@ -277,6 +284,7 @@ public class ContactInfoController implements Initializable {
                 conn.disconnect();
             }
         }
+        return null;
     }
 
     private void populateFields(JSONObject jsonObject) {

@@ -30,7 +30,6 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ImageView>
-                        <Text layoutX="116.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
                         <Text layoutX="116.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
                         <Button fx:id="logOut" alignment="CENTER_RIGHT" layoutX="533.0" layoutY="56.0" mnemonicParsing="false" onAction="#logOut" prefHeight="17.0" prefWidth="60.0" text="Log Out">
                             <font>
@@ -40,6 +39,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                         </Button>
+                  <Label fx:id="nameLabel" layoutX="116.0" layoutY="25.0" text="Name" />
                     </children>
                 </AnchorPane>
                 <Separator prefWidth="200.0" />

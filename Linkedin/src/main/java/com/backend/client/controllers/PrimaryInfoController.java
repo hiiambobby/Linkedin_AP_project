@@ -181,7 +181,13 @@ public class PrimaryInfoController implements Initializable {
         alert.showAndWait();
     }
 
-    public void loadPrimaryInfo() {
+    private void loadPrimaryInfo() {
+        JSONObject jsonResponse = getPrimaryInfoJSONObject();
+        if(jsonResponse != null){
+            populateFields(jsonResponse);
+        }
+    }
+    public JSONObject getPrimaryInfoJSONObject(){
         HttpURLConnection conn = null;
         try {
             URL url = new URL("http://localhost:8000/primaryInfo");
@@ -209,7 +215,7 @@ public class PrimaryInfoController implements Initializable {
 
                 // Parse the JSON response
                 JSONObject jsonResponse = new JSONObject(response.toString());
-                populateFields(jsonResponse);
+                return jsonResponse;
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to load primary info. Response code: " + responseCode);
             }
@@ -221,6 +227,7 @@ public class PrimaryInfoController implements Initializable {
                 conn.disconnect();
             }
         }
+        return null;
     }
 
     private void populateFields(JSONObject jsonObject) {

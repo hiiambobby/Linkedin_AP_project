@@ -150,7 +150,7 @@ public class SignUpController {
             return;
         }
 
-        URL url = new URL("http://localhost:8000/user"); // Replace with your server URL
+        URL url = new URL("http://localhost:8000/user");
         HttpURLConnection conn = null;
         try {
             conn = (HttpURLConnection) url.openConnection();
