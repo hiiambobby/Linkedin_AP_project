@@ -145,11 +145,7 @@ public class ContactInfoController implements Initializable {
         return null;
 
     }
-//    public void emailAndUrl(String token)
-//    {
-//        String email = JWT.validateToken(token);
-//        emailId.setText(email);
-//    }
+
 
     private boolean checkLength(String addr,String phoneNum,String instant) {
         if (addr.length() > 220){

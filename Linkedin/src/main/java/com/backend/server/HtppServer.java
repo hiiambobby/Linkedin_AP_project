@@ -21,6 +21,8 @@ public class HtppServer {
           //  server.createContext("/user", new userActionsHandler());
             server.createContext("/contactInfo", new ContactInfoHandler());
             server.createContext("/primaryInfo", new PrimaryInfoHandler());
+            server.createContext("/education", new EducationHandler());
+
 
             server.start();
 

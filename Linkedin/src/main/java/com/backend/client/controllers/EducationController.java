@@ -8,7 +8,14 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +68,7 @@ public class EducationController {
     private VBox skillsVBox;
 
     // Maximum number of skills allowed
-    private int maxSkills = 5;
+    private final int maxSkills = 5;
 
     // Range of years
     private ObservableList<Integer> years = FXCollections.observableArrayList();
@@ -208,18 +215,22 @@ public class EducationController {
         String startMonth = startMonthCombo.getValue();
 
         if (startYear != null && startMonth != null) {
-            int startMonthIndex = months.indexOf(startMonth);
-            int endYear = startYear + 1;
+            int currentYear = java.time.Year.now().getValue();
 
-            // Adjust the end year based on the start month
-            if (startMonthIndex < months.indexOf("July")) { // If start month is before or in July, end year should be the same
-                endYear = startYear;
-            }
-
+            // Create a list of years starting from the startYear to the currentYear
             ObservableList<Integer> endYears = FXCollections.observableArrayList();
-            for (int year = startYear; year <= endYear; year++) {
+            for (int year = startYear; year <= currentYear; year++) {
                 endYears.add(year);
             }
+
+            // Add the next year to the endYears list if the start month is late in the year
+            int startMonthIndex = months.indexOf(startMonth);
+            if (startMonthIndex >= months.indexOf("July")) {
+                // Allow selection of the next year if start month is July or later
+                endYears.add(startYear + 1);
+            }
+
+            // Set items in the end year combo box
             endYearCombo.setItems(endYears);
 
             // Ensure the current end year value is still in the updated list
@@ -229,19 +240,13 @@ public class EducationController {
         }
     }
 
-    private void saveEducation() {
-        readEducationData(); //for testing
-    }
 
-    private void discardChanges() {
-        // Your code to discard changes
-    }
     private void readEducationData() {
         String school = schoolField.getText();
 
         // Check if the school field is empty and show an alert if necessary
         if (school == null || school.trim().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR,"Error", "School field cannot be empty.");
+            showAlert(Alert.AlertType.ERROR, "Error", "School field cannot be empty.");
             return;
         }
 
@@ -289,6 +294,121 @@ public class EducationController {
         alert.showAndWait();
     }
 
+    private void saveEducation() {
+        addEducation();
+       // readEducationData(); //for testing
+        Stage stage = (Stage) discardButton.getScene().getWindow();
+        stage.close();
+    }
+
+    private void discardChanges() {
+        Stage stage = (Stage) discardButton.getScene().getWindow();
+        stage.close();
+    }
+
+    private JSONObject getJsonObject() {
+        // Create JSON object to send to the server
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            // Retrieve values from fields, handle nulls and provide default values
+            jsonObject.put("school", schoolField.getText() != null ? schoolField.getText() : "");
+            jsonObject.put("userId", TokenManager.getEmailFromStoredToken());
+            jsonObject.put("degree", degreeField.getText() != null ? degreeField.getText() : "");
+            jsonObject.put("fieldOfStudy", fieldOfStudyField.getText() != null ? fieldOfStudyField.getText() : "");
+
+            // For ComboBoxes, provide default empty string or null
+            jsonObject.put("startDateMonth", startDateMonthCombo.getValue() != null ? startDateMonthCombo.getValue() : "");
+            jsonObject.put("startDateYear", startDateYearCombo.getValue() != null ? startDateYearCombo.getValue() : 0); // Default to 0 for numeric
+
+            jsonObject.put("endDateMonth", endDateMonthCombo.getValue() != null ? endDateMonthCombo.getValue() : "");
+            jsonObject.put("endDateYear", endDateYearCombo.getValue() != null ? endDateYearCombo.getValue() : 0); // Default to 0 for numeric
+
+            jsonObject.put("activities", activitiesField.getText() != null ? activitiesField.getText() : "");
+            jsonObject.put("description", descriptionField.getText() != null ? descriptionField.getText() : "");
+
+            // For CheckBox, convert to boolean (true/false)
+            jsonObject.put("notifyNetwork", notifyNetworkCheckBox.isSelected());
+
+            // Add skills information (assuming skillsVBox contains the skill fields)
+            JSONArray skillsArray = new JSONArray();
+            for (Node node : skillsVBox.getChildren()) {
+                if (node instanceof HBox) {
+                    HBox hbox = (HBox) node;
+                    for (Node child : hbox.getChildren()) {
+                        if (child instanceof TextField) {
+                            TextField skillField = (TextField) child;
+                            skillsArray.put(skillField.getText() != null ? skillField.getText() : "");
+                        }
+                    }
+                }
+            }
+            jsonObject.put("skills", skillsArray);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+    public void addEducation() {
+        JSONObject jsonObject = getJsonObject();
+
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL("http://localhost:8000/education");
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+
+            // Retrieve the token from TokenManager
+            String tokenLong = TokenManager.getToken();
+            String token = TokenManager.extractTokenFromResponse(tokenLong);
+
+            if (token != null && !token.isEmpty()) {
+                conn.setRequestProperty("Authorization", "Bearer " + token);
+            } else {
+                System.out.println("No token available.");
+            }
+
+            conn.setDoOutput(true);
+
+            String json = jsonObject.toString();
+            System.out.println(jsonObject);
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = json.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = conn.getResponseCode();
+
+
+            // Handle response
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Education info saved successfully.");
+            } else {
+                // Read and log any error stream
+                InputStream errorStream = conn.getErrorStream();
+                if (errorStream != null) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                }
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save Education info. Response code: " + responseCode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+    }
 
 
 }
