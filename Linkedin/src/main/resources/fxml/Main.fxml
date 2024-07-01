@@ -16,7 +16,7 @@
                 <HBox layoutX="21.0" layoutY="10.0" spacing="2.0">
                     <children>
                         <!-- Label for "Linked" -->
-                        <Label text="Mewed" textFill="WHITE" translateY="40.0">
+                        <Label text="Mewed" textFill="BLACK" translateY="40.0">
                             <font>
                                 <Font size="24.0" />
                             </font>
