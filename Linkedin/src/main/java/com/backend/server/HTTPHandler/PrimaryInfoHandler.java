@@ -98,7 +98,7 @@ public class PrimaryInfoHandler implements HttpHandler {
         // Create an ObjectMapper instance for JSON serialization
         ObjectMapper objectMapper = new ObjectMapper();
 
-        // Retrieve the contact info from the database or other data source
+        // Retrieve the primary info from the database
         PrimaryInfo primaryInfo = primaryInfoController.getPrimaryInfo(userId);
 
         // Prepare the response
