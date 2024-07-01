@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class EducationController implements Initializable {
+public class EducationController{
 
 
         // FXML fields
@@ -41,8 +41,11 @@ public class EducationController implements Initializable {
 
         // Range of years
         private ObservableList<Integer> years = FXCollections.observableArrayList();
-        @Override
-        public void initialize(URL url, ResourceBundle resourceBundle) {
+    private ObservableList<String> months = FXCollections.observableArrayList();
+
+        @FXML
+        public void initialize() {
+            populateYears();
             populateScrollPane(); // Initialize the scroll pane content
             addSkillButton.setOnAction(event -> addSkillField());
             saveButton.setOnAction(event -> saveEducation());
@@ -91,6 +94,9 @@ public class EducationController implements Initializable {
             // End Date Year
             ComboBox<Integer> endDateYearCombo = new ComboBox<>(years);
             HBox endDateYearHBox = createField("End Date Year:", endDateYearCombo, labelStyle, fieldStyle);
+
+            startDateYearCombo.setOnAction(event -> updateEndYearCombo(startDateYearCombo, endDateMonthCombo, endDateYearCombo));
+            endDateMonthCombo.setOnAction(event -> updateEndYearCombo(startDateYearCombo, endDateMonthCombo, endDateYearCombo));
 
             // Activities
             HBox activitiesHBox = createField("Activities:", new TextField(), labelStyle, fieldStyle);
@@ -168,6 +174,31 @@ public class EducationController implements Initializable {
             }
         }
 
+    private void updateEndYearCombo(ComboBox<Integer> startYearCombo, ComboBox<String> startMonthCombo, ComboBox<Integer> endYearCombo) {
+        Integer startYear = startYearCombo.getValue();
+        String startMonth = startMonthCombo.getValue();
+
+        if (startYear != null && startMonth != null) {
+            int startMonthIndex = months.indexOf(startMonth);
+            int endYear = startYear + 1;
+
+            // Adjust the end year based on the start month
+            if (startMonthIndex < months.indexOf("July")) { // If start month is before or in July, end year should be the same
+                endYear = startYear;
+            }
+
+            ObservableList<Integer> endYears = FXCollections.observableArrayList();
+            for (int year = startYear; year <= endYear; year++) {
+                endYears.add(year);
+            }
+            endYearCombo.setItems(endYears);
+
+            // Ensure the current end year value is still in the updated list
+            if (endYearCombo.getValue() != null && !endYears.contains(endYearCombo.getValue())) {
+                endYearCombo.setValue(endYears.get(endYears.size() - 1)); // Set to the latest available year
+            }
+        }
+    }
         private void saveEducation() {
             // Your code to save education data
         }
