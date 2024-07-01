@@ -5,20 +5,16 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <AnchorPane layoutX="-5.0" layoutY="341.0" prefHeight="59.0" prefWidth="600.0">
-         <children>
-            <Button layoutX="541.0" layoutY="14.0" mnemonicParsing="false" text="Save" />
-            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Discard" />
-            <Separator layoutY="-10.0" prefHeight="14.0" prefWidth="600.0" />
-         </children>
-      </AnchorPane>
-      <ScrollPane layoutX="-1.0" layoutY="-1.0" prefHeight="344.0" prefWidth="600.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-        </content>
-      </ScrollPane>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.EducationController">
+    <children>
+        <AnchorPane layoutX="-5.0" layoutY="341.0" prefHeight="59.0" prefWidth="600.0">
+            <children>
+                <Button fx:id="saveButton" layoutX="541.0" layoutY="14.0" mnemonicParsing="false" text="Save" />
+                <Button fx:id="discardButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Discard" />
+                <Separator layoutY="-10.0" prefHeight="14.0" prefWidth="600.0" />
+            </children>
+        </AnchorPane>
+        <ScrollPane fx:id="scrollPane" layoutX="-1.0" layoutY="-1.0" prefHeight="344.0" prefWidth="600.0"/>
+    </children>
 </AnchorPane>
