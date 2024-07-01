@@ -20,6 +20,7 @@ public class HtppServer {
             server.createContext("/user", new userActionsHandler());
           //  server.createContext("/user", new userActionsHandler());
             server.createContext("/contactInfo", new ContactInfoHandler());
+            server.createContext("/primaryInfo", new PrimaryInfoHandler());
 
             server.start();
 

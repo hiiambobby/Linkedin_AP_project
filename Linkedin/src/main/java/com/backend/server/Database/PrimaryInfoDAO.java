@@ -9,7 +9,7 @@ public class PrimaryInfoDAO {
     private final Connection connection;
 
     public PrimaryInfoDAO() throws SQLException {
-        this.connection = MySql.getConnection(); // Assumes you have a DatabaseConnection class for obtaining connections
+        this.connection = MySql.getConnection();
         createTable();
     }
 
