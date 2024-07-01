@@ -173,7 +173,7 @@ public class PrimaryInfoController implements Initializable {
 
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
+    private static void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -187,7 +187,7 @@ public class PrimaryInfoController implements Initializable {
             populateFields(jsonResponse);
         }
     }
-    public JSONObject getPrimaryInfoJSONObject(){
+    public static JSONObject getPrimaryInfoJSONObject(){
         HttpURLConnection conn = null;
         try {
             URL url = new URL("http://localhost:8000/primaryInfo");

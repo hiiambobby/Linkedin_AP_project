@@ -25,7 +25,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ProfileController {
+import com.backend.client.controllers.PrimaryInfoController;
+
+public class ProfileController implements Initializable{
 
     @FXML
     private Button contactInfoBtn;
@@ -36,58 +38,20 @@ public class ProfileController {
     @FXML
     private Button logOut;
 
-    /*@Override
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         loadInformation();
-    }*/
+    }
 
-    /*private void loadInformation(){
-        HttpURLConnection conn = null;
-        try {
-            URL url = new URL("http://localhost:8000/primaryInfo");
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            // Retrieve the token from TokenManager
-            String tokenLong = TokenManager.getToken();
-            String token = TokenManager.extractTokenFromResponse(tokenLong);
-            if (token != null && !token.isEmpty()) {
-                conn.setRequestProperty("Authorization", "Bearer " + token);
-            }
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Read the response
-                InputStream inputStream = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                reader.close();
-
-                // Parse the JSON response
-                JSONObject jsonResponse = new JSONObject(response.toString());
-                populateFields(jsonResponse);
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to load profile info. Response code: " + responseCode);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while loading contact info.");
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
+    private void loadInformation(){
+        JSONObject jsonResponse = PrimaryInfoController.getPrimaryInfoJSONObject();
+        if(jsonResponse != null){
+            populateFields(jsonResponse);
         }
-    }*/
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    }
+    private void populateFields(JSONObject jsonObject) {
+        // Set other fields based on JSON object
+        nameLabel.setText(jsonObject.optString("firstName", ""));
     }
     public void ContactInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ContactInfo.fxml"));
