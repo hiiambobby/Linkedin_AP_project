@@ -117,6 +117,8 @@ public class PrimaryInfoController implements Initializable {
                 jsonObject.put("firstName", nameId.getText() != null ? nameId.getText() : "");
                 jsonObject.put("lastName", lastNameId.getText() != null ? lastNameId.getText() : "");
                 jsonObject.put("additionalName", additionalNameId.getText() != null ? additionalNameId.getText() : "");
+                jsonObject.put("profilePic", profilePicId.getText() != null ? profilePicId.getText() : "");
+                jsonObject.put("backgroundPic", backgroundPicId.getText() != null ? backgroundPicId.getText() : "");
                 jsonObject.put("headTitle", headTitleId.getText() != null ? headTitleId.getText() : "");
                 jsonObject.put("city", cityId.getText() != null ? cityId.getText() : "");
                 jsonObject.put("country", countryId.getText() != null ? countryId.getText() : "");
@@ -232,9 +234,12 @@ public class PrimaryInfoController implements Initializable {
 
     private void populateFields(JSONObject jsonObject) {
         // Set other fields based on JSON object
+
         nameId.setText(jsonObject.optString("firstName", ""));
         lastNameId.setText(jsonObject.optString("lastName", ""));
         additionalNameId.setText(jsonObject.optString("additionalName", ""));
+        profilePicId.setText(jsonObject.optString("profilePic", ""));
+        backgroundPicId.setText(jsonObject.optString("backgroundPic", ""));
         headTitleId.setText(jsonObject.optString("headTitle", ""));
         cityId.setText(jsonObject.optString("city", ""));
         countryId.setText(jsonObject.optString("country", ""));
@@ -248,5 +253,31 @@ public class PrimaryInfoController implements Initializable {
         statusId.getSelectionModel().selectFirst();
         // load previous data
         loadPrimaryInfo();
+    }
+    //i want to read the first name and last name from the login file if there is no data in the primaryinfo tabel
+    public void readFromFile()
+    {
+        String filePath = "userdata.txt"; // Path to your JSON file
+        try {
+            String jsonString = readJsonFile(filePath);
+            if (jsonString != null) {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                nameId.setText(jsonObject.optString("firstName", "Unknown"));
+                lastNameId.setText(jsonObject.optString("lastName", "Unknown"));
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static String readJsonFile(String filePath) throws IOException {
+        StringBuilder contentBuilder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                contentBuilder.append(line);
+            }
+        }
+        return contentBuilder.toString();
     }
 }

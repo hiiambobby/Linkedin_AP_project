@@ -18,12 +18,12 @@
             <children>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="85.0" prefWidth="600.0">
                     <children>
-                        <ImageView fitHeight="85.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="headerPic" fitHeight="85.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../img/defaultBackgroundPicture.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="29.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="profilePic" fitHeight="72.0" fitWidth="74.0" layoutX="18.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../img/emptyProfilePic.jpg" />
                             </image>
@@ -48,11 +48,11 @@
                     <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                             <children>
-                                <Button fx:id="contactInfoBtn" layoutX="14.0" layoutY="2.0" mnemonicParsing="false" onAction="#ContactInfo" text="Contact Info" textFill="#1cabcf">
+                                <Button fx:id="contactInfoBtn" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#ContactInfo" text="Contact Info" textFill="#1cabcf">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>
-                                <Button fx:id="primaryInfoBtn" layoutX="108.0" layoutY="2.0" mnemonicParsing="false" onAction="#PrimaryInfo" text="Primary Info">
+                                <Button fx:id="primaryInfoBtn" layoutX="110.0" layoutY="28.0" mnemonicParsing="false" onAction="#PrimaryInfo" text="Primary Info">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor></Button>

@@ -72,6 +72,8 @@ public class PrimaryInfoHandler implements HttpHandler {
             String firstName = jsonObject.optString("firstName", "");
             String lastName = jsonObject.optString("lastName", "");
             String additionalName = jsonObject.optString("additionalName", "");
+            String profilePic = jsonObject.optString("profilePic", "");
+            String backgroundPic = jsonObject.optString("backgroundPic", "");
             String headTitle = jsonObject.optString("headTitle", ""); // Expecting a String
             String city = jsonObject.optString("city", ""); // Expecting an int
             String country = jsonObject.optString("country", "");
@@ -79,7 +81,7 @@ public class PrimaryInfoHandler implements HttpHandler {
             String status = jsonObject.optString("status", "");
 
 
-            primaryInfoController.savePrimaryInfo(userId,firstName,lastName, additionalName,headTitle, city,country,profession,status);
+            primaryInfoController.savePrimaryInfo(userId,firstName,lastName, additionalName,profilePic,backgroundPic,headTitle, city,country,profession,status);
 
             JSONObject responseJson = new JSONObject();
             responseJson.put("message", "Primary info saved successfully");
@@ -119,19 +121,21 @@ public class PrimaryInfoHandler implements HttpHandler {
         String firstName = jsonObject.optString("firstName", "");
         String lastName = jsonObject.optString("lastName", "");
         String additionalName = jsonObject.optString("additionalName", "");
-        String headTitle = jsonObject.optString("headTitle", "");
-        String city = jsonObject.optString("city", "");
+        String profilePic = jsonObject.optString("profilePic", "");
+        String backgroundPic = jsonObject.optString("backgroundPic", "");
+        String headTitle = jsonObject.optString("headTitle", ""); // Expecting a String
+        String city = jsonObject.optString("city", ""); // Expecting an int
         String country = jsonObject.optString("country", "");
-        String profession  = jsonObject.optString("profession", "");
+        String profession = jsonObject.optString("profession", "");
         String status = jsonObject.optString("status", "");
 
-        primaryInfoController.updatePrimaryInfo(userId,firstName,lastName, additionalName,headTitle, city,country,profession,status);
+        primaryInfoController.updatePrimaryInfo(userId,firstName,lastName, additionalName,profilePic,backgroundPic,headTitle, city,country,profession,status);
 
         if (primaryInfoController.getPrimaryInfo(userId) != null) {
-            primaryInfoController.updatePrimaryInfo(userId,firstName,lastName, additionalName,headTitle, city,country,profession,status);
+            primaryInfoController.updatePrimaryInfo(userId,firstName,lastName, additionalName,profilePic,backgroundPic,headTitle, city,country,profession,status);
             return "{\"message\":\"Primary info updated successfully\"}";
         } else {
-            primaryInfoController.savePrimaryInfo(userId,firstName,lastName, additionalName,headTitle, city,country,profession,status);
+            primaryInfoController.savePrimaryInfo(userId,firstName,lastName, additionalName,profilePic,backgroundPic,headTitle, city,country,profession,status);
             return "{\"message\":\"Primary info created successfully\"}";
         }
     }

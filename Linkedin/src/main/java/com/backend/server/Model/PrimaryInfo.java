@@ -28,18 +28,25 @@ public class PrimaryInfo {
     private String userId;
     @JsonProperty("status")
     private String status;
+    @JsonProperty("backgroundPic")
+    private String backPic;
+    @JsonProperty("profilePic")
+    private String profilePic;
 
     // Default constructor
     public PrimaryInfo() {
     }
 
 
-    public PrimaryInfo(String userId,String firstName,String lastName, String additionalName,String headTitle,
-                       String city,String country, String profession,String status) {
+    public PrimaryInfo(String userId, String firstName, String lastName, String additionalName, String profilePic
+            , String backPic, String headTitle,
+                       String city, String country, String profession, String status) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.additionalName = additionalName;
+        this.profilePic = profilePic;
+        this.backPic = backPic;
         this.headTitle = headTitle;
         this.city = city;
         this.country = country;
@@ -61,6 +68,22 @@ public class PrimaryInfo {
 
     public void setAdditionalName(String additionalName) {
         this.additionalName = additionalName;
+    }
+
+    public String getBackPic() {
+        return backPic;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setBackPic(String backPic) {
+        this.backPic = backPic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 
     public void setCity(String city) {
@@ -131,8 +154,10 @@ public class PrimaryInfo {
                 ", last_name='" + lastName + '\'' + //common with user
                 ", additional_name=" + additionalName +
                 ", city=" + city +
+                ", profilePic=" + profilePic +
+                ", backgroundPic=" + backPic +
                 ", country=" + country +
-                ", head_title=" + headTitle+
+                ", head_title=" + headTitle +
                 ", profession=" + profession +
                 ", status=" + status +
                 '}';

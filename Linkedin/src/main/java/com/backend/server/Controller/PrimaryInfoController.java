@@ -13,8 +13,8 @@ public class PrimaryInfoController {
     }
 
     // Save a new primary information entry
-    public void savePrimaryInfo(String userId, String firstName, String lastName, String additionalName, String headTitle, String city, String country, String profession, String status) throws SQLException {
-        PrimaryInfo primaryInfo = new PrimaryInfo(userId,firstName,lastName, additionalName,headTitle, city,country,profession,status);
+    public void savePrimaryInfo(String userId, String firstName, String lastName, String additionalName,String profilePic,String backPic, String headTitle, String city, String country, String profession, String status) throws SQLException {
+        PrimaryInfo primaryInfo = new PrimaryInfo(userId,firstName,lastName, additionalName,profilePic,backPic,headTitle, city,country,profession,status);
         primaryInfoDAO.createPrimaryInfo(primaryInfo);
     }
 
@@ -24,8 +24,8 @@ public class PrimaryInfoController {
     }
 
     // Update existing primary information
-    public void updatePrimaryInfo(String userId, String firstName, String lastName, String additionalName, String headTitle, String city, String country, String profession, String status) throws SQLException {
-        PrimaryInfo primaryInfo = new PrimaryInfo(userId,firstName,lastName, additionalName,headTitle, city,country,profession,status);
+    public void updatePrimaryInfo(String userId, String firstName, String lastName, String additionalName,String profilePic,String backPic, String headTitle, String city, String country, String profession, String status) throws SQLException {
+        PrimaryInfo primaryInfo = new PrimaryInfo(userId,firstName,lastName, additionalName,profilePic,backPic,headTitle, city,country,profession,status);
         primaryInfoDAO.updatePrimaryInfo(primaryInfo);
     }
 
