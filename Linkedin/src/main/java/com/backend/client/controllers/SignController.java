@@ -73,5 +73,10 @@ public class SignController implements Initializable {
         });
     }
 
+    @FXML
+    void exitSelected(ActionEvent event) {
+        System.exit(0);
+    }
+
 
 }
