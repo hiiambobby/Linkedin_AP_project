@@ -25,27 +25,14 @@ public class ProfileController {
 
 
     public void ContactInfo(ActionEvent event) throws IOException {
-        // Load the FXML for the Contact Info scene
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ContactInfo.fxml"));
         Parent root = loader.load();
-
-        // Create a new Stage for the popup window
         Stage popupStage = new Stage();
-
-        // Set the scene for the popup stage
         popupStage.setScene(new Scene(root));
-
-        // Set an icon for the popup window (optional)
         Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
         popupStage.getIcons().add(icon);
-
-        // Set the title for the popup window (optional)
         popupStage.setTitle("Contact Info");
-
-        // Set the modality to make sure the popup blocks interaction with the main window
         popupStage.initModality(Modality.APPLICATION_MODAL);
-
-        // Show the popup window
         popupStage.show();
 
     }
@@ -60,6 +47,20 @@ public class ProfileController {
         popupStage.show();
 
     }
+    @FXML
+    private void addEducation(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Education.fxml"));
+        Parent root = loader.load();
+        Stage popupStage = new Stage();
+        popupStage.setScene(new Scene(root));
+        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+        popupStage.getIcons().add(icon);
+        popupStage.setTitle("Add Education");
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.show();
+
+    }
+
     public void logOut(ActionEvent event) throws IOException {
         TokenManager.clearToken();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml")); // Adjust path as needed
