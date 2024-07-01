@@ -4,13 +4,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySql {
-   private static final String JDBC_URL = "jdbc:mysql://localhost:3306/userdatabase";
+/*   private static final String JDBC_URL = "jdbc:mysql://localhost:3306/userdatabase";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "saba5782";
+    private static final String PASSWORD = "saba5782";*/
 
-//    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/mysql";
-//    private static final String USERNAME = "root";
-//    private static final String PASSWORD = "Iya07Ydi04#!";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/mysql";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "Iya07Ydi04#!";
 
     public static Connection connection;
 

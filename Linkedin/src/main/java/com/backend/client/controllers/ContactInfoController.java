@@ -313,7 +313,4 @@ public class ContactInfoController implements Initializable {
         return UUID.randomUUID().toString().substring(0, 16);
     }
 
-
-
-
 }
