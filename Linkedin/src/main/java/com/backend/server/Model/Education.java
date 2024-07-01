@@ -6,7 +6,7 @@ import java.sql.Date;
 
 public class Education {
     //school degree field of study //start day and end date Grade Activities and societies  Description Skills
-    @JsonProperty("id")
+    @JsonProperty("userId")
     private String id;
     @JsonProperty("school")
     private String school;
@@ -129,7 +129,7 @@ public class Education {
     @Override
     public String toString() {
         return "Education{" +
-                ", id='" + id + '\'' +
+                ", userId='" + id + '\'' +
                 ", school='" + school + '\'' +
                 ",  degree='" + degree + '\'' + //common with user
                 ", fieldOfStudy=" + fieldOfStudy+
