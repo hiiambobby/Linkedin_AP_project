@@ -3,16 +3,16 @@ package com.backend.server.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PrimaryInfo {
-    @JsonProperty("first_name")
+    @JsonProperty("firstName")
     private String firstName;
 
-    @JsonProperty("last_name")
+    @JsonProperty("lastName")
     private String lastName;
 
-    @JsonProperty("additional_name")
+    @JsonProperty("additionalName")
     private String additionalName;
 
-    @JsonProperty("head_title")//we should choose from different phone type
+    @JsonProperty("headTitle")
     private String headTitle;
 
 
