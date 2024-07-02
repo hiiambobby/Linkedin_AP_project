@@ -60,8 +60,7 @@ public class PrimaryInfoHandler implements HttpHandler {
                     return; // Exit the handler
                 }
 
-                // Debugging output
-                System.out.println("Extracted Email: " + email);
+
 
                 // Handle the request and generate a response
                  response = handleGet(email);

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -41,6 +42,7 @@ public class PrimaryInfoController implements Initializable {
     private TextField cityId;
     @FXML
     private TextField professionId;
+
 
     public void save(ActionEvent event) {
         JSONObject jsonObject = getJsonObject();
@@ -216,20 +218,34 @@ public class PrimaryInfoController implements Initializable {
         }
     }
 
-    public static JSONObject getPrimaryInfoJSONObject(){
+    public static JSONObject getPrimaryInfoJSONObject() {
         HttpURLConnection conn = null;
         try {
-            URL url = new URL("http://localhost:8000/primaryInfo");
+            // Retrieve the email from TokenManager
+            String email = readEmail();
+            System.out.println("Email before encoding: " + email);
+
+
+            // Check if the email is null and handle it
+            if (email == null || email.trim().isEmpty()) {
+                System.err.println("Email is null or empty.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Email is not available.");
+                return null;
+            }
+
+            // Ensure the email ID is URL-encoded
+            String encodedEmailId = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
+
+            // Construct the URL with the email ID as a query parameter
+            URL url = new URL("http://localhost:8000/primaryInfo?id=" + encodedEmailId);
+
+            // Open connection
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            // Retrieve the token from TokenManager
-            String tokenLong = TokenManager.getToken();
-            String token = TokenManager.extractTokenFromResponse(tokenLong);
-            if (token != null && !token.isEmpty()) {
-                conn.setRequestProperty("Authorization", "Bearer " + token);
-            }
+            // No token required; we skip setting the Authorization header
 
+            // Get the response code
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 // Read the response
@@ -243,10 +259,9 @@ public class PrimaryInfoController implements Initializable {
                 reader.close();
 
                 // Parse the JSON response
-                // saveToFile(jsonResponse, getEmailFromToken(token)); // Save to local file
-
                 return new JSONObject(response.toString());
             } else {
+                // Handle HTTP error response
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to load primary info. Response code: " + responseCode);
             }
         } catch (IOException e) {
@@ -307,7 +322,19 @@ public class PrimaryInfoController implements Initializable {
         }
         return null;
     }
-    public String readJsonFile(String filePath) throws IOException {
+    public static String readEmail()
+    {
+        String filePath = "userdata.txt"; // Path to your JSON file
+        try {
+            String jsonString = readJsonFile(filePath);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            return (jsonObject.optString("email", "Unknown"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static String readJsonFile(String filePath) throws IOException {
         return new String(Files.readAllBytes(Paths.get(filePath)));
     }
 }
