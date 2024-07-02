@@ -3,6 +3,8 @@ package com.backend.server.Controller;
 import com.backend.server.Database.ContactInfoDAO;
 import com.backend.server.Database.UserDAO;
 import com.backend.server.Model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,12 +17,12 @@ public class UserController {
         //this.contactInfoDAO = new ContactInfoDAO();
         this.userDAO = new UserDAO(); // Initialize UserDAO instance
     }
-
     public String getUsers() {
         try {
             List<User> users = userDAO.getAllUsers();
-            return users.toString();
-        } catch (SQLException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(users);
+        } catch (SQLException | JsonProcessingException e) {
             return "Error fetching users: " + e.getMessage();
         }
     }

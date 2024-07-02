@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class PrimaryInfoHandler implements HttpHandler {
@@ -38,14 +40,45 @@ public class PrimaryInfoHandler implements HttpHandler {
                 }
                 JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
                 handlePost(exchange, userId, jsonObject);
-            } else if (path.equals("/primaryInfo") && method.equalsIgnoreCase("GET")) {
-                // No authentication required for GET request
-                response = handleGet(exchange, userId);
-                exchange.sendResponseHeaders(200, response.getBytes().length);
+            }else if (path.startsWith("/primaryInfo") && method.equalsIgnoreCase("GET")) {
+                // Initialize email variable
+                String email = "";
+
+                // Get the query part of the URL if it exists
+                String query = exchange.getRequestURI().getQuery();
+                if (query != null && query.startsWith("id=")) {
+                    // Extract email from query parameter
+                    email = query.substring(3); // Extract email part after 'id='
+                    email = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+                } else {
+                    // If no query parameters are provided, return an error
+                    response = "{\"error\":\"Missing email parameter.\"}";
+                    exchange.sendResponseHeaders(400, response.getBytes().length); // Bad Request
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
+                    return; // Exit the handler
+                }
+
+                // Debugging output
+                System.out.println("Extracted Email: " + email);
+
+                // Handle the request and generate a response
+                 response = handleGet(email);
+
+                // Set response code based on the presence of primary info
+                if (response == null || response.isEmpty() || response.equals("{\"message\":\"Primary info not found\"}")) {
+                    exchange.sendResponseHeaders(404, response.getBytes().length);
+                } else {
+                    exchange.sendResponseHeaders(200, response.getBytes().length);
+                }
+
+                // Send response
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
-            } else if (path.equals("/primaryInfo") && method.equalsIgnoreCase("PUT")) {
+            }
+            else if (path.equals("/primaryInfo") && method.equalsIgnoreCase("PUT")) {
                 if (userId == null) {
                     exchange.sendResponseHeaders(401, -1); // Unauthorized
                     return;
@@ -103,8 +136,9 @@ public class PrimaryInfoHandler implements HttpHandler {
             sendResponse(exchange, 500, errorResponse.toString());
         }}
 
-    private String handleGet(HttpExchange exchange, String userId) throws IOException, SQLException {
+    private String handleGet(String userId) throws IOException, SQLException {
         // Create an ObjectMapper instance for JSON serialization
+        System.out.println("Received userId: " + userId); // Debug line
         ObjectMapper objectMapper = new ObjectMapper();
 
         // Retrieve the primary info from the database
