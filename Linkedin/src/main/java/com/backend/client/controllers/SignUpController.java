@@ -100,7 +100,7 @@ public class SignUpController {
                 newStage.setTitle("User Profile");
 
                 // Set the stage icon
-                Image icon = new Image(getClass().getResourceAsStream("/img/photo_2024-05-15_16-05-20.jpg"));
+                Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/photo_2024-05-15_16-05-20.jpg")));
                 newStage.getIcons().add(icon);
 
                 // Set window style

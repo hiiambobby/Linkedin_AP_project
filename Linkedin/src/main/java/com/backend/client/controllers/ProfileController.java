@@ -4,30 +4,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import com.backend.client.controllers.PrimaryInfoController;
 
 public class ProfileController implements Initializable {
 
@@ -48,54 +40,7 @@ public class ProfileController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         loadInformation();
-//
-//        //do the get method on primary info
-//        HttpURLConnection conn = null;
-//        try {
-//             url = new URL("http://localhost:8000/primaryInfo");
-//            try {
-//                conn = (HttpURLConnection) url.openConnection();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//            try {
-//                conn.setRequestMethod("GET");
-//            } catch (ProtocolException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            // Retrieve the token from TokenManager
-//            String tokenLong = TokenManager.getToken();
-//            String token = TokenManager.extractTokenFromResponse(tokenLong);
-//            if (token != null && !token.isEmpty()) {
-//                conn.setRequestProperty("Authorization", "Bearer " + token);
-//            }
-//
-//            int responseCode = conn.getResponseCode();
-//            if (responseCode == HttpURLConnection.HTTP_OK) {
-//                // Read the response
-//                InputStream inputStream = conn.getInputStream();
-//                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-//                StringBuilder response = new StringBuilder();
-//                String line;
-//                while ((line = reader.readLine()) != null) {
-//                    response.append(line);
-//                }
-//                reader.close();
-//
-//                // Parse the JSON response
-//                JSONObject jsonResponse = new JSONObject(response.toString());
-//                setPictures(jsonResponse);
-//            } else {
-//                System.out.println("error");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (conn != null) {
-//                conn.disconnect();
-//            }
-//        }
+
     }
     private void loadInformation(){
         JSONObject jsonResponse = PrimaryInfoController.getPrimaryInfoJSONObject();
@@ -222,5 +167,24 @@ public class ProfileController implements Initializable {
 
     public void updateProfile() {
         loadInformation();
+    }
+
+
+
+    public void openSearch(MouseEvent mouseEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Search.fxml")); 
+        Stage currentStage = (Stage) logOut.getScene().getWindow();
+        currentStage.close(); // Close the current stage if needed
+
+        // Create a new stage with the decorated style
+        Stage newStage = new Stage();
+        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+        newStage.getIcons().add(icon);
+        Scene newScene = new Scene(root);
+        newStage.setScene(newScene);
+        newStage.setTitle("search");
+        newStage.initStyle(StageStyle.DECORATED);
+        newStage.setFullScreen(true);
+        newStage.show();
     }
 }

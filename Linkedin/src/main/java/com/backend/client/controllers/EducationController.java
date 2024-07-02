@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -16,8 +17,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class EducationController {
@@ -56,10 +55,10 @@ public class EducationController {
     private ComboBox<Integer> endDateYearCombo;
 
     @FXML
-    private TextField activitiesField;
+    private TextArea activitiesField;
 
     @FXML
-    private TextField descriptionField;
+    private TextArea descriptionField;
 
     @FXML
     private CheckBox notifyNetworkCheckBox;
@@ -132,13 +131,16 @@ public class EducationController {
         startDateYearCombo.setOnAction(event -> updateEndYearCombo(startDateYearCombo, endDateMonthCombo, endDateYearCombo));
         endDateMonthCombo.setOnAction(event -> updateEndYearCombo(startDateYearCombo, endDateMonthCombo, endDateYearCombo));
 
-        // Activities
-        activitiesField = new TextField();
+// Activities
+        activitiesField = new TextArea();
+        activitiesField.setPrefRowCount(5); // Set the preferred number of rows
         HBox activitiesHBox = createField("Activities:", activitiesField, labelStyle, fieldStyle);
 
-        // Description
-        descriptionField = new TextField();
+// Description
+        descriptionField = new TextArea();
+        descriptionField.setPrefRowCount(10); // Set the preferred number of rows
         HBox descriptionHBox = createField("Description:", descriptionField, labelStyle, fieldStyle);
+
 
         // Skills VBox
         skillsVBox = new VBox(10); // 10px spacing between skills
@@ -175,13 +177,29 @@ public class EducationController {
         Label label = new Label(labelText);
         label.setStyle(labelStyle);
         field.setStyle(fieldStyle);
-
-        HBox hbox = new HBox(10);
-        hbox.setPadding(new Insets(5, 0, 5, 20)); // Padding for the HBox
-        hbox.getChildren().addAll(label, field);
-
+        HBox hbox = new HBox(10, label, field);
+        hbox.setAlignment(Pos.CENTER_LEFT);
         return hbox;
     }
+
+    public boolean maxLength() {
+        if (schoolField.getText().length() > 40) {
+
+            showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-500) words");
+            return false;
+        }
+        if (activitiesField.getText().length() > 500) {
+
+            showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-500) words");
+            return false;
+        }
+        if (descriptionField.getText().length() > 1000) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-1000) words");
+            return false;
+        }
+        return true;
+    }
+
 
     private void addSkillField() {
         if (skillsVBox.getChildren().size() < maxSkills) {
@@ -241,51 +259,6 @@ public class EducationController {
     }
 
 
-    private void readEducationData() {
-        String school = schoolField.getText();
-
-        // Check if the school field is empty and show an alert if necessary
-        if (school == null || school.trim().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error", "School field cannot be empty.");
-            return;
-        }
-
-        String degree = degreeField.getText();
-        String fieldOfStudy = fieldOfStudyField.getText();
-        String startDateMonth = startDateMonthCombo.getValue();
-        Integer startDateYear = startDateYearCombo.getValue();
-        String endDateMonth = endDateMonthCombo.getValue();
-        Integer endDateYear = endDateYearCombo.getValue();
-        String activities = activitiesField.getText();
-        String description = descriptionField.getText();
-        boolean notifyNetwork = notifyNetworkCheckBox.isSelected();
-
-        // Retrieve skills
-        List<String> skills = new ArrayList<>();
-        for (Node node : skillsVBox.getChildren()) {
-            if (node instanceof HBox) {
-                HBox skillHBox = (HBox) node;
-                for (Node child : skillHBox.getChildren()) {
-                    if (child instanceof TextField) {
-                        TextField skillField = (TextField) child;
-                        skills.add(skillField.getText());
-                    }
-                }
-            }
-        }
-
-        // Now you can use these values as needed
-        System.out.println("School: " + school);
-        System.out.println("Degree: " + (degree != null ? degree : "Not specified"));
-        System.out.println("Field of Study: " + (fieldOfStudy != null ? fieldOfStudy : "Not specified"));
-        System.out.println("Start Date: " + (startDateMonth != null ? startDateMonth : "Not specified") + " " + (startDateYear != null ? startDateYear : "Not specified"));
-        System.out.println("End Date: " + (endDateMonth != null ? endDateMonth : "Not specified") + " " + (endDateYear != null ? endDateYear : "Not specified"));
-        System.out.println("Activities: " + (activities != null ? activities : "Not specified"));
-        System.out.println("Description: " + (description != null ? description : "Not specified"));
-        System.out.println("Notify Network: " + notifyNetwork);
-        System.out.println("Skills: " + skills);
-    }
-
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -295,8 +268,10 @@ public class EducationController {
     }
 
     private void saveEducation() {
-        addEducation();
-       // readEducationData(); //for testing
+        if (maxLength()) {
+            addEducation();
+        }
+        // readEducationData(); //for testing
         Stage stage = (Stage) discardButton.getScene().getWindow();
         stage.close();
     }

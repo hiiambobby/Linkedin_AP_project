@@ -81,6 +81,7 @@ public class SignInController {
 
             // Set window style
             newStage.initStyle(StageStyle.DECORATED); // Standard window decorations
+            //newStage.setMaximized(true);
 
             // Show the new stage
             newStage.show();
