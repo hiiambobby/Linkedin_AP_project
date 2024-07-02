@@ -46,65 +46,68 @@ public class ProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         loadInformation();
-
-        //do the get method on primary info
-        HttpURLConnection conn = null;
-        try {
-             url = new URL("http://localhost:8000/primaryInfo");
-            try {
-                conn = (HttpURLConnection) url.openConnection();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                conn.setRequestMethod("GET");
-            } catch (ProtocolException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Retrieve the token from TokenManager
-            String tokenLong = TokenManager.getToken();
-            String token = TokenManager.extractTokenFromResponse(tokenLong);
-            if (token != null && !token.isEmpty()) {
-                conn.setRequestProperty("Authorization", "Bearer " + token);
-            }
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Read the response
-                InputStream inputStream = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                reader.close();
-
-                // Parse the JSON response
-                JSONObject jsonResponse = new JSONObject(response.toString());
-                setPictures(jsonResponse);
-            } else {
-                System.out.println("error");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
+//
+//        //do the get method on primary info
+//        HttpURLConnection conn = null;
+//        try {
+//             url = new URL("http://localhost:8000/primaryInfo");
+//            try {
+//                conn = (HttpURLConnection) url.openConnection();
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//            try {
+//                conn.setRequestMethod("GET");
+//            } catch (ProtocolException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//            // Retrieve the token from TokenManager
+//            String tokenLong = TokenManager.getToken();
+//            String token = TokenManager.extractTokenFromResponse(tokenLong);
+//            if (token != null && !token.isEmpty()) {
+//                conn.setRequestProperty("Authorization", "Bearer " + token);
+//            }
+//
+//            int responseCode = conn.getResponseCode();
+//            if (responseCode == HttpURLConnection.HTTP_OK) {
+//                // Read the response
+//                InputStream inputStream = conn.getInputStream();
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//                StringBuilder response = new StringBuilder();
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    response.append(line);
+//                }
+//                reader.close();
+//
+//                // Parse the JSON response
+//                JSONObject jsonResponse = new JSONObject(response.toString());
+//                setPictures(jsonResponse);
+//            } else {
+//                System.out.println("error");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (conn != null) {
+//                conn.disconnect();
+//            }
+//        }
     }
     private void loadInformation(){
         JSONObject jsonResponse = PrimaryInfoController.getPrimaryInfoJSONObject();
         if(jsonResponse != null){
             populateFields(jsonResponse);
+            setPictures(jsonResponse);
         }
     }
     private void populateFields(JSONObject jsonObject) {
         // Set other fields based on JSON object
-        nameLabel.setText(jsonObject.optString("firstName", ""));
+        nameLabel.setText((jsonObject.optString("firstName", "") + jsonObject.optString("additionalName", "")
+                + jsonObject.optString("lastName", "")));
     }
             public void ContactInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ContactInfo.fxml"));
@@ -211,11 +214,13 @@ public class ProfileController implements Initializable {
             return new Image(url);
         } catch (Exception e) {
             // If an exception occurs (e.g., invalid URL), return the default image
-            System.out.println("erorrrrr");
             new Image("/img/emptyProfilePic.jpg");
         }
         return null;
     }
 
 
+    public void updateProfile() {
+        loadInformation();
+    }
 }

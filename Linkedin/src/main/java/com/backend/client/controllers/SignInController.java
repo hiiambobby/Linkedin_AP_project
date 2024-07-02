@@ -51,19 +51,38 @@ public class SignInController {
        boolean success = sendRequest(email,pass);
         if (success) {
             fetchAndSaveUserData(email);
-            // Load the new FXML file
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Profile.fxml"))); // Adjust path as needed
-            Stage currentStage = (Stage) signInButton.getScene().getWindow();
-            currentStage.close(); // Close the current stage if needed
 
-            // Create a new stage with the decorated style
+            // Load the new FXML file and get the controller
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml")); // Adjust path as needed
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return; // Exit the method if the page cannot be loaded
+            }
+
+            // Get the ProfileController instance from the loader
+            ProfileController controller = loader.getController();
+            ControllerManager.setProfileController(controller);
+
+            // Close the current stage
+            Stage currentStage = (Stage) signInButton.getScene().getWindow();
+            currentStage.close(); // Close the current stage
+
+            // Create and configure a new stage for the Profile page
             Stage newStage = new Stage();
-            Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
-            newStage.getIcons().add(icon);
-            Scene newScene = new Scene(root);
-            newStage.setScene(newScene);
+            newStage.setScene(new Scene(root));
             newStage.setTitle("User Profile");
-            newStage.initStyle(StageStyle.DECORATED); // Standard window decorations for the new stage
+
+            // Set the stage icon
+            Image icon = new Image(getClass().getResourceAsStream("/img/photo_2024-05-15_16-05-20.jpg"));
+            newStage.getIcons().add(icon);
+
+            // Set window style
+            newStage.initStyle(StageStyle.DECORATED); // Standard window decorations
+
+            // Show the new stage
             newStage.show();
         }
 

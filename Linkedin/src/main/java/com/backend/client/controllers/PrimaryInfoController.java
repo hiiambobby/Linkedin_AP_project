@@ -14,6 +14,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class PrimaryInfoController implements Initializable {
@@ -101,8 +103,15 @@ public class PrimaryInfoController implements Initializable {
 
 
     private void closePage(ActionEvent event) throws IOException {
+        // Close the current page
         Stage popupStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         popupStage.close();
+
+        // Update the profile page if it exists
+        ProfileController profileController = ControllerManager.getProfileController();
+        if (profileController != null) {
+            profileController.updateProfile();
+        }
     }
     public void cancel(ActionEvent event) throws IOException {
         closePage(event);
@@ -235,8 +244,8 @@ public class PrimaryInfoController implements Initializable {
     private void populateFields(JSONObject jsonObject) {
         // Set other fields based on JSON object
 
-        nameId.setText(jsonObject.optString("firstName", ""));
-        lastNameId.setText(jsonObject.optString("lastName", ""));
+        nameId.setText(jsonObject.optString("firstName", readFirstName()));
+        lastNameId.setText(jsonObject.optString("lastName", readLastName()));
         additionalNameId.setText(jsonObject.optString("additionalName", ""));
         profilePicId.setText(jsonObject.optString("profilePic", ""));
         backgroundPicId.setText(jsonObject.optString("backgroundPic", ""));
@@ -255,29 +264,31 @@ public class PrimaryInfoController implements Initializable {
         loadPrimaryInfo();
     }
     //i want to read the first name and last name from the login file if there is no data in the primaryinfo tabel
-    public void readFromFile()
+    public String readFirstName()
     {
         String filePath = "userdata.txt"; // Path to your JSON file
         try {
             String jsonString = readJsonFile(filePath);
-            if (jsonString != null) {
-                JSONObject jsonObject = new JSONObject(jsonString);
-                nameId.setText(jsonObject.optString("firstName", "Unknown"));
-                lastNameId.setText(jsonObject.optString("lastName", "Unknown"));
-
-            }
+            JSONObject jsonObject = new JSONObject(jsonString);
+                return (jsonObject.optString("firstName", "Unknown"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
-    private static String readJsonFile(String filePath) throws IOException {
-        StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                contentBuilder.append(line);
-            }
+    public String readLastName()
+    {
+        String filePath = "userdata.txt"; // Path to your JSON file
+        try {
+            String jsonString = readJsonFile(filePath);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            return (jsonObject.optString("lastName", "Unknown"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return contentBuilder.toString();
+        return null;
+    }
+    public String readJsonFile(String filePath) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(filePath)));
     }
 }
