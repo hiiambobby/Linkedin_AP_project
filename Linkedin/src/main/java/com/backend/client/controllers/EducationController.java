@@ -185,16 +185,16 @@ public class EducationController {
     public boolean maxLength() {
         if (schoolField.getText().length() > 40) {
 
-            showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-500) words");
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-500) words");
             return false;
         }
         if (activitiesField.getText().length() > 500) {
 
-            showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-500) words");
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-500) words");
             return false;
         }
         if (descriptionField.getText().length() > 1000) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-1000) words");
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Please enter between(1-1000) words");
             return false;
         }
         return true;
@@ -259,13 +259,7 @@ public class EducationController {
     }
 
 
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 
     private void saveEducation() {
         if (maxLength()) {
@@ -362,7 +356,7 @@ public class EducationController {
 
             // Handle response
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Education info saved successfully.");
+                setAlert.showAlert(Alert.AlertType.INFORMATION, "Success", "Education info saved successfully.");
             } else {
                 // Read and log any error stream
                 InputStream errorStream = conn.getErrorStream();
@@ -373,11 +367,11 @@ public class EducationController {
                         System.out.println(line);
                     }
                 }
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save Education info. Response code: " + responseCode);
+                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to save Education info. Response code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
         } finally {
             if (conn != null) {
                 conn.disconnect();

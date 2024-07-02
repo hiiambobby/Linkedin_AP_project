@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #64b5f6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.searchBar">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #64b5f6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.SearchBar">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
@@ -24,8 +24,8 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="33.0" prefWidth="600.0">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSearch" prefHeight="34.0" prefWidth="64.0" text="search" />
-                  <TextField alignment="CENTER" prefHeight="34.0" prefWidth="478.0" />
+                  <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleSearch" prefHeight="34.0" prefWidth="64.0" text="search" />
+                  <TextField fx:id="searchField" alignment="CENTER" prefHeight="34.0" prefWidth="478.0" />
                </children>
             </HBox>
             <ScrollPane fx:id="scrollPane" prefHeight="205.0" prefWidth="585.0" scaleX="0.9">

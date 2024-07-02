@@ -28,24 +28,28 @@ public class PrimaryInfoHandler implements HttpHandler {
         String response = "";
 
         try {
-            // Extract user ID (email) from token
+            // Extract user ID (email) from token if available
             String userId = extractUserIdFromToken(exchange);
 
-            if (userId == null) {
-                exchange.sendResponseHeaders(401, -1); // Unauthorized
-                return;
-            }
-
             if (path.equals("/primaryInfo") && method.equalsIgnoreCase("POST")) {
+                if (userId == null) {
+                    exchange.sendResponseHeaders(401, -1); // Unauthorized
+                    return;
+                }
                 JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
                 handlePost(exchange, userId, jsonObject);
             } else if (path.equals("/primaryInfo") && method.equalsIgnoreCase("GET")) {
+                // No authentication required for GET request
                 response = handleGet(exchange, userId);
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
             } else if (path.equals("/primaryInfo") && method.equalsIgnoreCase("PUT")) {
+                if (userId == null) {
+                    exchange.sendResponseHeaders(401, -1); // Unauthorized
+                    return;
+                }
                 JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
                 response = handlePut(exchange, userId, jsonObject);
                 exchange.sendResponseHeaders(200, response.getBytes().length);
@@ -53,6 +57,10 @@ public class PrimaryInfoHandler implements HttpHandler {
                 os.write(response.getBytes());
                 os.close();
             } else if (path.equals("/primaryInfo") && method.equalsIgnoreCase("DELETE")) {
+                if (userId == null) {
+                    exchange.sendResponseHeaders(401, -1); // Unauthorized
+                    return;
+                }
                 response = handleDelete(exchange, userId);
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
@@ -66,7 +74,6 @@ public class PrimaryInfoHandler implements HttpHandler {
             e.printStackTrace();
         }
     }
-
     private void handlePost(HttpExchange exchange, String userId, JSONObject jsonObject) throws IOException, SQLException {
         try{  // Implement logic to save primary info
             String firstName = jsonObject.optString("firstName", "");

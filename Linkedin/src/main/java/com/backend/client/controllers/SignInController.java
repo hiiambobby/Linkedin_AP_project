@@ -135,7 +135,7 @@ public class SignInController {
         }
         }
 
-    public static void fetchAndSaveUserData(String userId) throws IOException {
+    public  void fetchAndSaveUserData(String userId) throws IOException {
         String token = TokenManager.getToken();
         if (token == null) {
             System.out.println("No token available");
@@ -168,7 +168,7 @@ public class SignInController {
         }
     }
 
-    private static void saveUserDataToFile(String data) throws IOException {
+    private void saveUserDataToFile(String data) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE))) {
             writer.write(data);
             System.out.println("User data saved to " + USER_DATA_FILE);

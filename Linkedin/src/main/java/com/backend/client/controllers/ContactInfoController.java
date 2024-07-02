@@ -1,31 +1,23 @@
 package com.backend.client.controllers;
 
-import com.backend.server.Util.JWT;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Month;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.UUID;
-import java.util.prefs.Preferences;
 
 public class ContactInfoController implements Initializable {
 
@@ -93,7 +85,7 @@ public class ContactInfoController implements Initializable {
 
             // Handle response
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Contact info saved successfully.");
+               setAlert.showAlert(Alert.AlertType.INFORMATION, "Success", "Contact info saved successfully.");
                 saved(event); // Assuming this method exists to handle UI updates
             } else {
                 // Read and log any error stream
@@ -105,11 +97,11 @@ public class ContactInfoController implements Initializable {
                         System.out.println(line);
                     }
                 }
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info. Response code: " + responseCode);
+                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to save contact info. Response code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -170,13 +162,7 @@ public class ContactInfoController implements Initializable {
 
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 
 
     /***
@@ -274,11 +260,11 @@ public class ContactInfoController implements Initializable {
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 return jsonResponse;
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to load contact info. Response code: " + responseCode);
+                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to load contact info. Response code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while loading contact info.");
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while loading contact info.");
         } finally {
             if (conn != null) {
                 conn.disconnect();

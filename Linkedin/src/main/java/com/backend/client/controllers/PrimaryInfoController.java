@@ -18,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+import static com.backend.client.controllers.TokenManager.getEmailFromToken;
+
 public class PrimaryInfoController implements Initializable {
     @FXML
     private ComboBox<String> statusId;
@@ -77,6 +79,7 @@ public class PrimaryInfoController implements Initializable {
             // Handle response
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Primary info saved successfully.");
+              //  saveToFile(jsonObject, TokenManager.getEmailFromToken(tokenLong)); // Save to local file
                 closePage(event); // Assuming this method exists to handle UI updates
             } else {
                 // Read and log any error stream
@@ -183,6 +186,20 @@ public class PrimaryInfoController implements Initializable {
         return true;
 
     }
+    public void saveToFile(JSONObject primaryInfo,String email) {
+        if (email == null || email.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Email is not specified or empty.");
+            return;
+        }
+        String filePath = "config/" + email + ".json";
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(primaryInfo.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving the file.");
+        }
+    }
+
 
     private static void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -198,6 +215,7 @@ public class PrimaryInfoController implements Initializable {
             populateFields(jsonResponse);
         }
     }
+
     public static JSONObject getPrimaryInfoJSONObject(){
         HttpURLConnection conn = null;
         try {
@@ -225,8 +243,9 @@ public class PrimaryInfoController implements Initializable {
                 reader.close();
 
                 // Parse the JSON response
-                JSONObject jsonResponse = new JSONObject(response.toString());
-                return jsonResponse;
+                // saveToFile(jsonResponse, getEmailFromToken(token)); // Save to local file
+
+                return new JSONObject(response.toString());
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to load primary info. Response code: " + responseCode);
             }
