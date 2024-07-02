@@ -5,7 +5,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -25,14 +24,14 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="33.0" prefWidth="600.0">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="34.0" prefWidth="64.0" text="search" />
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSearch" prefHeight="34.0" prefWidth="64.0" text="search" />
                   <TextField alignment="CENTER" prefHeight="34.0" prefWidth="478.0" />
                </children>
             </HBox>
-            <ScrollPane prefHeight="205.0" prefWidth="585.0" scaleX="0.9">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-              </content>
+            <ScrollPane fx:id="scrollPane" prefHeight="205.0" prefWidth="585.0" scaleX="0.9">
+               <content>
+                  <VBox fx:id="profileList" prefHeight="200.0" prefWidth="600.0" />
+               </content>
             </ScrollPane>
          </children>
       </VBox>

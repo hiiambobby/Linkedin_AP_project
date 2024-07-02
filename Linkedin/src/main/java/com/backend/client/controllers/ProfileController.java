@@ -172,7 +172,7 @@ public class ProfileController implements Initializable {
 
 
     public void openSearch(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Search.fxml")); 
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Search.fxml"));
         Stage currentStage = (Stage) logOut.getScene().getWindow();
         currentStage.close(); // Close the current stage if needed
 
