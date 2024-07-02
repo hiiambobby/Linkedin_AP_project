@@ -9,15 +9,30 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #64b5f6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.SearchBar">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="728.0" style="-fx-background-color: #64b5f6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.SearchBar">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
-            <HBox prefHeight="37.0" prefWidth="600.0">
+            <HBox prefHeight="37.0" prefWidth="600.0" style="-fx-background-color: white;" translateY="-130.0">
                <children>
                   <ImageView fx:id="profileId" accessibleRole="BUTTON" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="20.0">
                      <image>
-                        <Image url="@../icons/icons8-male-user-48.png" />
+                        <Image url="@../icons/icons8-cat-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="profileId1" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="30.0">
+                     <image>
+                        <Image url="@../icons/icons8-animal-shelter-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="profileId11" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="40.0">
+                     <image>
+                        <Image url="@../icons/icons8-happy-cloud-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="profileId111" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="50.0">
+                     <image>
+                        <Image url="@../icons/icons8-top-view-bird-48.png" />
                      </image>
                   </ImageView>
                </children>
@@ -30,7 +45,7 @@
             </HBox>
             <ScrollPane fx:id="scrollPane" prefHeight="205.0" prefWidth="585.0" scaleX="0.9">
                <content>
-                  <VBox fx:id="profileList" prefHeight="200.0" prefWidth="600.0" />
+                  <VBox fx:id="profileList" prefHeight="200.0" prefWidth="727.0" />
                </content>
             </ScrollPane>
          </children>
