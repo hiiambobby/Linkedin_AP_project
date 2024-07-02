@@ -74,7 +74,7 @@ public class SignUpController {
             // Make the HTTP request
             boolean success = sendPostRequest(firstName, lastName, email, password, confPassword);
             if (success) {
-                fetchAndSaveUserData();
+                fetchAndSaveUserData(email);
 
                 // Load the new FXML file and get the controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml")); // Adjust path as needed
@@ -163,20 +163,21 @@ public class SignUpController {
             }
         }
     }
-    private void fetchAndSaveUserData() throws IOException {
+    private void fetchAndSaveUserData(String userId) throws IOException {
         String token = TokenManager.getToken();
         if (token == null) {
             System.out.println("No token available");
             return;
         }
 
-        URL url = new URL("http://localhost:8000/user");
+        URL url = new URL("http://localhost:8000/user?id=" + userId); // Append user ID to URL
         HttpURLConnection conn = null;
         try {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
 
             int responseCode = conn.getResponseCode();
             System.out.println("GET Response Code :: " + responseCode);
@@ -192,8 +193,7 @@ public class SignUpController {
                 conn.disconnect();
                 System.out.println("Connection closed");
             }
-        }
-    }
+        }    }
 
     private void saveUserDataToFile(String data) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE))) {

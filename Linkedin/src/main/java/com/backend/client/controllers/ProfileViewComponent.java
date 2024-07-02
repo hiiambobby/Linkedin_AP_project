@@ -21,6 +21,11 @@ public class ProfileViewComponent extends VBox {
     private Label headerTitleLabel;
 
     public ProfileViewComponent(String profilePictureUrl, String name, String headerTitle) {
+        // Set default profile picture URL if the provided URL is null or empty
+        if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
+            profilePictureUrl = "/icons/icons8-male-user-48.png"; // Default image path
+        }
+
         // Initialize and configure the UI components
         profilePicture = new ImageView(new Image(profilePictureUrl));
         profilePicture.setFitHeight(50);
@@ -41,5 +46,5 @@ public class ProfileViewComponent extends VBox {
         this.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: lightgray; -fx-border-width: 1;");
         this.setPrefWidth(300);
     }
-
 }
+

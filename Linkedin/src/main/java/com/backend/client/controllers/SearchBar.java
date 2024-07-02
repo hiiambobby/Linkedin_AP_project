@@ -97,7 +97,7 @@ public class SearchBar {
     }
     catch (Exception e)
     {
-        System.out.println("found where the error is");
+       e.printStackTrace();
     }
     }
 

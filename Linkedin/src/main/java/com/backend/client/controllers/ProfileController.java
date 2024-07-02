@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -17,8 +18,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
@@ -43,12 +52,85 @@ public class ProfileController implements Initializable {
 
     }
     private void loadInformation(){
-        JSONObject jsonResponse = PrimaryInfoController.getPrimaryInfoJSONObject();
+        JSONObject jsonResponse = getPrimaryInfoJSONObject();
         if(jsonResponse != null){
             populateFields(jsonResponse);
             setPictures(jsonResponse);
         }
     }
+    public  JSONObject getPrimaryInfoJSONObject() {
+        HttpURLConnection conn = null;
+        try {
+            // Retrieve the email from TokenManager
+            String email = readEmail();
+            System.out.println("Email before encoding: " + email);
+
+
+            // Check if the email is null and handle it
+            if (email == null || email.trim().isEmpty()) {
+                System.err.println("Email is null or empty.");
+                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Email is not available.");
+                return null;
+            }
+
+            // Ensure the email ID is URL-encoded
+            String encodedEmailId = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
+
+            // Construct the URL with the email ID as a query parameter
+            URL url = new URL("http://localhost:8000/primaryInfo?id=" + encodedEmailId);
+
+            // Open connection
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            // No token required; we skip setting the Authorization header
+
+            // Get the response code
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Read the response
+                InputStream inputStream = conn.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                // Parse the JSON response
+                return new JSONObject(response.toString());
+            } else {
+                // Handle HTTP error response
+                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to load primary info. Response code: " + responseCode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while loading primary info.");
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+        return null;
+    }
+
+    public String readEmail()
+    {
+        String filePath = "userdata.txt"; // Path to your JSON file
+        try {
+            String jsonString = readJsonFile(filePath);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            return (jsonObject.optString("email", "Unknown"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public String readJsonFile(String filePath) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(filePath)));
+    }
+
     private void populateFields(JSONObject jsonObject) {
         // Set other fields based on JSON object
         nameLabel.setText((jsonObject.optString("firstName", "") + jsonObject.optString("additionalName", "")

@@ -188,19 +188,6 @@ public class PrimaryInfoController implements Initializable {
         return true;
 
     }
-    public void saveToFile(JSONObject primaryInfo,String email) {
-        if (email == null || email.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Email is not specified or empty.");
-            return;
-        }
-        String filePath = "config/" + email + ".json";
-        try (FileWriter file = new FileWriter(filePath)) {
-            file.write(primaryInfo.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving the file.");
-        }
-    }
 
 
     private static void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -218,7 +205,7 @@ public class PrimaryInfoController implements Initializable {
         }
     }
 
-    public static JSONObject getPrimaryInfoJSONObject() {
+    public  JSONObject getPrimaryInfoJSONObject() {
         HttpURLConnection conn = null;
         try {
             // Retrieve the email from TokenManager
@@ -322,7 +309,7 @@ public class PrimaryInfoController implements Initializable {
         }
         return null;
     }
-    public static String readEmail()
+    public String readEmail()
     {
         String filePath = "userdata.txt"; // Path to your JSON file
         try {
@@ -334,7 +321,7 @@ public class PrimaryInfoController implements Initializable {
         }
         return null;
     }
-    public static String readJsonFile(String filePath) throws IOException {
+    public String readJsonFile(String filePath) throws IOException {
         return new String(Files.readAllBytes(Paths.get(filePath)));
     }
 }

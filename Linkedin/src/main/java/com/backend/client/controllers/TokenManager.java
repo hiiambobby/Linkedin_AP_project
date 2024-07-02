@@ -55,17 +55,13 @@ public class TokenManager {
      */
     public static String getEmailFromToken(String token) {
         try {
-
             DecodedJWT decodedJWT = JWT.decode(token);
-            String email = decodedJWT.getClaim("email").asString();
-            System.out.println("Extracted Email: " + email);  // Debugging
-            return email;
+            return decodedJWT.getClaim("email").asString();
         } catch (JWTDecodeException e) {
             System.err.println("Failed to decode JWT token: " + e.getMessage());
             return null;
         }
     }
-
 
     /**
      * Retrieve the stored token and extract the email from it.
@@ -74,18 +70,10 @@ public class TokenManager {
      */
     public static String getEmailFromStoredToken() {
         String token = getToken();
-        if (token != null && !token.trim().isEmpty()) {
-            String plainToken = extractTokenFromResponse(token);
-            if (plainToken != null) {
-                return getEmailFromToken(plainToken);
-            } else {
-                System.err.println("Failed to extract plain token.");
-                return null;
-            }
-        } else {
-            System.err.println("Token is null or empty.");
-            return null;
+        if (token != null) {
+            return getEmailFromToken(token);
         }
+        return null;
     }
 
     /**
