@@ -249,7 +249,9 @@ public class PrimaryInfoController implements Initializable {
                 return new JSONObject(response.toString());
             } else {
                 // Handle HTTP error response
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to load primary info. Response code: " + responseCode);
+
+                nameId.setText(readFirstName());
+                lastNameId.setText(readLastName());
             }
         } catch (IOException e) {
             e.printStackTrace();

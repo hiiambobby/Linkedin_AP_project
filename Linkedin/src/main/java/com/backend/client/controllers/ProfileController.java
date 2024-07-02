@@ -102,7 +102,7 @@ public class ProfileController implements Initializable {
                 return new JSONObject(response.toString());
             } else {
                 // Handle HTTP error response
-                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to load primary info. Response code: " + responseCode);
+              //  setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to load primary info. Response code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
