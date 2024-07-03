@@ -2,18 +2,18 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="728.0" style="-fx-background-color: #64b5f6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.SearchBar">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
-            <HBox prefHeight="37.0" prefWidth="600.0" style="-fx-background-color: white;" translateY="-130.0">
+            <HBox prefHeight="37.0" prefWidth="600.0" style="-fx-background-color: white;" translateY="-18.5">
                <children>
                   <ImageView fx:id="profileId" accessibleRole="BUTTON" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="20.0">
                      <image>
@@ -42,15 +42,28 @@
                   </ImageView>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="33.0" prefWidth="600.0">
+            <HBox prefHeight="32.0" prefWidth="702.0" translateY="20.0">
                <children>
-                  <Button fx:id="searchButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleSearch" prefHeight="34.0" prefWidth="64.0" text="search" />
-                  <TextField fx:id="searchField" alignment="CENTER" prefHeight="34.0" prefWidth="478.0" />
+                  <Button fx:id="reqBtn" mnemonicParsing="false" onAction="#showRequests" prefHeight="26.0" prefWidth="159.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Requests" textFill="#fffcfc" translateX="90.0">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="followerBtn" mnemonicParsing="false" onAction="#showFollowers" prefHeight="26.0" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Followers" textFill="WHITE" translateX="90.0">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="followingBtn" mnemonicParsing="false" onAction="#showFollowings" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Following" textFill="WHITE" translateX="90.0">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
                </children>
             </HBox>
-            <ScrollPane fx:id="scrollPane" prefHeight="205.0" prefWidth="585.0" scaleX="0.9">
+            <ScrollPane fx:id="scrollPane" prefHeight="429.0" prefWidth="749.0" scaleX="0.75" scaleY="0.9">
                <content>
-                  <VBox fx:id="profileList" prefHeight="200.0" prefWidth="727.0" />
+                  <VBox fx:id="profileList" prefHeight="427.0" prefWidth="729.0" />
                </content>
             </ScrollPane>
          </children>

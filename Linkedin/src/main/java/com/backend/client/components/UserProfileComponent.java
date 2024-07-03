@@ -106,8 +106,7 @@ public class UserProfileComponent extends VBox {
 
     //send connect request
     private void handleConnect(String name,JSONObject profileJSON) {
-        boolean connected = true;
-        sendConnectReq(profileJSON);
+        boolean connected = sendConnectReq(profileJSON);
         if (connected) {
             updateConnectButton();
         }
