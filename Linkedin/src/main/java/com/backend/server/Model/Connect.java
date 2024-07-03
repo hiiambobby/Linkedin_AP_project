@@ -14,6 +14,11 @@ public class Connect {
     @JsonProperty("accepted")
     private boolean accepted;
 
+    // No-argument constructor is required for Jackson
+    public Connect() {
+    }
+
+
     public Connect(String senderName, String receiverName, String notes, boolean accepted) {
         this.notes = notes;
         this.senderName = senderName;
@@ -33,6 +38,11 @@ public class Connect {
         this.receiverName = receiverName;
     }
 
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+
     public void setSenderName(String senderName) {
         this.senderName = senderName;
     }
@@ -49,6 +59,13 @@ public class Connect {
         return senderName;
     }
 
+    @Override
+    public String toString() {
+        return "Connect{" +
+                ", sender='" + senderName + '\'' +
+                ", receiver='" + receiverName + '\'' +
+                ", notes='" + notes + '\'' +
+                ",  accepted='" + accepted + +
+                '}';
+    }
 }
-
-
