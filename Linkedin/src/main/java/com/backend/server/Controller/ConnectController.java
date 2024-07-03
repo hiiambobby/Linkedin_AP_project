@@ -46,10 +46,16 @@ public class ConnectController {
             throw new RuntimeException("Connection request does not exist.");
         }
     }
-
     private boolean connectionExists(String sender, String receiver) {
-        List<Connect> connections = connectDAO.getConnections(sender);
-        return connections.stream()
-                .anyMatch(c -> c.getReceiverName().equals(receiver) || c.getSenderName().equals(receiver));
+        List<Connect> connections = connectDAO.getPending(sender,receiver);
+        System.out.println("Connections for sender " + receiver + ": " + connections);
+
+        boolean exists = connections.stream()
+                .anyMatch(c -> (c.getSenderName().equals(sender) && c.getReceiverName().equals(receiver)));
+
+        System.out.println("Connection exists between " + sender + " and " + receiver + ": " + exists);
+        return exists;
     }
+
+
 }

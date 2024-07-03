@@ -20,7 +20,7 @@ public class ConnectDAO {
     private void createTable() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS connections (" +
 //                "id VARCHAR(255) PRIMARY KEY," + // we do not need primary key because it is two sided somehow
-                "sender VARCHAR(255) NOT NULL," +
+                "sender VARCHAR(255) PRIMARY KEY," +
                 "receiver VARCHAR(255) NOT NULL," +
                 "notes TEXT," +
                 "accepted BOOLEAN DEFAULT FALSE" +
@@ -52,6 +52,27 @@ public class ConnectDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Connect> getPending(String sender,String receiver) {
+        String querySQL = "SELECT * FROM connections WHERE accepted = false AND sender = ? AND receiver = ?";
+        List<Connect> connections = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(querySQL)) {
+            stmt.setString(1, sender);
+            stmt.setString(2, receiver);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                connections.add(new Connect(
+                        rs.getString("sender"),
+                        rs.getString("receiver"),
+                        rs.getString("notes"),
+                        rs.getBoolean("accepted")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return connections;
     }
 
     public List<Connect> getConnections(String user) {
