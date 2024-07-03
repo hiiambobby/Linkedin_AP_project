@@ -18,10 +18,7 @@ import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -220,8 +217,10 @@ public class myNetworkController {
         String name = result.optString("firstName", "") + " " + result.optString("lastName", "");
         String headerTitle = result.optString("headTitle", "");
         String note = result.optString("note", "No note provided");
-        return new ConnectRequestComponent(profilePicUrl, name, headerTitle, note);
+        String email =  result.optString("userId", "");
+        return new ConnectRequestComponent(profilePicUrl, name, headerTitle, note,email);
     }
+
 
     public String readEmail() {
         String filePath = "userdata.txt"; // Path to your JSON file
@@ -246,4 +245,5 @@ public class myNetworkController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 }
