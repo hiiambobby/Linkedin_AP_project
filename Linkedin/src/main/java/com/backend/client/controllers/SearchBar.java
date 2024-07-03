@@ -165,8 +165,8 @@ public class SearchBar {
         conn.setRequestProperty("Accept", "application/json");
 
         int responseCode = conn.getResponseCode();
-        System.out.println("Response Code for primary info retrieval: " + responseCode);
-        System.out.println("Request URL: " + url);
+        //System.out.println("Response Code for primary info retrieval: " + responseCode);
+      //  System.out.println("Request URL: " + url);
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -207,11 +207,12 @@ public class SearchBar {
     }
 
     private Node createProfileView(JSONObject profileData) {
+        JSONObject wholeInfo = profileData;
         String profilePicUrl = profileData.optString("profilePic", "/icons/icons8-male-user-48.png");
         String name = profileData.optString("firstName", "") + " " + profileData.optString("lastName", "");
         String headerTitle = profileData.optString("headTitle", "");
 
-        return new ProfileViewComponent(profilePicUrl, name, headerTitle);
+        return new ProfileViewComponent(profileData,profilePicUrl, name, headerTitle);
     }
 
 

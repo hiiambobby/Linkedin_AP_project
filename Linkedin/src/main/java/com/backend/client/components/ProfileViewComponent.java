@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 public class ProfileViewComponent extends VBox {
 
@@ -18,7 +19,7 @@ public class ProfileViewComponent extends VBox {
     private Label nameLabel;
     private Label headerTitleLabel;
 
-    public ProfileViewComponent(String profilePictureUrl, String name, String headerTitle) {
+    public ProfileViewComponent(JSONObject profileData, String profilePictureUrl, String name, String headerTitle) {
         // Set default profile picture URL if the provided URL is null or empty
         if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
             profilePictureUrl = "/icons/icons8-male-user-48.png"; // Default image path
@@ -47,12 +48,13 @@ public class ProfileViewComponent extends VBox {
         // Add click event handler to show the profile page
         String finalProfilePictureUrl = profilePictureUrl;
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            showUserProfile(finalProfilePictureUrl, "img/defaultBackgroundPicture.png", name, "", "test");
+            showUserProfile(profileData,finalProfilePictureUrl, "img/defaultBackgroundPicture.png", name, "", "test");
         });
     }
 
-    private void showUserProfile(String profilePictureUrl, String backgroundPictureUrl, String name, String additionalName, String lastName) {
-        UserProfileComponent userProfileComponent = new UserProfileComponent(profilePictureUrl, backgroundPictureUrl, name, additionalName, lastName);
+    private void showUserProfile(JSONObject info,String profilePictureUrl, String backgroundPictureUrl
+            , String name, String additionalName, String lastName) {
+        UserProfileComponent userProfileComponent = new UserProfileComponent(info,profilePictureUrl, backgroundPictureUrl, name, additionalName, lastName);
 
         Stage profileStage = new Stage();
         profileStage.initModality(Modality.APPLICATION_MODAL);

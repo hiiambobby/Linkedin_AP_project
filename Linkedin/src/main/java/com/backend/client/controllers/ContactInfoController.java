@@ -50,7 +50,7 @@ public class ContactInfoController implements Initializable {
 
 
     public void Save(ActionEvent event) {
-        JSONObject jsonObject = getJsonObject(); // Assuming you have a method to create JSONObject
+        JSONObject jsonObject = getJsonObject();
 
         HttpURLConnection conn = null;
         try {
