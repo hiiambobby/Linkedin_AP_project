@@ -207,7 +207,7 @@ public class SearchBar {
     }
 
     private Node createProfileView(JSONObject profileData) {
-        JSONObject wholeInfo = profileData;
+      //  JSONObject wholeInfo = profileData;
         String profilePicUrl = profileData.optString("profilePic", "/icons/icons8-male-user-48.png");
         String name = profileData.optString("firstName", "") + " " + profileData.optString("lastName", "");
         String headerTitle = profileData.optString("headTitle", "");
@@ -216,4 +216,17 @@ public class SearchBar {
     }
 
 
+    public void openNetwork(MouseEvent mouseEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Network.fxml"));
+        Stage currentStage = (Stage) profileId.getScene().getWindow();
+        currentStage.close();
+        Stage newStage = new Stage();
+        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+        newStage.getIcons().add(icon);
+        Scene newScene = new Scene(root);
+        newStage.setScene(newScene);
+        newStage.setTitle("profile");
+        newStage.initStyle(StageStyle.DECORATED);
+        newStage.show();
+    }
 }

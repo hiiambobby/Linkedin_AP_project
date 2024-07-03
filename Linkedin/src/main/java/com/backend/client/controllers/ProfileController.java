@@ -269,4 +269,20 @@ public class ProfileController implements Initializable {
         newStage.setFullScreen(true);
         newStage.show();
     }
+    public void openNetwork(MouseEvent mouseEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Network.fxml"));
+        Stage currentStage = (Stage) logOut.getScene().getWindow();
+        currentStage.close(); // Close the current stage if needed
+
+        // Create a new stage with the decorated style
+        Stage newStage = new Stage();
+        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+        newStage.getIcons().add(icon);
+        Scene newScene = new Scene(root);
+        newStage.setScene(newScene);
+        newStage.setTitle("my network");
+        newStage.initStyle(StageStyle.DECORATED);
+        newStage.setFullScreen(true);
+        newStage.show();
+    }
 }

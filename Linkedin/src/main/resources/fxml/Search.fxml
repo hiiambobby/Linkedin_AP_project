@@ -20,22 +20,22 @@
                         <Image url="@../icons/icons8-cat-48.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="profileId1" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="30.0">
+                  <ImageView fx:id="homeId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="30.0">
                      <image>
                         <Image url="@../icons/icons8-animal-shelter-48.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="profileId11" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="40.0">
+                  <ImageView fx:id="networkId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#openNetwork" pickOnBounds="true" preserveRatio="true" translateX="40.0">
                      <image>
                         <Image url="@../icons/icons8-happy-cloud-48.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="profileId111" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="50.0">
+                  <ImageView fx:id="pmId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="50.0">
                      <image>
                         <Image url="@../icons/icons8-top-view-bird-48.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="profileId1111" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="60.0">
+                  <ImageView accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="60.0">
                      <image>
                         <Image url="@../icons/icons8-search-48.png" />
                      </image>

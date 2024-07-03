@@ -75,12 +75,14 @@ public class ConnectDAO {
         return connections;
     }
 
+
+    ///i changed here we will add the users in another way later
     public List<Connect> getConnections(String user) {
-        String querySQL = "SELECT * FROM connections WHERE (sender = ? OR receiver = ?) AND accepted = true";
+        String querySQL = "SELECT * FROM connections WHERE receiver = ? AND accepted = false";
         List<Connect> connections = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(querySQL)) {
             stmt.setString(1, user);
-            stmt.setString(2, user);
+      //      stmt.setString(2, user);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 connections.add(new Connect(
