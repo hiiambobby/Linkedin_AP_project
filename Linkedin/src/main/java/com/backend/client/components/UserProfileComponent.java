@@ -1,4 +1,4 @@
-package com.backend.client.controllers;
+package com.backend.client.components;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -65,6 +65,29 @@ public class UserProfileComponent extends VBox {
         this.getChildren().addAll(backgroundPicture, profileBox);
         this.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: lightgray; -fx-border-width: 1;");
         this.setPrefWidth(400);
+
+        connectButton.setOnAction(event -> handleConnect());
+        followButton.setOnAction(event -> handleFollow());
+    }
+
+    private void handleFollow() {
+        boolean connected = true;
+        if (connected) {
+            updateFollowButton();
+        }
+    }
+
+    private void updateFollowButton() {
+        followButton.setText("Following");
+        followButton.setDisable(true);
+        followButton.setStyle("-fx-background-color: lightgreen;");
+    }
+
+    private void handleConnect() {
+        boolean connected = true;
+        if (connected) {
+            updateConnectButton();
+        }
     }
 
     // Add event handlers for the buttons if needed
@@ -74,5 +97,10 @@ public class UserProfileComponent extends VBox {
 
     public void setOnFollowAction(EventHandler<ActionEvent> event) {
         followButton.setOnAction(event);
+    }
+    public void updateConnectButton() {
+        connectButton.setText("Connected");
+        connectButton.setDisable(true);
+        connectButton.setStyle("-fx-background-color: lightgreen;");
     }
 }
