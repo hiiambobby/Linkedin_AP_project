@@ -1,7 +1,6 @@
 package com.backend.server.HTTPHandler;
 
 import com.backend.server.Controller.ConnectController;
-import com.backend.server.Database.ConnectDAO;
 import com.backend.server.Model.Connect;
 import com.backend.server.Util.JWT;
 import com.sun.net.httpserver.HttpExchange;

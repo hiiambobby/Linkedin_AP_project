@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Follow {
 @JsonProperty("follower")
     private String follower;
-@JsonProperty("followed")
-    private String followed;
+@JsonProperty("following")
+    private String following;
 
 //empty constructor
     public Follow()
@@ -14,18 +14,22 @@ public class Follow {
 
     }
 
-    public Follow(String follower,String followed)
+    public Follow(String follower,String following)
     {
-        this.followed = followed;
         this.follower = follower;
+        this.following = following;
     }
 
-    public void setFollowed(String followed) {
-        this.followed = followed;
+    public void setFollowing(String following) {
+        this.following = following;
     }
 
     public String getFollowed() {
-        return followed;
+        return following;
+    }
+
+    public String getFollowing() {
+        return following;
     }
 
     public void setFollower(String follower) {
@@ -38,7 +42,7 @@ public class Follow {
     public String toString() {
         return "Follow{" +
                 ", follower='" + follower + '\'' +
-                ", followed='" + followed + '\'' +
+                ", following='" + following + '\'' +
                 '}';
     }
 }
