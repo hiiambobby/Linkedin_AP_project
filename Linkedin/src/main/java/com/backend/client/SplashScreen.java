@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -22,10 +23,18 @@ public class SplashScreen extends Application {
         ImageView imageView = new ImageView(splashImage);
         StackPane splashRoot = new StackPane(imageView);
 
-        Scene splashScene = new Scene(splashRoot, 640, 640); // Adjust the size as needed
+        // Create a rounded rectangle for clipping
+        Rectangle clip = new Rectangle(540, 540);
+        clip.setArcWidth(30); // Adjust corner roundness
+        clip.setArcHeight(30); // Adjust corner roundness
+        splashRoot.setClip(clip);
+
+        // Create the splash screen scene
+        Scene splashScene = new Scene(splashRoot, 540, 540); // Adjust the size as needed
         splashStage.initStyle(StageStyle.UNDECORATED);
         splashStage.setScene(splashScene);
         splashStage.show();
+
 
         new Thread(() -> {
             try {

@@ -273,35 +273,29 @@ public class ProfileController implements Initializable {
 
 
     public void openSearch(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Search.fxml"));
-        Stage currentStage = (Stage) logOut.getScene().getWindow();
-        currentStage.close(); // Close the current stage if needed
+        openNewStage("/fxml/Search.fxml", "Search");
 
-        // Create a new stage with the decorated style
-        Stage newStage = new Stage();
-        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
-        newStage.getIcons().add(icon);
-        Scene newScene = new Scene(root);
-        newStage.setScene(newScene);
-        newStage.setTitle("search");
-        newStage.initStyle(StageStyle.DECORATED);
-        newStage.setFullScreen(true);
-        newStage.show();
     }
     public void openNetwork(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Network.fxml"));
-        Stage currentStage = (Stage) logOut.getScene().getWindow();
-        currentStage.close(); // Close the current stage if needed
+        openNewStage("/fxml/Network.fxml", "Network");
 
-        // Create a new stage with the decorated style
+    }
+    private void openNewStage(String fxmlPath, String title) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+        Stage currentStage = (Stage) logOut.getScene().getWindow();
+        currentStage.close();
         Stage newStage = new Stage();
         Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
         newStage.getIcons().add(icon);
         Scene newScene = new Scene(root);
         newStage.setScene(newScene);
-        newStage.setTitle("my network");
+        newStage.setTitle(title);
         newStage.initStyle(StageStyle.DECORATED);
-        newStage.setFullScreen(true);
         newStage.show();
+    }
+
+    public void openMessages(MouseEvent mouseEvent) throws IOException {
+        openNewStage("/fxml/MessagePage.fxml", "Messages");
+
     }
 }

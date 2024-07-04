@@ -56,7 +56,7 @@
                                     <Image url="@../icons/icons8-happy-cloud-48.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#openMessages">
                                  <image>
                                     <Image url="@../icons/icons8-top-view-bird-48.png" />
                                  </image>

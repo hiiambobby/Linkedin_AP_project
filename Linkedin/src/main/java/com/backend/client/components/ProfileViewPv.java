@@ -1,6 +1,11 @@
 package com.backend.client.components;
 
+import com.backend.client.controllers.PMController;
+import com.backend.client.controllers.setAlert;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,9 +52,36 @@ public class ProfileViewPv extends VBox{
     }
 
     private void showMessagePopup(JSONObject profileData) {
-        System.out.println("hi");
+        //show the message box
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Messages.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and set the message
+            PMController controller = loader.getController();
+            String message = profileData.optString("message", "No message provided"); // Adjust based on your JSON structure
+            controller.setMessage(message);
+
+            // Create and configure the stage
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Message");
+            dialogStage.setScene(new Scene(root));
+
+            // Pass the stage to the controller
+            controller.setDialogStage(dialogStage);
+
+            // Show the dialog
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            setAlert.showAlert(Alert.AlertType.ERROR,"Error","An error occured....");
+        }
+    }
 
     }
 
 
-}
+
