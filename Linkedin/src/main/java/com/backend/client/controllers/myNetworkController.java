@@ -113,6 +113,7 @@ public class myNetworkController {
         newStage.show();
     }
 
+    //this works fine
     private List<JSONObject> getRequests() throws IOException {
         String email = readEmail();
         URL url = new URL("http://localhost:8000/connect?user=" + URLEncoder.encode(email, StandardCharsets.UTF_8.toString()));
@@ -160,7 +161,7 @@ public class myNetworkController {
             JSONObject primaryInfo = getPrimaryInfoByEmail(receiverEmail);
             if (primaryInfo != null) {
                 // Add the request note to the primary info
-                primaryInfo.put("note", request.optString("note", "No note provided"));
+                primaryInfo.put("note", request.optString("notes", "No note provided"));
                 detailedRequests.add(primaryInfo);
             }
         }

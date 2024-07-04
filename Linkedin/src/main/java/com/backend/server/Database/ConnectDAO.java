@@ -55,7 +55,7 @@ public class ConnectDAO {
     }
 
     public List<Connect> getPending(String sender,String receiver) {
-        String querySQL = "SELECT * FROM connections WHERE accepted = false AND sender = ? AND receiver = ?";
+        String querySQL = "SELECT * FROM connections WHERE (accepted = false OR accepted = true) AND sender = ? AND receiver = ?";
         List<Connect> connections = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(querySQL)) {
             stmt.setString(1, sender);
@@ -99,12 +99,26 @@ public class ConnectDAO {
     }
     //if one of them has accepted the request
     public List<Connect> getConnected(String user) {
-        String querySQL = "SELECT * FROM connections WHERE (receiver = ? OR Sender = ?) AND accepted = true";
+        // SQL query to fetch connections
+        String querySQL = "SELECT * FROM connections WHERE (receiver = ? OR sender = ?) AND accepted = true";
         List<Connect> connections = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(querySQL)) {
+            // Set parameters for the prepared statement
             stmt.setString(1, user);
-            //      stmt.setString(2, user);
+            stmt.setString(2, user);
+
+            // Print the SQL query with parameters for debugging
+            System.out.println("Executing query: " + querySQL.replace("?", "'" + user + "'"));
+
+            // Execute the query and get the result set
             ResultSet rs = stmt.executeQuery();
+
+            // Print debug statement if no results are found
+            if (!rs.isBeforeFirst()) {
+                System.out.println("No results found for user: " + user);
+            }
+
+            // Process the result set
             while (rs.next()) {
                 connections.add(new Connect(
                         rs.getString("sender"),
@@ -114,8 +128,15 @@ public class ConnectDAO {
                 ));
             }
         } catch (SQLException e) {
+            // Print SQL exceptions for debugging
+            System.err.println("SQL Exception: " + e.getMessage());
+            e.printStackTrace(); // Print the stack trace for more details
             throw new RuntimeException(e);
         }
+
+        // Print the found connections for debugging
+        System.out.println("Found connections: " + connections);
+
         return connections;
     }
 

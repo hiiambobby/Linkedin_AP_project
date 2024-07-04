@@ -2,6 +2,7 @@ package com.backend.client.controllers;
 
 import com.backend.client.components.ProfileViewComponent;
 import com.backend.client.components.ProfileViewPv;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,17 +45,20 @@ public class MessageController implements Initializable {
     }
 
     private void showConnections() {
-        try {
-            List<JSONObject> requests = findConnections();
-            if (requests != null && !requests.isEmpty()) {
-                List<JSONObject> requestDetails = fetchPrimaryInfoForRequests(requests);
-                displaySearchResults(requestDetails);
+            try {
+                List<JSONObject> requests = findConnections();
+                if (requests != null && !requests.isEmpty()) {
+                    List<JSONObject> requestDetails = fetchPrimaryInfoForRequests(requests);
+                    Platform.runLater(() -> displaySearchResults(requestDetails));
+                } else {
+                    System.out.println("No requests found.");
+                }
+            } catch (IOException e) {
+                Platform.runLater(() -> setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while fetching connection requests."));
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while fetching connection requests.");
-            e.printStackTrace();
         }
-    }
+
 
 
     public void profileView(MouseEvent mouseEvent) throws IOException {
@@ -85,18 +89,33 @@ public class MessageController implements Initializable {
         newStage.show();
     }
 
-    //we should first find all the connections emails
+    //for debuggin purposes
     public List<JSONObject> findConnections() throws IOException {
+        // Print debug statement to indicate the method has started
+        System.out.println("Starting findConnections method");
+
+        // Prepare the URL string with encoded parameters
         String urlString = String.format("http://localhost:8000/connect?user=%s&connected=%s",
                 URLEncoder.encode(readEmail(), "UTF-8"), URLEncoder.encode("type", "UTF-8"));
+
+        // Print the URL to check if it's correct
+        System.out.println("Connecting to URL: " + urlString);
+
+        // Create a URL object and open a connection
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
 
+        // Get the response code and print it for debugging
         int responseCode = conn.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
 
         if (responseCode == HttpURLConnection.HTTP_OK) {
+            // Print debug statement indicating a successful connection
+            System.out.println("Connection successful, reading response");
+
+            // Read the response from the connection
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder response = new StringBuilder();
             String line;
@@ -105,14 +124,25 @@ public class MessageController implements Initializable {
             }
             reader.close();
 
+            // Print the raw JSON response
+            System.out.println("Raw JSON Response: " + response.toString());
+
+            // Parse the JSON response and convert it to a list of JSON objects
             JSONArray jsonResponse = new JSONArray(response.toString());
             List<JSONObject> requestList = new ArrayList<>();
             for (int i = 0; i < jsonResponse.length(); i++) {
                 requestList.add(jsonResponse.getJSONObject(i));
             }
+
+            // Print the parsed request list
+            System.out.println("Parsed request list: " + requestList);
+
             return requestList;
         } else {
+            // Print debug statement indicating a failed connection
             System.err.println("Failed to get connect requests, Response code: " + responseCode);
+
+            // Read and print the error response
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
             StringBuilder errorResponse = new StringBuilder();
             String errorLine;
@@ -120,14 +150,15 @@ public class MessageController implements Initializable {
                 errorResponse.append(errorLine);
             }
             errorReader.close();
-            System.err.println("Error response: " + errorResponse);
+
+            // Print the error response
+            System.err.println("Error response: " + errorResponse.toString());
         }
 
+        // Disconnect the connection and return null
         conn.disconnect();
         return null;
     }
-
-
 
     private List<JSONObject> fetchPrimaryInfoForRequests(List<JSONObject> requests) throws IOException {
         List<JSONObject> detailedRequests = new ArrayList<>();
@@ -136,7 +167,7 @@ public class MessageController implements Initializable {
             JSONObject primaryInfo = getPrimaryInfoByEmail(receiverEmail);
             if (primaryInfo != null) {
                 // Add the request note to the primary info
-                primaryInfo.put("note", request.optString("note", "No note provided"));
+                primaryInfo.put("note", request.optString("notes", "No note provided"));
                 detailedRequests.add(primaryInfo);
             }
         }
@@ -178,11 +209,13 @@ public class MessageController implements Initializable {
     }
 
     private void displaySearchResults(List<JSONObject> results) {
-        viewConnections.getChildren().clear();
-        for (JSONObject result : results) {
-            Node profileView = connectListView(result);
-            viewConnections.getChildren().add(profileView);
-        }
+        Platform.runLater(() -> {
+            viewConnections.getChildren().clear();
+            for (JSONObject result : results) {
+                Node profileView = connectListView(result);
+                viewConnections.getChildren().add(profileView);
+            }
+        });
     }
 
     private Node connectListView(JSONObject result) {
