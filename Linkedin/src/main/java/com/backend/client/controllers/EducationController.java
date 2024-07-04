@@ -73,6 +73,33 @@ public class EducationController {
     private ObservableList<Integer> years = FXCollections.observableArrayList();
     private ObservableList<String> months = FXCollections.observableArrayList();
 
+    private void saveEducation() {
+        if (maxLength()) {
+            addEducation();
+        }
+        // readEducationData(); //for testing
+
+        Stage stage = (Stage) discardButton.getScene().getWindow();
+        stage.close();
+
+        // add education to profile
+        /*String school = schoolField.getText();
+        String degree = degreeField.getText();
+        String field = fieldOfStudyField.getText();
+        String startMonth = startDateMonthCombo.getValue();
+        Integer startYear = startDateYearCombo.getValue();
+        String endMonth = endDateMonthCombo.getValue();
+        Integer endYear = endDateYearCombo.getValue();
+        String activities = activitiesField.getText();
+        String description = descriptionField.getText();
+
+        ProfileController profileController = ControllerManager.getProfileController();
+        if (profileController != null) {
+            profileController.addEducationProfile(school, degree, field,startMonth, startYear, endMonth,endYear,activities,description);
+        } else {
+            System.out.println("ProfileController reference is null");
+        }*/
+    }
     @FXML
     public void initialize() {
         populateYears();
@@ -258,18 +285,6 @@ public class EducationController {
         }
     }
 
-
-
-
-    private void saveEducation() {
-        if (maxLength()) {
-            addEducation();
-        }
-        // readEducationData(); //for testing
-        Stage stage = (Stage) discardButton.getScene().getWindow();
-        stage.close();
-    }
-
     private void discardChanges() {
         Stage stage = (Stage) discardButton.getScene().getWindow();
         stage.close();
@@ -378,6 +393,5 @@ public class EducationController {
             }
         }
     }
-
 
 }

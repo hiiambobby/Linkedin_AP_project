@@ -1,97 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="blue-panel" stylesheets="@/Style.css" xmlns:fa="http://www.jensd.de/fontawesomefx" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
-    <children>
-        <VBox prefHeight="400.0" prefWidth="600.0">
-            <children>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="85.0" prefWidth="600.0">
-                    <children>
-                        <ImageView fx:id="headerPic" fitHeight="85.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/defaultBackgroundPicture.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="profilePic" fitHeight="72.0" fitWidth="74.0" layoutX="18.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/emptyProfilePic.jpg" />
-                            </image>
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </ImageView>
-                        <Text layoutX="116.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
-                        <Button fx:id="logOut" alignment="CENTER_RIGHT" layoutX="533.0" layoutY="56.0" mnemonicParsing="false" onAction="#logOut" prefHeight="17.0" prefWidth="60.0" text="Log Out">
-                            <font>
-                                <Font size="10.0" />
-                            </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                        </Button>
-                  <Label fx:id="nameLabel" layoutX="116.0" layoutY="25.0" text="Name" />
-                  <HBox layoutX="223.0" layoutY="12.0" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: white;">
+
+<StackPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="blue-panel" stylesheets="@/Style.css" xmlns:fa="http://www.jensd.de/fontawesomefx">
+          <children>
+              <VBox prefHeight="400.0" prefWidth="600.0">
+                  <children>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="85.0" prefWidth="600.0">
+                          <children>
+                              <ImageView fx:id="headerPic" fitHeight="85.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../img/defaultBackgroundPicture.png" />
+                                  </image>
+                              </ImageView>
+                              <ImageView fx:id="profilePic" fitHeight="72.0" fitWidth="74.0" layoutX="18.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../img/emptyProfilePic.jpg" />
+                                  </image>
+                                  <cursor>
+                                      <Cursor fx:constant="HAND" />
+                                  </cursor>
+                              </ImageView>
+                              <Text layoutX="116.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                        <Label fx:id="nameLabel" layoutX="116.0" layoutY="25.0" text="Name" />
+                        <HBox layoutX="223.0" layoutY="12.0" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: white;">
+                           <children>
+                              <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/icons8-cat-48.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/icons8-animal-shelter-48.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="networkId" fitHeight="22.0" fitWidth="25.0" onMouseClicked="#openNetwork" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/icons8-happy-cloud-48.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/icons8-top-view-bird-48.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="searchId" fitHeight="22.0" fitWidth="25.0" onMouseClicked="#openSearch" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/icons8-search-48.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                          </children>
+                      </AnchorPane>
+                      <Separator prefWidth="200.0" />
+                  <HBox prefHeight="310.0" prefWidth="600.0">
                      <children>
-                        <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/icons8-cat-48.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/icons8-animal-shelter-48.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="networkId" fitHeight="22.0" fitWidth="25.0" onMouseClicked="#openNetwork" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/icons8-happy-cloud-48.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/icons8-top-view-bird-48.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="searchId" fitHeight="22.0" fitWidth="25.0" onMouseClicked="#openSearch" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/icons8-search-48.png" />
-                           </image>
-                        </ImageView>
+                        <ScrollPane fx:id="educationScrollPane" prefHeight="310.0" prefWidth="490.0">
+                           <content>
+                              <VBox fx:id="educationVBox" prefHeight="200.0" prefWidth="474.0" />
+                           </content>
+                        </ScrollPane>
+                        <VBox alignment="TOP_CENTER" prefHeight="310.0" prefWidth="104.0" spacing="5.0">
+                           <children>
+                                      <Button fx:id="primaryInfoBtn" mnemonicParsing="false" onAction="#PrimaryInfo" text="Primary Info">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                                      <Button fx:id="contactInfoBtn" mnemonicParsing="false" onAction="#ContactInfo" text="Contact Info" textFill="#1cabcf">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <Button fx:id="addEducationBtn" mnemonicParsing="false" onAction="#addEducation" prefHeight="26.0" prefWidth="77.0" text="+" />
+                                    <Button fx:id="logOut" alignment="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="25.6" prefWidth="73.0" text="Log Out">
+                                        <font>
+                                            <Font size="10.0" />
+                                        </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                    </Button>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
                      </children>
                   </HBox>
-                    </children>
-                </AnchorPane>
-                <Separator prefWidth="200.0" />
-                <SplitPane dividerPositions="0.7406417112299464" prefHeight="310.0" prefWidth="600.0">
-                    <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                            <children>
-                                <Button fx:id="contactInfoBtn" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#ContactInfo" text="Contact Info" textFill="#1cabcf">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></Button>
-                                <Button fx:id="primaryInfoBtn" layoutX="110.0" layoutY="28.0" mnemonicParsing="false" onAction="#PrimaryInfo" text="Primary Info">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></Button>
-                        <Button fx:id="addEducationBtn" layoutX="230.0" layoutY="175.0" mnemonicParsing="false" onAction="#addEducation" text="+" />
-                            </children></AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                    </items>
-                </SplitPane>
-            </children>
-        </VBox>
-    </children>
-</AnchorPane>
+                  </children>
+              </VBox>
+          </children>
+      </AnchorPane>
+   </children>
+</StackPane>

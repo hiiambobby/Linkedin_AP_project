@@ -9,9 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -44,6 +46,28 @@ public class ProfileController implements Initializable {
     private ImageView headerPic;
     @FXML
     private ImageView profilePic;
+    @FXML
+    private ScrollPane educationScrollPane;
+    @FXML
+    private VBox educationVBox;
+
+    // add education to profile
+    /*public void addEducationProfile(String school, String degree, String field, String startMonth, Integer startYear,
+                                    String endMonth, Integer endYear, String activities,String description) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EducationFormat.fxml"));
+            VBox educationComponent = loader.load();
+
+            // Access the controller of EducationComponent to set data
+            EducationFormatController controller = loader.getController();
+            controller.setEducationDetails(school, degree, field,startMonth, startYear, endMonth,endYear,activities,description);
+
+            // Add the component to the VBox
+            educationVBox.getChildren().add(educationComponent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -192,11 +216,6 @@ public class ProfileController implements Initializable {
         newStage.initStyle(StageStyle.TRANSPARENT); // Standard window decorations for the new stage
         newStage.show();
     }
-
-    public void setNameLabel(String text){
-
-    }
-
 
 
     private void setPictures(JSONObject jsonObject) {

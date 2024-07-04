@@ -32,4 +32,17 @@ public class EducationFormatController {
 
     @FXML
     private Label studyFieldLabel;
+
+    public void setEducationDetails(String school, String degree, String field, String startMonth, Integer startYear,
+                                    String endMonth, Integer endYear, String activities,String description) {
+        schoolLabel.setText(school);
+        degreeLabel.setText(degree);
+        studyFieldLabel.setText(field);
+        startMonthLabel.setText(startMonth);
+        startYearLabel.setText(startYear.toString());
+        endMonthLabel.setText(endMonth);
+        endYearLabel.setText(endYear.toString());
+        activityLabel.setText(activities);
+        descriptionLabel.setText(description);
+    }
 }
