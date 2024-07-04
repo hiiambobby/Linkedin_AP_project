@@ -43,5 +43,9 @@ public class PostController {
     void viewCommentsSelected(ActionEvent event) {
 
     }
+    @FXML
+    void viewLikesSelected(ActionEvent event) {
+
+    }
 
 }

@@ -42,7 +42,7 @@
       <Separator prefWidth="200.0" />
       <VBox prefHeight="84.0" prefWidth="412.0">
          <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="51.0" prefWidth="412.0" spacing="5.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="37.0" prefWidth="412.0" spacing="5.0">
                <children>
                   <Label fx:id="commentsCounterLabel" text="0" />
                   <Label text="comments" />
@@ -54,13 +54,15 @@
                </padding>
             </HBox>
             <Separator prefWidth="200.0" />
-            <HBox alignment="CENTER" prefHeight="76.0" prefWidth="412.0" spacing="20.0">
+            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="390.0" spacing="20.0">
                <children>
-                  <Button fx:id="likeBtn" minHeight="25.6" minWidth="98.4" mnemonicParsing="false" onAction="#likeSelected" text="like" />
+                  <Button fx:id="likeBtn" mnemonicParsing="false" onAction="#likeSelected" text="like" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <Button minHeight="25.6" minWidth="98.4" mnemonicParsing="false" onAction="#commentSelected" text="comment" />
+                  <Button mnemonicParsing="false" onAction="#viewLikesSelected" text="view likes" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <Button minHeight="25.6" minWidth="98.4" mnemonicParsing="false" onAction="#viewCommentsSelected" text="view comments" />
+                  <Button mnemonicParsing="false" onAction="#commentSelected" text="comment" />
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <Button mnemonicParsing="false" onAction="#viewCommentsSelected" text="view comments" />
                </children>
                <padding>
                   <Insets bottom="5.0" />
