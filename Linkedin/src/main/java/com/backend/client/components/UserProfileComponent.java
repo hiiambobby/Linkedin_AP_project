@@ -163,6 +163,9 @@ public class UserProfileComponent extends VBox {
             // Check if the response code is HTTP_OK (200)
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 // Optional: Read the response if needed
+                followButton.setText("Following");
+                followButton.setStyle("-fx-background-color: grey;"); // Example styling
+                followButton.setDisable(true);
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
                     StringBuilder response = new StringBuilder();
                     String responseLine;
