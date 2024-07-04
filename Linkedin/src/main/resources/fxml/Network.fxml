@@ -54,7 +54,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="followingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showFollowings" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Following" textFill="WHITE">
+                  <Button fx:id="followingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showFollowings" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Followings" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>

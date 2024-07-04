@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
@@ -41,14 +42,10 @@ public class myNetworkController {
     @FXML
     public void showRequests(ActionEvent event) {
         try {
-            // Get the pending connection requests
             List<JSONObject> requests = getRequests();
             if (requests != null && !requests.isEmpty()) {
-                // Fetch primary information for each request
                 List<JSONObject> requestDetails = fetchPrimaryInfoForRequests(requests);
                 displaySearchResults(requestDetails);
-            } else {
-                showAlert(Alert.AlertType.INFORMATION, "No Requests", "You have no pending connection requests.");
             }
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while fetching connection requests.");
@@ -59,22 +56,33 @@ public class myNetworkController {
     @FXML
     public void showFollowers(ActionEvent event) {
         try {
-            List<JSONObject> requests = getFollowers(readEmail());
-            if (requests != null && !requests.isEmpty()) {
-                List<JSONObject> requestDetails = fetchPrimaryInfoForFollowers(requests);
-                displaySearchResultsForFollow(requestDetails);
+            List<JSONObject> followers = getFollows(readEmail(), "followers");
+            if (followers != null && !followers.isEmpty()) {
+                List<JSONObject> followerDetails = fetchPrimaryInfoForFollows(followers, "follower");
+                displaySearchResultsForFollow(followerDetails);
             } else {
-              //  showAlert(Alert.AlertType.INFORMATION, "No Requests", "You have no pending connection requests.");
+                showAlert(Alert.AlertType.INFORMATION, "No Followers", "You have no followers.");
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while fetching connection requests.");
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while fetching followers.");
             e.printStackTrace();
         }
     }
 
     @FXML
     public void showFollowings(ActionEvent event) {
-        // Implementation for showing followings goes here
+        try {
+            List<JSONObject> followings = getFollows(readEmail(), "followings");
+            if (followings != null && !followings.isEmpty()) {
+                List<JSONObject> followingDetails = fetchPrimaryInfoForFollows(followings, "following");
+                displaySearchResultsForFollow(followingDetails);
+            } else {
+                showAlert(Alert.AlertType.INFORMATION, "No Followings", "You are not following anyone.");
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while fetching followings.");
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -154,17 +162,22 @@ public class myNetworkController {
         }
         return detailedRequests;
     }
-    private List<JSONObject> fetchPrimaryInfoForFollowers(List<JSONObject> followers) throws IOException {
-        List<JSONObject> detailedFollowers = new ArrayList<>();
-        for (JSONObject follower : followers) {
-            String followerEmail = follower.getString("follower");
-            System.out.println("Fetching primary info for: " + followerEmail);
-            JSONObject primaryInfo = getPrimaryInfoByEmail(followerEmail);
-            if (primaryInfo != null) {
-                detailedFollowers.add(primaryInfo);
+    private List<JSONObject> fetchPrimaryInfoForFollows(List<JSONObject> follows, String type) throws IOException {
+        List<JSONObject> detailedFollows = new ArrayList<>();
+        for (JSONObject follow : follows) {
+            try {
+                String followEmail = follow.getString(type);
+                System.out.println("Fetching primary info for: " + followEmail);
+                JSONObject primaryInfo = getPrimaryInfoByEmail(followEmail);
+                if (primaryInfo != null) {
+                    detailedFollows.add(primaryInfo);
+                }
+            } catch (JSONException e) {
+                System.err.println("Error: " + e.getMessage());
+                System.err.println(type + " JSON: " + follow.toString());
             }
         }
-        return detailedFollowers;
+        return detailedFollows;
     }
 
     private JSONObject getPrimaryInfoByEmail(String email) throws IOException {
@@ -250,11 +263,16 @@ public class myNetworkController {
         alert.showAndWait();
     }
     //do a get on followers and followings send the result to the profile view
-    private List<JSONObject> getFollowers(String userId) {
+    private List<JSONObject> getFollows(String userId, String type) {
         try {
+            // Validate the type parameter
+            if (!"followers".equalsIgnoreCase(type) && !"followings".equalsIgnoreCase(type)) {
+                throw new IllegalArgumentException("Invalid type. Must be 'followers' or 'followings'.");
+            }
+
             // Construct the URL with query parameters for userId and type
             String urlString = String.format("http://localhost:8000/follow?userId=%s&type=%s",
-                    URLEncoder.encode(userId, "UTF-8"), URLEncoder.encode("followers", "UTF-8"));
+                    URLEncoder.encode(userId, "UTF-8"), URLEncoder.encode(type, "UTF-8"));
             URL url = new URL(urlString);
 
             // Open connection
@@ -274,18 +292,18 @@ public class myNetworkController {
 
                     // Parse the response JSON
                     JSONArray jsonResponse = new JSONArray(response.toString());
-                    System.out.println("Followers JSON response: " + jsonResponse.toString());
+                    System.out.println(type + " JSON response: " + jsonResponse.toString());
 
-                    // Extract only the "follower" field from each object in the array
-                    List<JSONObject> followersList = new ArrayList<>();
+                    // Extract the relevant field from each object in the array
+                    List<JSONObject> followsList = new ArrayList<>();
                     for (int i = 0; i < jsonResponse.length(); i++) {
                         JSONObject followObj = jsonResponse.getJSONObject(i);
-                        String followerEmail = followObj.getString("follower");
-                        JSONObject followerJson = new JSONObject();
-                        followerJson.put("follower", followerEmail);
-                        followersList.add(followerJson);
+                        String followEmail = followObj.getString(type.equals("followers") ? "follower" : "following");
+                        JSONObject followJson = new JSONObject();
+                        followJson.put(type.equals("followers") ? "follower" : "following", followEmail);
+                        followsList.add(followJson);
                     }
-                    return followersList;
+                    return followsList;
                 }
             } else {
                 System.err.println("GET request failed. Response Code: " + responseCode);
@@ -297,6 +315,7 @@ public class myNetworkController {
         }
         return null;
     }
+
 
     private void displaySearchResultsForFollow(List<JSONObject> results) {
         networkList.getChildren().clear();
