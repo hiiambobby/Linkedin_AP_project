@@ -30,7 +30,7 @@
                         <Image url="@../icons/icons8-happy-cloud-48.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="pmId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="50.0">
+                  <ImageView fx:id="pmId" accessibleRole="BUTTON" accessibleText="messageId" onMouseClicked="#openMessage" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="50.0">
                      <image>
                         <Image url="@../icons/icons8-top-view-bird-48.png" />
                      </image>

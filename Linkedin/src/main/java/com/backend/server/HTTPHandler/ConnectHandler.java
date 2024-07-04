@@ -116,12 +116,18 @@ public class ConnectHandler implements HttpHandler {
     private String handleGetRequest(HttpExchange exchange) throws IOException, SQLException {
         String query = exchange.getRequestURI().getQuery();
         String user = getQueryParam(query, "user");
-
+        String connected = getQueryParam(query, "connected");
+        List<Connect> connections = null;
         if (user == null) {
             throw new IllegalArgumentException("User parameter is missing");
         }
-
-        List<Connect> connections = connectController.getConnections(user);
+        //i want to get all the people that are connected
+        if(connected != null) {
+        connections = connectController.getConnected(user);
+        }
+        else {
+          connections = connectController.getConnections(user);
+        }
         return objectMapper.writeValueAsString(connections);
     }
 

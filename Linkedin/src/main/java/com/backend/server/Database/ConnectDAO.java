@@ -97,6 +97,27 @@ public class ConnectDAO {
         }
         return connections;
     }
+    //if one of them has accepted the request
+    public List<Connect> getConnected(String user) {
+        String querySQL = "SELECT * FROM connections WHERE (receiver = ? OR Sender = ?) AND accepted = true";
+        List<Connect> connections = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(querySQL)) {
+            stmt.setString(1, user);
+            //      stmt.setString(2, user);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                connections.add(new Connect(
+                        rs.getString("sender"),
+                        rs.getString("receiver"),
+                        rs.getString("notes"),
+                        rs.getBoolean("accepted")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return connections;
+    }
 
     public void deleteConnection(String sender, String receiver) {
         String deleteSQL = "DELETE FROM connections WHERE sender = ? AND receiver = ?";

@@ -23,6 +23,7 @@ public class HtppServer {
             server.createContext("/education", new EducationHandler());
             server.createContext("/connect", new ConnectHandler());
             server.createContext("/follow", new FollowHandler());
+            server.createContext("/message", new MessageHandler());
 
 
 

@@ -53,7 +53,13 @@ public class SearchBar {
     }
 
     public void profileView(MouseEvent mouseEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Profile.fxml"));
+        openNewStage("/fxml/Profile.fxml", "Profile");
+    }
+    public void openMessage(MouseEvent mouseEvent) throws IOException {
+        openNewStage("/fxml/MessagePage.fxml", "Messages");
+    }
+    private void openNewStage(String fxmlPath, String title) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
         Stage currentStage = (Stage) profileId.getScene().getWindow();
         currentStage.close();
         Stage newStage = new Stage();
@@ -61,7 +67,7 @@ public class SearchBar {
         newStage.getIcons().add(icon);
         Scene newScene = new Scene(root);
         newStage.setScene(newScene);
-        newStage.setTitle("profile");
+        newStage.setTitle(title);
         newStage.initStyle(StageStyle.DECORATED);
         newStage.show();
     }
@@ -229,4 +235,6 @@ public class SearchBar {
         newStage.initStyle(StageStyle.DECORATED);
         newStage.show();
     }
+
+
 }

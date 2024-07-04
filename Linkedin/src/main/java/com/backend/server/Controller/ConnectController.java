@@ -58,4 +58,7 @@ public class ConnectController {
     }
 
 
+    public List<Connect> getConnected(String user) {
+        return connectDAO.getConnected(user);
+    }
 }

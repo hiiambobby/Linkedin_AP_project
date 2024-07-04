@@ -94,6 +94,10 @@ public class myNetworkController {
     public void profileView(MouseEvent mouseEvent) throws IOException {
         openNewStage("/fxml/Profile.fxml", "Profile");
     }
+    @FXML
+    public void openNetwork(MouseEvent mouseEvent) throws IOException {
+        openNewStage("/fxml/MessagePage.fxml", "Messages");
+    }
 
     private void openNewStage(String fxmlPath, String title) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
@@ -324,5 +328,6 @@ public class myNetworkController {
             networkList.getChildren().add(profileView);
         }
     }
+
 
 }
