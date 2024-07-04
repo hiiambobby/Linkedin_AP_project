@@ -15,10 +15,6 @@ import org.json.JSONObject;
 
 public class ProfileViewComponent extends VBox {
 
-    private ImageView profilePicture;
-    private Label nameLabel;
-    private Label headerTitleLabel;
-
     public ProfileViewComponent(JSONObject profileData, String profilePictureUrl, String name, String headerTitle) {
         // Set default profile picture URL if the provided URL is null or empty
         if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
@@ -26,15 +22,15 @@ public class ProfileViewComponent extends VBox {
         }
 
         // Initialize and configure the UI components
-        profilePicture = new ImageView(new Image(profilePictureUrl));
+        ImageView profilePicture = new ImageView(new Image(profilePictureUrl));
         profilePicture.setFitHeight(50);
         profilePicture.setFitWidth(50);
         profilePicture.setPreserveRatio(true);
 
-        nameLabel = new Label(name);
+        Label nameLabel = new Label(name);
         nameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-        headerTitleLabel = new Label(headerTitle);
+        Label headerTitleLabel = new Label(headerTitle);
         headerTitleLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: gray;");
 
         // Create a layout for the profile view
