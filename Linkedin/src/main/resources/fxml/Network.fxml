@@ -42,19 +42,19 @@
                   </ImageView>
                </children>
             </HBox>
-            <HBox prefHeight="32.0" prefWidth="702.0" translateY="20.0">
+            <HBox alignment="CENTER" prefHeight="32.0" prefWidth="702.0" translateY="20.0">
                <children>
-                  <Button fx:id="reqBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showRequests" prefHeight="26.0" prefWidth="159.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Requests" textFill="#fffcfc" translateX="90.0">
+                  <Button fx:id="reqBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showRequests" prefHeight="26.0" prefWidth="159.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Requests" textFill="#fffcfc">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="followerBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showFollowers" prefHeight="26.0" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Followers" textFill="WHITE" translateX="90.0">
+                  <Button fx:id="followerBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showFollowers" prefHeight="26.0" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Followers" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="followingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showFollowings" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Following" textFill="WHITE" translateX="90.0">
+                  <Button fx:id="followingBtn" alignment="CENTER" mnemonicParsing="false" onAction="#showFollowings" prefWidth="193.0" style="-fx-background-color: #2196f3; -fx-background-radius: 7;" text="Following" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>

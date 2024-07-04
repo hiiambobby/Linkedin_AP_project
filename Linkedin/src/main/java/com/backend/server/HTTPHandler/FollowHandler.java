@@ -1,15 +1,12 @@
 package com.backend.server.HTTPHandler;
 
 import com.backend.server.Controller.FollowController;
-import com.backend.server.Model.Follow;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
+
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -42,13 +39,13 @@ public class FollowHandler implements HttpHandler {
 
         exchange.getResponseHeaders().set("Content-Type", "application/json");
         exchange.sendResponseHeaders(statusCode, response.getBytes().length);
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes());
+        }
     }
 
     private void handlePostRequest(HttpExchange exchange) throws IOException, SQLException {
-        String jsonInput = new String(exchange.getRequestBody().readAllBytes());
+        String jsonInput = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         followController.createFollow(jsonInput);
     }
 

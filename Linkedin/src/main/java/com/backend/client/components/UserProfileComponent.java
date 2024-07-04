@@ -2,6 +2,8 @@ package com.backend.client.components;
 
 import com.backend.client.controllers.TokenManager;
 import com.backend.client.controllers.setAlert;
+import com.backend.server.Model.Follow;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,14 +18,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicReference;
-
+import java.net.URLEncoder;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class UserProfileComponent extends VBox {
 
@@ -35,8 +42,15 @@ public class UserProfileComponent extends VBox {
     private Button connectButton;
     private Button followButton;
   //  private Label noteLabel;
+  private JSONObject info;
+    private String profileEmail;
 
     public UserProfileComponent(JSONObject info,String profilePictureUrl, String backgroundPictureUrl, String name, String additionalName, String lastName) {
+
+        this.info = info;
+        this.profileEmail = info.optString("userId", "");
+        System.out.println(profileEmail);
+
         // Set default profile picture URL if the provided URL is null or empty
         if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
             profilePictureUrl = "/icons/icons8-male-user-48.png"; // Default image path
@@ -83,26 +97,101 @@ public class UserProfileComponent extends VBox {
         this.setPrefWidth(400);
 
         connectButton.setOnAction(event -> handleConnect(name,info));
-        followButton.setOnAction(event -> handleFollow());
+        followButton.setOnAction(event -> handleFollow(info));
+
+
+        //change the button if following
+        updateFollowButton();
     }
 
-    private void handleFollow() {
-        boolean connected = true;
-        if (connected) {
-            updateFollowButton();
+    private void handleFollow(JSONObject info) {
+        updateFollowButton();
+         follow(info);
+    }
+
+    public String readEmail() {
+        String filePath = "userdata.txt"; // Path to your JSON file
+        try {
+            String jsonString = readJsonFile(filePath);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            return jsonObject.optString("email", "Unknown");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String readJsonFile(String filePath) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(filePath)));
+    }
+
+
+    private void follow(JSONObject info) {
+        HttpURLConnection connection = null;
+        try {
+            // Create a Follow object from the provided JSON info
+            Follow follow = new Follow(readEmail(), profileEmail);
+            System.out.println("Following: " + profileEmail);
+
+            // Convert the Follow object to a JSON string
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonInputString = objectMapper.writeValueAsString(follow);
+
+            // Define the URL for the POST request
+            URL url = new URL("http://localhost:8000/follow"); // Replace with your actual URL
+
+            // Open the connection
+            connection = (HttpURLConnection) url.openConnection();
+
+            // Set the request method to POST
+            connection.setRequestMethod("POST");
+
+            // Set request headers
+            connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setDoOutput(true); // Enable input/output streams
+
+            // Write the JSON data to the output stream
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+
+            // Check if the response code is HTTP_OK (200)
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Optional: Read the response if needed
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+                    System.out.println("Response: " + response.toString());
+                }
+            } else {
+                // Print error message
+                System.err.println("POST request failed. Response Code: " + responseCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Print exception details
+        } finally {
+            if (connection != null) {
+                connection.disconnect(); // Ensure the connection is disconnected
+            }
         }
     }
 
-    public String findEmail(JSONObject profileData)
-    {
-        return profileData.optString("userId", "");
+    public void setOnConnectAction(EventHandler<ActionEvent> event) {
+        connectButton.setOnAction(event);
     }
 
-    private void updateFollowButton() {
-        followButton.setText("Following");
-        followButton.setDisable(true);
-        followButton.setStyle("-fx-background-color: lightgreen;");
+    public void setOnFollowAction(EventHandler<ActionEvent> event) {
+        followButton.setOnAction(event);
     }
+
 
     //send connect request
     private void handleConnect(String name,JSONObject profileJSON) {
@@ -168,9 +257,8 @@ public class UserProfileComponent extends VBox {
     private JSONObject getJsonObject(JSONObject profileJSON) {
     String note = openNotePopup(nameLabel.getText());
         JSONObject jsonObject = new JSONObject();
-        String email = findEmail(profileJSON);
         try {
-            jsonObject.put("receiver",email);
+            jsonObject.put("receiver",profileEmail);
             jsonObject.put("notes", note);
             jsonObject.put("accepted",false); // Corrected to match expected retrieval type
 
@@ -180,15 +268,6 @@ public class UserProfileComponent extends VBox {
         return jsonObject;
     }
 
-
-    // Add event handlers for the buttons if needed
-    public void setOnConnectAction(EventHandler<ActionEvent> event) {
-        connectButton.setOnAction(event);
-    }
-
-    public void setOnFollowAction(EventHandler<ActionEvent> event) {
-        followButton.setOnAction(event);
-    }
 
     public void updateConnectButton() {
         connectButton.setText("Pending");
@@ -222,4 +301,75 @@ public class UserProfileComponent extends VBox {
         popupStage.showAndWait();
         return note.get();
     }
+
+
+    private void updateFollowButton() {
+        boolean following = isFollowing(readEmail(),"followings");
+        if (following) {
+            followButton.setText("Following");
+            followButton.setStyle("-fx-background-color: grey;"); // Example styling
+            followButton.setDisable(true); // Optionally disable the button if following
+        } else {
+            followButton.setText("Follow");
+            followButton.setStyle("-fx-background-color: lightgreen;"); // Example styling
+            followButton.setDisable(false); // Enable the button if not following
+        }
+    }
+
+    private boolean isFollowing(String userId,String type) {
+        try {
+            // Construct the URL with query parameters for userId and type
+            String urlString = String.format("http://localhost:8000/follow?userId=%s&type=%s",
+                    URLEncoder.encode(userId, "UTF-8"), URLEncoder.encode(type, "UTF-8"));
+            URL url = new URL(urlString);
+
+            // Open connection
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Read response
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+
+                    // Parse the response JSON
+                    JSONArray jsonArray = new JSONArray(response.toString());
+
+                    // Check if the profileId is in the list based on the type
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        if ("followers".equalsIgnoreCase(type)) {
+                            if (jsonObject.getString("follower").equals(profileEmail)) {
+                                return true;
+                            }
+                        } else if ("followings".equalsIgnoreCase(type)) {
+                            if (jsonObject.getString("following").equals(profileEmail)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            } else {
+                System.err.println("GET request failed. Response Code: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public String findEmail()
+    {
+       return info.optString("userId","");
+
+    }
+
 }

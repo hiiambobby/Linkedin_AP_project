@@ -3,48 +3,45 @@ package com.backend.server.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Follow {
-@JsonProperty("follower")
+    @JsonProperty("follower")
     private String follower;
-@JsonProperty("following")
+
+    @JsonProperty("following")
     private String following;
 
-//empty constructor
-    public Follow()
-    {
-
+    // Default constructor
+    public Follow() {
     }
 
-    public Follow(String follower,String following)
-    {
+    // Parameterized constructor
+    public Follow(String follower, String following) {
         this.follower = follower;
         this.following = following;
     }
 
-    public void setFollowing(String following) {
-        this.following = following;
-    }
-
-    public String getFollowed() {
-        return following;
-    }
-
-    public String getFollowing() {
-        return following;
+    // Getter and Setter for follower
+    public String getFollower() {
+        return follower;
     }
 
     public void setFollower(String follower) {
         this.follower = follower;
     }
 
-    public String getFollower() {
-        return follower;
+    // Getter and Setter for following
+    public String getFollowing() {
+        return following;
     }
+
+    public void setFollowing(String following) {
+        this.following = following;
+    }
+
+    @Override
     public String toString() {
         return "Follow{" +
-                ", follower='" + follower + '\'' +
+                "follower='" + follower + '\'' +
                 ", following='" + following + '\'' +
                 '}';
     }
 }
-
-
