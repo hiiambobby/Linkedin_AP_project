@@ -15,7 +15,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="blue-panel" stylesheets="@/Style.css" xmlns:fa="http://www.jensd.de/fontawesomefx">
@@ -56,7 +55,7 @@
                                     <Image url="@../icons/icons8-happy-cloud-48.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="22.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#openMessages">
+                              <ImageView fitHeight="22.0" fitWidth="25.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../icons/icons8-top-view-bird-48.png" />
                                  </image>
@@ -80,18 +79,19 @@
                         </ScrollPane>
                         <VBox alignment="TOP_CENTER" prefHeight="310.0" prefWidth="104.0" spacing="5.0">
                            <children>
-                                      <Button fx:id="primaryInfoBtn" mnemonicParsing="false" onAction="#PrimaryInfo" text="Primary Info">
+                                      <Button fx:id="primaryInfoBtn" mnemonicParsing="false" onAction="#PrimaryInfo" prefWidth="94.0" text="Primary Info">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Button>
-                                      <Button fx:id="contactInfoBtn" mnemonicParsing="false" onAction="#ContactInfo" text="Contact Info" textFill="#1cabcf">
+                                      <Button fx:id="contactInfoBtn" mnemonicParsing="false" onAction="#ContactInfo" prefHeight="26.0" prefWidth="94.0" text="Contact Info" textFill="#1cabcf">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Button>
-                              <Button fx:id="addEducationBtn" mnemonicParsing="false" onAction="#addEducation" prefHeight="26.0" prefWidth="77.0" text="+" />
-                                    <Button fx:id="logOut" alignment="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="25.6" prefWidth="73.0" text="Log Out">
+                              <Button fx:id="addEducationBtn" mnemonicParsing="false" onAction="#addEducation" prefHeight="26.0" prefWidth="94.0" text="Add Education" />
+                              <Button mnemonicParsing="false" onAction="#addPost" prefWidth="94.0" text="Add Post" />
+                                    <Button fx:id="logOut" alignment="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="25.6" prefWidth="94.0" text="Log Out">
                                         <font>
                                             <Font size="10.0" />
                                         </font>

@@ -174,7 +174,7 @@ public class ProfileController implements Initializable {
     }
 
     public void PrimaryInfo(ActionEvent event) throws IOException {
-        // Load the FXML for the Contact Info scene
+        // Load the FXML for the Primary Info scene
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PrimaryInfo.fxml"));
         Parent root = loader.load();
         Stage popupStage = new Stage();
@@ -197,6 +197,16 @@ public class ProfileController implements Initializable {
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.show();
 
+    }
+    @FXML
+    void addPost(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/newPost.fxml"));
+        Parent root = loader.load();
+        Stage popupStage = new Stage();
+        popupStage.setScene(new Scene(root));
+        popupStage.setTitle("New Post");
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.show();
     }
 
     public void logOut(ActionEvent event) throws IOException {
