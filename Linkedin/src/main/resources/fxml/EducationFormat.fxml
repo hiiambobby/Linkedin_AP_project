@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="440.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.EducationFormatController">
+   <children>
+      <Label text="Education">
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
+      <Separator prefWidth="200.0" />
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="School:" />
+            <Label fx:id="schoolLabel" text="Empty" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Degree:" />
+            <Label fx:id="degreeLabel" text="Empty" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Field of study:" />
+            <Label fx:id="studyFieldLabel" text="Empty" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Started at:" />
+            <Label fx:id="startMonthLabel" text="month" />
+            <Label fx:id="startYearLabel" text="year" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Ended at:" />
+            <Label fx:id="endMonthLabel" text="month" />
+            <Label fx:id="endYearLabel" text="year" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Activities:" />
+            <Label fx:id="activityLabel" text="Empty" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Description:" />
+            <Label fx:id="descriptionLabel" text="Empty" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="Skills:" />
+            <Label fx:id="skillsLabel" text="Empty" />
+         </children>
+         <opaqueInsets>
+            <Insets left="5.0" right="5.0" />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" right="5.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" top="5.0" />
+   </padding>
+</VBox>
