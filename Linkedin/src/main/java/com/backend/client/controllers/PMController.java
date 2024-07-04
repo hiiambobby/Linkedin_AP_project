@@ -176,23 +176,36 @@ public class PMController {
     }
 
     @FXML
-    private void  handleFile() {
-        // Open file chooser for files (videos, documents, etc.)
+    private void handleFile() {
+        // Open file chooser for text files only
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select File");
+        fileChooser.setTitle("Select Text File");
 
-        // Add file filters for all files
+        // Add file filter for text files only
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("All Files", "*.*")
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")
         );
 
         // Show open file dialog
         File file = fileChooser.showOpenDialog(dialogStage);
         if (file != null) {
             // Handle the selected file
-            setFileUrl(file.getAbsolutePath());
+           setFileUrl(convertToFileUrl(file.getAbsolutePath()));
+            setFileUrl(fileUrl);
+            System.out.println("File selected: " + fileUrl);
         } else {
-            System.out.println("null file");
+            System.out.println("No file selected");
+        }
+    }
+
+    private String convertToFileUrl(String path) {
+        try {
+            // Normalize and convert the path to a file URL
+            File file = new File(Paths.get(path).toAbsolutePath().normalize().toString());
+            return file.toURI().toURL().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
     }
 

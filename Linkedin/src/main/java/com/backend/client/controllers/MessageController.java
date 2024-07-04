@@ -1,5 +1,6 @@
 package com.backend.client.controllers;
 
+import com.backend.client.components.MessageComponent;
 import com.backend.client.components.ProfileViewComponent;
 import com.backend.client.components.ProfileViewPv;
 import javafx.application.Platform;
@@ -10,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +24,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -38,10 +42,13 @@ public class MessageController implements Initializable {
 
     @FXML
     private VBox viewConnections;
+    @FXML
+    private  VBox viewMessages;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         showConnections();
+        showMessages();
     }
 
     private void showConnections() {
@@ -58,8 +65,25 @@ public class MessageController implements Initializable {
                 e.printStackTrace();
             }
         }
-
-
+    private void showMessages() {
+        new Thread(() -> {
+            try {
+                List<JSONObject> messages = getMessages();
+                if (messages != null && !messages.isEmpty()) {
+                    Platform.runLater(() -> displayMessages(messages));
+                } else {
+                    Platform.runLater(() -> {
+                        viewMessages.getChildren().add(new Label("No messages found."));
+                    });
+                }
+            } catch (IOException e) {
+                Platform.runLater(() -> {
+                    new Alert(Alert.AlertType.ERROR, "An error occurred while fetching messages.").show();
+                });
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     public void profileView(MouseEvent mouseEvent) throws IOException {
         openNewStage("/fxml/Profile.fxml", "Profile");
@@ -232,6 +256,7 @@ public class MessageController implements Initializable {
         return new ProfileViewPv(email, profilePicUrl, name, headerTitle);
     }
 
+
     public String readEmail() {
         String filePath = "userdata.txt"; // Path to your JSON file
         try {
@@ -249,12 +274,84 @@ public class MessageController implements Initializable {
     }
 
 
-    //do a get request
-    public void getMessages()
-    {
+    public List<JSONObject> getMessages() throws IOException {
+        // Prepare the URL with encoded receiver email
+        String email = URLEncoder.encode(readEmail(), StandardCharsets.UTF_8.toString());
+        URL url = new URL("http://localhost:8000/message?receiver=" + email);
 
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+        List<JSONObject> messagesList = new ArrayList<>();
+
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            int responseCode = connection.getResponseCode();
+            StringBuilder response = new StringBuilder();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Read the response
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                // Convert response to JSONArray
+                JSONArray jsonArray = new JSONArray(response.toString());
+
+                // Convert each JSONObject in the JSONArray to a List
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    messagesList.add(jsonObject);
+                }
+
+            } else {
+                System.err.println("Failed to retrieve messages. Response code: " + responseCode);
+
+                // Read error response
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                StringBuilder errorResponse = new StringBuilder();
+                String errorLine;
+                while ((errorLine = reader.readLine()) != null) {
+                    errorResponse.append(errorLine);
+                }
+                System.err.println("Error response: " + errorResponse.toString());
+            }
+        } finally {
+            // Close resources
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+
+        return messagesList;
     }
+    private Node messageView(JSONObject result) {
+        String userName = result.optString("sender", "");
+        String image = result.optString("image", "");
+        String video = result.optString("video", "");
+        String text = result.optString("text", "");
+        String file = result.optString("textFile", "");
 
-
+        // Assuming MessageComponent has a constructor that matches this signature
+        return new MessageComponent("", userName, video, text, file, image);
+    }
+    private void displayMessages(List<JSONObject> results) {
+        viewMessages.getChildren().clear();
+        for (JSONObject result : results) {
+            Node messageComponent = messageView(result);
+            viewMessages.getChildren().add(messageComponent);
+        }
+    }
 
 }

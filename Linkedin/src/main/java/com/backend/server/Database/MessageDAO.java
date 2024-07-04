@@ -60,7 +60,7 @@ public class MessageDAO {
                         rs.getString("receiver"),
                         rs.getString("text"),
                         rs.getString("image"),
-                        rs.getString("file"),
+                        rs.getString("textFile"),
                         rs.getString("video")
                 ));
             }
