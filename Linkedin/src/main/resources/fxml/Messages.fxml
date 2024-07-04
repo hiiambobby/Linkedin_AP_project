@@ -24,6 +24,11 @@
             </ImageView>
             <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancel" onMouseClicked="#cancel" text="Cancel" translateX="148.0" translateY="5.0" />
             <Button fx:id="sendBtn" alignment="CENTER" mnemonicParsing="false" onAction="#send" onMouseClicked="#send" text="Send" translateX="153.0" translateY="5.0" />
+            <ImageView fx:id="videoView" fitHeight="35.0" fitWidth="38.0" onMouseClicked="#handleVideo" pickOnBounds="true" preserveRatio="true" translateX="-82.0" translateY="-1.0">
+               <image>
+                  <Image url="@../icons/icons8-video-100.png" />
+               </image>
+            </ImageView>
          </children>
       </HBox>
    </children>

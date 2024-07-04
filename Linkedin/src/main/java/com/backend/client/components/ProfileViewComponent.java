@@ -44,7 +44,7 @@ public class ProfileViewComponent extends VBox {
         // Add click event handler to show the profile page
         String finalProfilePictureUrl = profilePictureUrl;
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            showUserProfile(profileData,finalProfilePictureUrl, "img/defaultBackgroundPicture.png", name, "", "test");
+            showUserProfile(profileData, finalProfilePictureUrl, "img/defaultBackgroundPicture.png", name, "", "test");
         });
     }
 

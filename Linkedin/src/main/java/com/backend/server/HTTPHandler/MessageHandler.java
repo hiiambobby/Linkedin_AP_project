@@ -55,30 +55,31 @@ public class MessageHandler implements HttpHandler {
         }
     }
 
-    // Handles POST requests to create a new message
     private void handlePostMessage(HttpExchange exchange) throws IOException {
+        String requestBody = null;
         try (InputStream inputStream = exchange.getRequestBody()) {
-            // Log request body for debugging
-            String requestBody = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            requestBody = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             System.out.println("Request Body: " + requestBody);
 
-            // Deserialize request body to Message object
-            Message message;
-            try {
-                message = objectMapper.readValue(requestBody, Message.class);
-            } catch (InvalidDefinitionException e) {
-                // Handle specific deserialization exceptions
-                sendResponse(exchange, "Invalid Message Format", 400);
-                return;
-            }
-
+            Message message = objectMapper.readValue(requestBody, Message.class);
             messageController.createMessage(message);
             sendResponse(exchange, "Message Created", 201);
+        } catch (InvalidDefinitionException e) {
+            // Handle specific deserialization exceptions
+            System.err.println("Invalid message format: " + e.getMessage());
+            sendResponse(exchange, "Invalid Message Format", 400);
         } catch (IOException e) {
             e.printStackTrace(); // Print stack trace for debugging
+            System.err.println("Failed to read request body: " + e.getMessage());
             sendResponse(exchange, "Invalid Request Body", 400);
+        } catch (Exception e) {
+            e.printStackTrace(); // Print stack trace for debugging
+            System.err.println("Unexpected error: " + e.getMessage());
+            sendResponse(exchange, "Internal Server Error", 500);
         }
     }
+
+
 
     // Handles GET requests to retrieve messages for a specific receiver
     private void handleGetMessages(HttpExchange exchange) throws IOException, SQLException {
@@ -95,14 +96,14 @@ public class MessageHandler implements HttpHandler {
     }
 
 
-    // Sends a response back to the client
     private void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
-        byte[] responseBytes = response.getBytes(StandardCharsets.UTF_8);
-        exchange.sendResponseHeaders(statusCode, responseBytes.length);
+        exchange.sendResponseHeaders(statusCode, response.getBytes().length);
         try (OutputStream os = exchange.getResponseBody()) {
-            os.write(responseBytes);
+            os.write(response.getBytes());
         }
     }
+
+
 
     private Map<String, String> parseQuery(String query) {
         if (query == null || query.isEmpty()) {

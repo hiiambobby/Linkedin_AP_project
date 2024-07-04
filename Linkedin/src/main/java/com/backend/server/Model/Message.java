@@ -1,7 +1,6 @@
 package com.backend.server.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Optional;
 
 public class Message {
 
@@ -14,11 +13,14 @@ public class Message {
     @JsonProperty("text")
     private String text;
 
+    @JsonProperty("image")
+    private String image;
+
+    @JsonProperty("file")
+    private String File;
+
     @JsonProperty("video")
     private String video;
-
-    @JsonProperty("textFile")
-    private String textFile;
 
     // Default constructor for JSON deserialization
     public Message() {
@@ -26,12 +28,13 @@ public class Message {
     }
 
     // Constructor with all fields
-    public Message(String sender, String receiver, String text, String video, String textFile) {
+    public Message(String sender, String receiver, String text, String image, String File,String video) {
         this.sender = sender;
         this.receiver = receiver;
         this.text = text;
+        this.image = image;
+        this.File = File;
         this.video = video;
-        this.textFile = textFile;
     }
 
     // Getters and Setters
@@ -41,6 +44,14 @@ public class Message {
 
     public void setSender(String sender) {
         this.sender = sender;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     public String getReceiver() {
@@ -59,20 +70,20 @@ public class Message {
         this.text = text;
     }
 
-    public String getVideo() {
-        return video;
+    public String getImage() {
+        return image;
     }
 
-    public void setVideo(String video) {
-        this.video = video;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getTextFile() {
-        return textFile;
+    public String getFile() {
+        return File;
     }
 
-    public void setTextFile(String textFile) {
-        this.textFile = textFile;
+    public void setFile(String file) {
+        this.File = file;
     }
 
     @Override
@@ -81,8 +92,9 @@ public class Message {
                 "sender='" + sender + '\'' +
                 ", receiver='" + receiver + '\'' +
                 ", text='" + text + '\'' +
+                ", image='" + image + '\'' +
+                ", file='" + File + '\'' +
                 ", video='" + video + '\'' +
-                ", textFile='" + textFile + '\'' +
                 '}';
     }
 }

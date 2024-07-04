@@ -17,8 +17,10 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 
 public class ProfileViewPv extends VBox{
+    private static String profileEmail;
 
-    public ProfileViewPv(JSONObject profileData, String profilePictureUrl, String name, String headerTitle) {
+    public ProfileViewPv(String profileEmail, String profilePictureUrl, String name, String headerTitle) {
+        this.profileEmail = profileEmail;
         // Set default profile picture URL if the provided URL is null or empty
         if (profilePictureUrl == null || profilePictureUrl.isEmpty()) {
             profilePictureUrl = "/icons/icons8-male-user-48.png"; // Default image path
@@ -47,11 +49,11 @@ public class ProfileViewPv extends VBox{
         // Add click event handler to show the profile page
         String finalProfilePictureUrl = profilePictureUrl;
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            showMessagePopup(profileData);
+            showMessagePopup();
         });
     }
 
-    private void showMessagePopup(JSONObject profileData) {
+    private void showMessagePopup() {
         //show the message box
         try {
             // Load the FXML file
@@ -60,8 +62,7 @@ public class ProfileViewPv extends VBox{
 
             // Get the controller and set the message
             PMController controller = loader.getController();
-            String message = profileData.optString("message", "No message provided"); // Adjust based on your JSON structure
-            controller.setMessage(message);
+
 
             // Create and configure the stage
             Stage dialogStage = new Stage();
@@ -72,7 +73,6 @@ public class ProfileViewPv extends VBox{
             // Pass the stage to the controller
             controller.setDialogStage(dialogStage);
 
-            // Show the dialog
             dialogStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +81,10 @@ public class ProfileViewPv extends VBox{
         }
     }
 
+    public static String getProfileEmail() {
+        return profileEmail;
     }
+}
 
 
 

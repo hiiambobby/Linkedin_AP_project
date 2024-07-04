@@ -219,13 +219,18 @@ public class MessageController implements Initializable {
     }
 
     private Node connectListView(JSONObject result) {
-
         String profilePicUrl = result.optString("profilePic", "/icons/icons8-male-user-48.png");
         String name = result.optString("firstName", "") + " " + result.optString("lastName", "");
         String headerTitle = result.optString("headTitle", "");
-        return new ProfileViewPv(result,profilePicUrl, name, headerTitle);
-    }
+        String email = result.optString("userId", "");
 
+        // Do not return yourself
+        if (email.equals(readEmail())) {
+            return new VBox(); // Return an empty VBox as a placeholder
+        }
+
+        return new ProfileViewPv(email, profilePicUrl, name, headerTitle);
+    }
 
     public String readEmail() {
         String filePath = "userdata.txt"; // Path to your JSON file
@@ -242,6 +247,14 @@ public class MessageController implements Initializable {
     public String readJsonFile(String filePath) throws IOException {
         return new String(Files.readAllBytes(Paths.get(filePath)));
     }
+
+
+    //do a get request
+    public void getMessages()
+    {
+
+    }
+
 
 
 }
