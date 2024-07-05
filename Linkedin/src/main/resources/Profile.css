@@ -1,0 +1,5 @@
+#profilePic {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-clip: null; /* Make sure clipping is handled in Java code */
+}

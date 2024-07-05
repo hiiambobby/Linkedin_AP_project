@@ -54,6 +54,7 @@ public class SignInController {
 
             // Load the new FXML file and get the controller
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml")); // Adjust path as needed
+
             Parent root = null;
             try {
                 root = loader.load();
