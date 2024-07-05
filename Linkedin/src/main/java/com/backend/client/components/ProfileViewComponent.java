@@ -14,6 +14,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 public class ProfileViewComponent extends VBox {
 
     public ProfileViewComponent(JSONObject profileData, String profilePictureUrl, String name, String headerTitle) {
@@ -46,12 +48,16 @@ public class ProfileViewComponent extends VBox {
         // Add click event handler to show the profile page
         String finalProfilePictureUrl = profilePictureUrl;
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            showUserProfile(profileData, finalProfilePictureUrl, "img/defaultBackgroundPicture.png", name, "", "test");
+            try {
+                showUserProfile(profileData, finalProfilePictureUrl, "img/defaultBackgroundPicture.png", name, "", "test");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
     private void showUserProfile(JSONObject info,String profilePictureUrl, String backgroundPictureUrl
-            , String name, String additionalName, String lastName) {
+            , String name, String additionalName, String lastName) throws IOException {
         UserProfileComponent userProfileComponent = new UserProfileComponent(info,profilePictureUrl, backgroundPictureUrl, name, additionalName, lastName);
 
         Stage profileStage = new Stage();

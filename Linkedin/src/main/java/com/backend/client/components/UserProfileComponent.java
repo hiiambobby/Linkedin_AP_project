@@ -1,6 +1,7 @@
 package com.backend.client.components;
 
 import com.backend.client.controllers.TokenManager;
+import com.backend.client.controllers.infoControl;
 import com.backend.client.controllers.setAlert;
 import com.backend.server.Model.Follow;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +51,7 @@ public class UserProfileComponent extends VBox {
   private JSONObject info;
     private static String profileEmail;
 
-    public UserProfileComponent(JSONObject info,String profilePictureUrl, String backgroundPictureUrl, String name, String additionalName, String lastName) {
+    public UserProfileComponent(JSONObject info,String profilePictureUrl, String backgroundPictureUrl, String name, String additionalName, String lastName) throws IOException {
 
         this.info = info;
         this.profileEmail = info.optString("userId", "");
@@ -85,8 +86,19 @@ public class UserProfileComponent extends VBox {
 
         lastNameLabel = new Label(lastName);
         lastNameLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: gray;");
+        if(infoControl.isUserConnected(profileEmail))
+        {
+            connectButton = new Button("Connected");
+            connectButton.setDisable(true);
 
-        connectButton = new Button("Connect");
+        }
+        else if(co)
+        {
+            updateConnectButton();
+        }
+        else {
+            connectButton = new Button("Connect");
+        }
         followButton = new Button("Follow");
 
 
@@ -113,7 +125,13 @@ public class UserProfileComponent extends VBox {
         this.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: lightgray; -fx-border-width: 1;");
         this.setPrefWidth(400);
 
-        connectButton.setOnAction(event -> handleConnect(name,info));
+        connectButton.setOnAction(event -> {
+            try {
+                handleConnect(name,info);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         followButton.setOnAction(event -> handleFollow(info));
 
 
@@ -214,7 +232,7 @@ public class UserProfileComponent extends VBox {
 
 
     //send connect request
-    private void handleConnect(String name,JSONObject profileJSON) {
+    private void handleConnect(String name,JSONObject profileJSON) throws IOException {
         boolean connected = sendConnectReq(profileJSON);
         if (connected) {
             updateConnectButton();
@@ -289,11 +307,6 @@ public class UserProfileComponent extends VBox {
     }
 
 
-    public void updateConnectButton() {
-        connectButton.setText("Pending");
-        connectButton.setDisable(true);
-        connectButton.setStyle("-fx-background-color: gray;");
-    }
     private String openNotePopup(String fullName) {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -320,6 +333,13 @@ public class UserProfileComponent extends VBox {
         popupStage.setScene(scene);
         popupStage.showAndWait();
         return note.get();
+    }
+
+    public void updateConnectButton() throws IOException {
+
+        connectButton.setText("Pending");
+        connectButton.setDisable(true);
+        connectButton.setStyle("-fx-background-color: gray;");
     }
 
 

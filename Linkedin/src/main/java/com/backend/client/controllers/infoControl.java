@@ -110,7 +110,7 @@ public class infoControl {
         dayId.setEditable(false);
     }
 
-    public List<JSONObject> findConnections() throws IOException {
+    public static List<JSONObject> findConnections() throws IOException {
         System.out.println("Starting findConnections method");
 
         String urlString = String.format("http://localhost:8000/connect?user=%s&connected=%s",
@@ -168,7 +168,7 @@ public class infoControl {
     }
 
     // Method to check if a specific userId is in the connections
-    public boolean isUserConnected(String userId) throws IOException {
+    public static boolean isUserConnected(String userId) throws IOException {
         List<JSONObject> connections = findConnections();
         if (connections != null) {
             for (JSONObject connection : connections) {
