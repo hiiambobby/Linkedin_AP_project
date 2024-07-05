@@ -17,6 +17,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EducationController {
@@ -83,7 +85,7 @@ public class EducationController {
         stage.close();
 
         // add education to profile
-        /*String school = schoolField.getText();
+        String school = schoolField.getText();
         String degree = degreeField.getText();
         String field = fieldOfStudyField.getText();
         String startMonth = startDateMonthCombo.getValue();
@@ -93,12 +95,26 @@ public class EducationController {
         String activities = activitiesField.getText();
         String description = descriptionField.getText();
 
+        // Collecting skills
+        List<String> skills = new ArrayList<>();
+        for (Node node : skillsVBox.getChildren()) {
+            if (node instanceof HBox) {
+                HBox hbox = (HBox) node;
+                for (Node child : hbox.getChildren()) {
+                    if (child instanceof TextField) {
+                        TextField skillField = (TextField) child;
+                        skills.add(skillField.getText());
+                    }
+                }
+            }
+        }
+
         ProfileController profileController = ControllerManager.getProfileController();
         if (profileController != null) {
-            profileController.addEducationProfile(school, degree, field,startMonth, startYear, endMonth,endYear,activities,description);
+            profileController.addEducationProfile(school, degree, field, startMonth, startYear, endMonth, endYear, activities, description, skills);
         } else {
             System.out.println("ProfileController reference is null");
-        }*/
+        }
     }
     @FXML
     public void initialize() {
@@ -382,7 +398,7 @@ public class EducationController {
                         System.out.println(line);
                     }
                 }
-                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to save Education info. Response code: " + responseCode);
+                setAlert.showAlert(Alert.AlertType.INFORMATION, "Error", "At least enter the school name! ");
             }
         } catch (IOException e) {
             e.printStackTrace();

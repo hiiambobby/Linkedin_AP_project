@@ -2,6 +2,10 @@ package com.backend.client.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+
+import java.util.List;
+
 public class EducationFormatController {
     @FXML
     private Label activityLabel;
@@ -22,7 +26,7 @@ public class EducationFormatController {
     private Label schoolLabel;
 
     @FXML
-    private Label skillsLabel;
+    private TextArea skillsLabel;
 
     @FXML
     private Label startMonthLabel;
@@ -34,7 +38,7 @@ public class EducationFormatController {
     private Label studyFieldLabel;
 
     public void setEducationDetails(String school, String degree, String field, String startMonth, Integer startYear,
-                                    String endMonth, Integer endYear, String activities,String description) {
+                                    String endMonth, Integer endYear, String activities, String description, List<String> skills) {
         schoolLabel.setText(school);
         degreeLabel.setText(degree);
         studyFieldLabel.setText(field);
@@ -43,6 +47,14 @@ public class EducationFormatController {
         endMonthLabel.setText(endMonth);
         endYearLabel.setText(endYear.toString());
         activityLabel.setText(activities);
-        descriptionLabel.setText(description);
+        degreeLabel.setText(description);
+        // Concatenate skills into a single string
+        StringBuilder skillsText = new StringBuilder();
+        for (String skill : skills) {
+            skillsText.append(skill).append("\n");
+        }
+
+        // Set the concatenated string to the skillsTextArea
+        skillsLabel.setText(skillsText.toString());
     }
 }

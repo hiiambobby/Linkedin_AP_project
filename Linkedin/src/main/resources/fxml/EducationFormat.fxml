@@ -3,21 +3,28 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="440.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.EducationFormatController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="440.0" spacing="10.0" style="-fx-background-color: lightgray;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.EducationFormatController">
    <children>
-      <Label text="Education">
+      <Label style="-fx-background-color: cyan; -fx-background-radius: 10;" text="Education" textFill="#a19797">
          <padding>
             <Insets left="5.0" />
          </padding>
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
       </Label>
       <Separator prefWidth="200.0" />
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="School:" />
+            <Label text="School:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <Label fx:id="schoolLabel" text="Empty" />
          </children>
          <opaqueInsets>
@@ -29,7 +36,10 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Degree:" />
+            <Label text="Degree:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <Label fx:id="degreeLabel" text="Empty" />
          </children>
          <opaqueInsets>
@@ -41,8 +51,11 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Field of study:" />
-            <Label fx:id="studyFieldLabel" text="Empty" />
+            <Label text="Field of study:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="studyFieldLabel" prefHeight="18.0" prefWidth="327.0" text="Empty" />
          </children>
          <opaqueInsets>
             <Insets left="5.0" right="5.0" />
@@ -53,7 +66,10 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Started at:" />
+            <Label text="Started at:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <Label fx:id="startMonthLabel" text="month" />
             <Label fx:id="startYearLabel" text="year" />
          </children>
@@ -66,7 +82,10 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Ended at:" />
+            <Label text="Ended at:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <Label fx:id="endMonthLabel" text="month" />
             <Label fx:id="endYearLabel" text="year" />
          </children>
@@ -79,8 +98,11 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Activities:" />
-            <Label fx:id="activityLabel" text="Empty" />
+            <Label text="Activities:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="activityLabel" prefHeight="18.0" prefWidth="359.0" text="Empty" />
          </children>
          <opaqueInsets>
             <Insets left="5.0" right="5.0" />
@@ -91,7 +113,10 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Description:" />
+            <Label text="Description:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <Label fx:id="descriptionLabel" text="Empty" />
          </children>
          <opaqueInsets>
@@ -103,8 +128,11 @@
       </HBox>
       <HBox prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Skills:" />
-            <Label fx:id="skillsLabel" text="Empty" />
+            <Label text="Skills:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <TextArea fx:id="skillsLabel" prefHeight="0.0" prefWidth="239.0" />
          </children>
          <opaqueInsets>
             <Insets left="5.0" right="5.0" />

@@ -30,6 +30,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
@@ -52,22 +53,22 @@ public class ProfileController implements Initializable {
     private VBox educationVBox;
 
     // add education to profile
-    /*public void addEducationProfile(String school, String degree, String field, String startMonth, Integer startYear,
-                                    String endMonth, Integer endYear, String activities,String description) {
+    public void addEducationProfile(String school, String degree, String field, String startMonth, Integer startYear,
+                                    String endMonth, Integer endYear, String activities,String description, List<String> skills) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EducationFormat.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EducationFormat.fxml"));
             VBox educationComponent = loader.load();
 
             // Access the controller of EducationComponent to set data
             EducationFormatController controller = loader.getController();
-            controller.setEducationDetails(school, degree, field,startMonth, startYear, endMonth,endYear,activities,description);
+            controller.setEducationDetails(school, degree, field,startMonth, startYear, endMonth,endYear,activities,description,skills);
 
             // Add the component to the VBox
             educationVBox.getChildren().add(educationComponent);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -261,7 +262,7 @@ public class ProfileController implements Initializable {
     }
     private Image loadProfile(String url) {
         if (url == null || url.isEmpty()) {
-            return new Image("/img/emptyProfilePic.jpg");
+            return new Image("/icons/icons8-male-user-48.png");
             // Use default image if URL is null or empty
         }
         try {
@@ -270,7 +271,7 @@ public class ProfileController implements Initializable {
             return new Image(url);
         } catch (Exception e) {
             // If an exception occurs (e.g., invalid URL), return the default image
-            new Image("/img/emptyProfilePic.jpg");
+            new Image("/icons/icons8-male-user-48.png");
         }
         return null;
     }
