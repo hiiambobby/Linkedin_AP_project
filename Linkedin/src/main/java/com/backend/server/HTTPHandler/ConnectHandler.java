@@ -122,12 +122,14 @@ public class ConnectHandler implements HttpHandler {
             throw new IllegalArgumentException("User parameter is missing");
         }
         //i want to get all the people that are connected
-        if(connected.equals("type")) {
+        if(connected == null)
+        {
+            connections = connectController.getConnections(user);
+        }
+        else if(connected.equals("type")) {
              connections = connectController.getConnected(user);
         }
-        else {
-          connections = connectController.getConnections(user);
-        }
+
         return objectMapper.writeValueAsString(connections);
 
     }

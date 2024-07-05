@@ -1,6 +1,7 @@
 package com.backend.client.components;
 
 import com.backend.client.controllers.TokenManager;
+import com.backend.client.controllers.UserEmail;
 import com.backend.client.controllers.infoControl;
 import com.backend.client.controllers.setAlert;
 import com.backend.server.Model.Follow;
@@ -31,6 +32,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.net.URLEncoder;
 import java.io.BufferedReader;
@@ -92,9 +95,11 @@ public class UserProfileComponent extends VBox {
             connectButton.setDisable(true);
 
         }
-        else if(co)
+        else if(isUserInConnectRequests(UserEmail.readEmail()))
         {
+            connectButton = new Button("Pending");
             updateConnectButton();
+            connectButton.setDisable(true);
         }
         else {
             connectButton = new Button("Connect");
@@ -144,28 +149,13 @@ public class UserProfileComponent extends VBox {
          follow(info);
     }
 
-    public String readEmail() {
-        String filePath = "userdata.txt"; // Path to your JSON file
-        try {
-            String jsonString = readJsonFile(filePath);
-            JSONObject jsonObject = new JSONObject(jsonString);
-            return jsonObject.optString("email", "Unknown");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String readJsonFile(String filePath) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filePath)));
-    }
 
 
     private void follow(JSONObject info) {
         HttpURLConnection connection = null;
         try {
             // Create a Follow object from the provided JSON info
-            Follow follow = new Follow(readEmail(), profileEmail);
+            Follow follow = new Follow(UserEmail.readEmail(), profileEmail);
             System.out.println("Following: " + profileEmail);
 
             // Convert the Follow object to a JSON string
@@ -241,55 +231,61 @@ public class UserProfileComponent extends VBox {
 
     //sending
     private boolean sendConnectReq(JSONObject profileJSON) {
-
-        JSONObject jsonObject = getJsonObject(profileJSON);
         HttpURLConnection conn = null;
         try {
+            // Setup URL and connection
             URL url = new URL("http://localhost:8000/connect");
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
 
-            // Retrieve the token from TokenManager
-            String tokenLong = TokenManager.getToken();
-            String token = TokenManager.extractTokenFromResponse(tokenLong);
-
+            // Retrieve and set the token
+            String token = TokenManager.extractTokenFromResponse(TokenManager.getToken());
             if (token != null && !token.isEmpty()) {
                 conn.setRequestProperty("Authorization", "Bearer " + token);
             } else {
-                System.out.println("No token available.");
+                System.err.println("No token available, authorization header not set.");
             }
-            conn.setDoOutput(true);
 
-            assert jsonObject != null;
-            String json = jsonObject.toString();
-            System.out.println(jsonObject);
+            // Write JSON data to the output stream
             try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = json.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
+                byte[] input = profileJSON.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(input);
             }
 
+            // Check response code
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                System.out.println("request sent successfully");
+                System.out.println("Request sent successfully.");
                 return true;
             } else {
-                InputStream errorStream = conn.getErrorStream();
-                if (errorStream != null) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        System.out.println(line);
-                    }
-                }
-                setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to connect. Response code: " + responseCode);
+                handleErrorResponse(conn);
                 return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while saving contact info.");
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while sending the connect request.");
+            return false;
+        } finally {
+            // Ensure the connection is always closed
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
-        return false;
+    }
+
+    private void handleErrorResponse(HttpURLConnection conn) throws IOException {
+        try (InputStream errorStream = conn.getErrorStream();
+             BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
+            String line;
+            StringBuilder errorResponse = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                errorResponse.append(line);
+            }
+            System.err.println("Error response: " + errorResponse.toString());
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Failed to connect. Response code: " + conn.getResponseCode());
+        }
     }
 
     private JSONObject getJsonObject(JSONObject profileJSON) {
@@ -344,7 +340,7 @@ public class UserProfileComponent extends VBox {
 
 
     private void updateFollowButton() {
-        boolean following = isFollowing(readEmail(),"followings");
+        boolean following = isFollowing(UserEmail.readEmail(),"followings");
         if (following) {
             followButton.setText("Following");
             followButton.setStyle("-fx-background-color: grey;"); // Example styling
@@ -465,5 +461,74 @@ public class UserProfileComponent extends VBox {
             System.err.println("Response content: " + unescapedJson);
             throw e;
         }
+    }
+
+
+    //to check pending reqs
+    private static String getConnectRequests() throws IOException {
+        System.out.println("Retrieving connect requests...");
+        URL url = new URL("http://localhost:8000/connect?user=" + URLEncoder.encode(profileEmail, StandardCharsets.UTF_8.toString()));
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            // Print the raw response for debugging
+            System.out.println("Raw Response: " + response.toString());
+
+            // Return the raw response as a string
+            return response.toString();
+        } else {
+            System.err.println("Failed to get connect requests, Response code: " + responseCode);
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            StringBuilder errorResponse = new StringBuilder();
+            String errorLine;
+            while ((errorLine = errorReader.readLine()) != null) {
+                errorResponse.append(errorLine);
+            }
+            errorReader.close();
+            System.err.println("Error response: " + errorResponse.toString());
+        }
+        conn.disconnect();
+        return "";
+    }
+
+    // Method to check if a user is in connect requests
+    public static boolean isUserInConnectRequests(String userId) throws IOException {
+        // Retrieve the connect requests
+        String connectRequests = getConnectRequests();
+
+        // Check if connectRequests is not empty
+        if (connectRequests.isEmpty()) {
+            return false;
+        }
+
+        // Parse the JSON response
+        try {
+            JSONArray jsonArray = new JSONArray(connectRequests);
+
+            // Iterate through the JSON array and check for the userId in the sender field
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String sender = jsonObject.optString("sender", null);
+
+                if (userId.equals(sender)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error parsing JSON response: " + e.getMessage());
+        }
+
+        return false;
     }
 }
