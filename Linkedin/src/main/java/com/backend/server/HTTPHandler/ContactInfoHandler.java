@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 
@@ -34,21 +36,51 @@ public class ContactInfoHandler implements HttpHandler {
             // Extract user ID (email) from token
             String userId = extractUserIdFromToken(exchange);
 
-            if (userId == null) {
-                exchange.sendResponseHeaders(401, -1); // Unauthorized
-                return;
-            }
+
 
             if (path.equals("/contactInfo") && method.equalsIgnoreCase("POST")) {
+                if (userId == null) {
+                    exchange.sendResponseHeaders(401, -1); // Unauthorized
+                    return;
+                }
                 JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
                 handlePost(exchange, userId, jsonObject);
             } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("GET")) {
-                response = handleGet(exchange, userId);
-                exchange.sendResponseHeaders(200, response.getBytes().length);
+                String email = "";
+                String query = exchange.getRequestURI().getQuery();
+                if (query != null && query.startsWith("id=")) {
+                    // Extract email from query parameter
+                    email = query.substring(3); // Extract email part after 'id='
+                    email = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
+                }  else {
+                    // If no query parameters are provided, return an error
+                    response = "{\"error\":\"Missing email parameter.\"}";
+                    exchange.sendResponseHeaders(400, response.getBytes().length); // Bad Request
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
+                    return; // Exit the handler
+                }
+
+                // Handle the request and generate a response
+                response = handleGet(email);
+
+                // Set response code based on the presence of primary info
+                if (response == null || response.isEmpty() || response.equals("{\"message\":\"Primary info not found\"}")) {
+                    exchange.sendResponseHeaders(404, response.getBytes().length);
+                } else {
+                    exchange.sendResponseHeaders(200, response.getBytes().length);
+                }
+
+                // Send response
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
             } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("PUT")) {
+                if (userId == null) {
+                    exchange.sendResponseHeaders(401, -1); // Unauthorized
+                    return;
+                }
                 JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
                 response = handlePut(exchange, userId, jsonObject);
                 exchange.sendResponseHeaders(200, response.getBytes().length);

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="341.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.infoControl" >
+   <children>
+      <VBox prefHeight="200.0" prefWidth="520.0">
+         <children>
+            <HBox prefHeight="43.0" prefWidth="520.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="8.0">
+                     <image>
+                        <Image url="@../icons/icons8-url-50.png" />
+                     </image>
+                  </ImageView>
+                  <TextField alignment="CENTER" prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="51.0" prefWidth="520.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="8.0">
+                     <image>
+                        <Image url="@../icons/icons8-email-50.png" />
+                     </image>
+                  </ImageView>
+                  <TextField prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="520.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="8.0">
+                     <image>
+                        <Image url="@../icons/icons8-phone-50.png" />
+                     </image>
+                  </ImageView>
+                  <TextField prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="520.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="8.0">
+                     <image>
+                        <Image url="@../icons/icons8-message-48.png" />
+                     </image>
+                  </ImageView>
+                  <TextField prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="54.0" prefWidth="520.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="8.0">
+                     <image>
+                        <Image url="@../icons/icons8-birthday-50.png" />
+                     </image>
+                  </ImageView>
+                  <TextField prefHeight="26.0" prefWidth="150.0" translateX="30.0" translateY="8.0" />
+                  <TextField prefHeight="26.0" prefWidth="150.0" translateX="30.0" translateY="8.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="82.0" prefWidth="517.0">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="8.0">
+                     <image>
+                        <Image url="@../icons/icons8-address-64.png" />
+                     </image>
+                  </ImageView>
+                  <TextArea prefHeight="200.0" prefWidth="300.0" translateX="30.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

@@ -101,13 +101,14 @@ public class MessageComponent extends VBox{
         }
 
         // Add hyperlink if file URL is provided
+        System.out.println(fileUrl);
         if (fileUrl != null && !fileUrl.isEmpty()) {
             Hyperlink fileLink = new Hyperlink("Open File");
             fileLink.setStyle("-fx-text-fill: #0066cc; -fx-font-size: 12px;");
             fileLink.setOnAction(event -> openFile(fileUrl));
             getChildren().add(fileLink);
         }
-   
+
     }
 
     private Media createMediaFromUrl(String url) {

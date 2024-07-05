@@ -6,7 +6,9 @@ import com.backend.server.Model.Follow;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -18,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.*;
@@ -41,6 +44,7 @@ public class UserProfileComponent extends VBox {
     private Label lastNameLabel;
     private Button connectButton;
     private Button followButton;
+    private Button contactInfoButton;
   //  private Label noteLabel;
   private JSONObject info;
     private String profileEmail;
@@ -84,10 +88,22 @@ public class UserProfileComponent extends VBox {
         connectButton = new Button("Connect");
         followButton = new Button("Follow");
 
+
+        // Create the "Contact Info" button
+        contactInfoButton = new Button("Contact Info");
+        contactInfoButton.setStyle("-fx-font-size: 12px; -fx-background-color: #007bff; -fx-text-fill: cyan;");
+        contactInfoButton.setOnAction(e -> {
+            try {
+                showInfoPopup();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         // Create a layout for the user info
         VBox userInfoBox = new VBox(5, nameLabel, additionalName != null && !additionalName.isEmpty() ? additionalNameLabel : new Label(), lastNameLabel);
 
-        HBox buttonBox = new HBox(10, connectButton, followButton);
+        HBox contactInfo = new HBox(10,contactInfoButton);
+        HBox buttonBox = new HBox(10, connectButton, followButton,contactInfo);
 
         // Create a layout for the profile view
         VBox profileBox = new VBox(10, profilePicture, userInfoBox, buttonBox);
@@ -374,5 +390,27 @@ public class UserProfileComponent extends VBox {
        return info.optString("userId","");
 
     }
+
+    public void showInfoPopup() throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/info.fxml")); // Ensure this path is correct
+            Parent root = loader.load();
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Contact Info");
+            popupStage.setScene(new Scene(root));
+            popupStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+//    public static JSONObject getContactInfo()
+//    {
+//        //do get based on email
+//
+//
+//    }
+
 
 }

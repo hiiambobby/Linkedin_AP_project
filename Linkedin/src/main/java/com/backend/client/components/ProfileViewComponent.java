@@ -3,6 +3,7 @@ package com.backend.client.components;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -33,6 +34,7 @@ public class ProfileViewComponent extends VBox {
         Label headerTitleLabel = new Label(headerTitle);
         headerTitleLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: gray;");
 
+
         // Create a layout for the profile view
         HBox profileBox = new HBox(10, profilePicture, nameLabel);
         VBox contentBox = new VBox(5, profileBox, headerTitleLabel);
@@ -57,5 +59,9 @@ public class ProfileViewComponent extends VBox {
         profileStage.setTitle("Profile");
         profileStage.setScene(new Scene(userProfileComponent));
         profileStage.show();
+    }
+    public void showInfoPopup()
+    {
+
     }
 }
