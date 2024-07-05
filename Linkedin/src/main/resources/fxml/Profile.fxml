@@ -24,7 +24,7 @@
                         <Image url="@../icons/icons8-cat-48.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="30.0">
+                  <ImageView fx:id="homeId" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#openHome" pickOnBounds="true" preserveRatio="true" translateX="30.0">
                      <image>
                         <Image url="@../icons/icons8-animal-shelter-48.png" />
                      </image>
@@ -48,12 +48,16 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="438.0" prefWidth="728.0">
                <children>
-                  <VBox prefHeight="422.0" prefWidth="613.0">
+                  <VBox prefHeight="438.0" prefWidth="607.0">
                      <children>
-                        <AnchorPane prefHeight="227.0" prefWidth="562.0" style="-fx-background-color: white;">
+                        <AnchorPane prefHeight="230.0" prefWidth="599.0" style="-fx-background-color: white;">
                            <children>
-                              <ImageView fx:id="headerPic" fitHeight="170.0" fitWidth="562.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true" />
-                              <ImageView fx:id="profilePic" fitHeight="135.0" fitWidth="135.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: transparent; -fx-background-radius: 50%;" />
+                              <ImageView fx:id="headerPic" fitHeight="170.0" fitWidth="605.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                              <AnchorPane layoutY="48.0" style="-fx-background-radius: 50;">
+                                 <children>
+                                    <ImageView fx:id="profilePic" fitHeight="135.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: transparent; -fx-background-radius: 50%;" />
+                                 </children>
+                              </AnchorPane>
                               <VBox layoutY="171.0" prefHeight="59.0" prefWidth="370.0">
                                  <children>
                                     <Label fx:id="nameLabel" prefHeight="44.0" prefWidth="366.0" text="No Name" />
@@ -75,21 +79,21 @@
                         <Insets left="5.0" right="5.0" />
                      </padding>
                   </VBox>
-                  <VBox prefHeight="410.0" prefWidth="87.0" spacing="10.0" style="-fx-background-color: white;">
+                  <VBox prefHeight="422.0" prefWidth="94.0" spacing="10.0" style="-fx-background-color: white;">
                      <children>
-                        <Button fx:id="primaryInfoBtn" mnemonicParsing="false" onAction="#PrimaryInfo" prefHeight="27.0" prefWidth="86.0" text="Primary Info">
+                        <Button fx:id="primaryInfoBtn" mnemonicParsing="false" onAction="#PrimaryInfo" prefHeight="27.0" prefWidth="86.0" style="-fx-background-radius: 5;" text="Primary Info" textFill="#1cabcf">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="contactInfoBtn" mnemonicParsing="false" onAction="#ContactInfo" prefHeight="26.0" prefWidth="94.0" text="Contact Info" textFill="#1cabcf">
+                        <Button fx:id="contactInfoBtn" mnemonicParsing="false" onAction="#ContactInfo" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5;" text="Contact Info" textFill="#1cabcf">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="addEducationBtn" mnemonicParsing="false" onAction="#addEducation" prefHeight="26.0" prefWidth="94.0" text="Add Education" />
-                        <Button fx:id="postBtn" mnemonicParsing="false" onAction="#addPost" prefWidth="94.0" text="Add Post" />
-                        <Button fx:id="logOut" alignment="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="25.6" prefWidth="94.0" text="Log Out">
+                        <Button fx:id="addEducationBtn" mnemonicParsing="false" onAction="#addEducation" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5;" text="Add Education" textFill="#1cabcf" />
+                        <Button fx:id="postBtn" mnemonicParsing="false" onAction="#addPost" prefWidth="94.0" style="-fx-background-radius: 5;" text="Add Post" textFill="#1cabcf" />
+                        <Button fx:id="logOut" alignment="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="25.6" prefWidth="94.0" style="-fx-background-radius: 5;" text="Log Out" textFill="#1cabcf">
                            <font>
                               <Font size="10.0" />
                            </font>

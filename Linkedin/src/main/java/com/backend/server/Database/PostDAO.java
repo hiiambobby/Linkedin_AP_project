@@ -120,25 +120,29 @@ public class PostDAO {
         return posts;
     }
     public List<Post> getPostsByHashtag(String hashtag) throws SQLException {
-        List<Post> posts = new ArrayList<>();
-        String query = "SELECT p.id, p.sender, p.text, p.video, p.image " +
+        String sql = "SELECT p.id, p.sender, p.text, p.video, p.image " +
                 "FROM post p " +
                 "JOIN hashtags h ON p.id = h.post_id " +
-                "WHERE h.hashtag = ?";
+                "WHERE h.hashtag LIKE ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, hashtag.toLowerCase()); // Search with lowercase
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Post post = new Post();
-                post.setId(rs.getInt("id"));
-                post.setSender(rs.getString("sender"));
-                post.setText(rs.getString("text"));
-                post.setVideo(parseJsonToList(rs.getString("video")));
-                post.setImage(parseJsonToList(rs.getString("image")));
-                posts.add(post);
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            // Add wildcards to the hashtag for partial matching
+            pstmt.setString(1, "%" + hashtag + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                List<Post> posts = new ArrayList<>();
+                while (rs.next()) {
+                    Post post = new Post();
+                    post.setId(rs.getInt("id"));
+                    post.setSender(rs.getString("sender"));
+                    post.setText(rs.getString("text"));
+                    post.setVideo(parseJsonToList(rs.getString("video")));
+                    post.setImage(parseJsonToList(rs.getString("image")));
+                    posts.add(post);
+                }
+                return posts;
             }
         }
-        return posts;
     }
 }

@@ -237,4 +237,8 @@ public class SearchBar {
     }
 
 
+    public void openHome(MouseEvent mouseEvent) throws IOException {
+        openNewStage("/fxml/TimeLine.fxml", "Feed");
+
+    }
 }

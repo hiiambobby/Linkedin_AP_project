@@ -200,14 +200,32 @@ public class ProfileController implements Initializable {
 
     }
     @FXML
-    void addPost(ActionEvent event) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/newPost.fxml"));
-        Parent root = loader.load();
-        Stage popupStage = new Stage();
-        popupStage.setScene(new Scene(root));
-        popupStage.setTitle("New Post");
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.show();
+    void addPost(ActionEvent event) throws IOException {
+        try {
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/newPost.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and set the message
+            NewPostController controller = loader.getController();
+
+
+            // Create and configure the stage
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Message");
+            dialogStage.setScene(new Scene(root));
+
+            // Pass the stage to the controller
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "An error occured....");
+        }
     }
 
     public void logOut(ActionEvent event) throws IOException {
@@ -309,4 +327,9 @@ public class ProfileController implements Initializable {
         openNewStage("/fxml/MessagePage.fxml", "Messages");
 
     }
+    public void openHome(MouseEvent mouseEvent) throws IOException {
+        openNewStage("/fxml/TimeLine.fxml", "Feed");
+
+    }
+
 }

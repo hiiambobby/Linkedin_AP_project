@@ -54,26 +54,9 @@ public class PMController {
         dialogStage.close();
     }
 
-    public TextArea getMessageTextArea() {
-        return messageTextArea;
-    }
 
 
-    public String readEmail() {
-        String filePath = "userdata.txt"; // Path to your JSON file
-        try {
-            String jsonString = readJsonFile(filePath);
-            JSONObject jsonObject = new JSONObject(jsonString);
-            return jsonObject.optString("email", "Unknown");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    public String readJsonFile(String filePath) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filePath)));
-    }
 
     //do a POST request(get the users email)
     private void sendMessage() throws IOException {
@@ -95,7 +78,7 @@ public class PMController {
 
             // Create JSON body using org.json.JSONObject
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("sender", readEmail());
+            jsonObject.put("sender", UserEmail.readEmail());
             jsonObject.put("receiver", userEmail);
             jsonObject.put("text", messageTextArea.getText());
             jsonObject.put("image", imageUrl);
@@ -125,15 +108,6 @@ public class PMController {
                 }
             } else {
                 System.out.println("Failed to send message. Response Code: " + responseCode);
-//                // Optionally, read the error stream
-//                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
-//                    String inputLine;
-//                    StringBuilder response = new StringBuilder();
-//                    while ((inputLine = in.readLine()) != null) {
-//                        response.append(inputLine);
-//                    }
-//                    System.out.println("Error Response: " + response.toString());
-//                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -211,22 +185,16 @@ public class PMController {
 
     @FXML
     private void handleVideo(MouseEvent mouseEvent) {
-        // Open file chooser for video files
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Video File");
 
-        // Add file filters for video files
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Video Files", "*.mp4", "*.mkv", "*.avi", "*.mov")
         );
 
-        // Show open file dialog
         File file = fileChooser.showOpenDialog(dialogStage);
         if (file != null) {
-            // Handle the selected video file
-            System.out.println("Selected video file: " + file.getAbsolutePath());
             setVideoUrl(file.getAbsolutePath());
-            // Add code here to handle or process the video file
         } else {
             System.out.println("No video file selected");
         }
