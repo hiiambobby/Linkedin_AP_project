@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Message {
 
+
     @JsonProperty("sender")
     private String sender;
 

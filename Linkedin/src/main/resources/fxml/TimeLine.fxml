@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="728.0" style="-fx-background-color: #64b5f6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.TimeLineController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox prefHeight="37.0" prefWidth="600.0" style="-fx-background-color: white;" translateY="-38.0">
+               <children>
+                  <ImageView fx:id="profileId" accessibleRole="BUTTON" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="20.0">
+                     <image>
+                        <Image url="@../icons/icons8-cat-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="homeId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="30.0">
+                     <image>
+                        <Image url="@../icons/icons8-animal-shelter-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="networkId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#openNetwork" pickOnBounds="true" preserveRatio="true" translateX="40.0">
+                     <image>
+                        <Image url="@../icons/icons8-happy-cloud-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="pmId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="50.0">
+                     <image>
+                        <Image url="@../icons/icons8-top-view-bird-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#openSearch" pickOnBounds="true" preserveRatio="true" translateX="60.0">
+                     <image>
+                        <Image url="@../icons/icons8-search-48.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="427.0" prefWidth="714.0">
+               <children>
+                  <ScrollPane prefHeight="470.0" prefWidth="338.0">
+                     <content>
+                        <VBox fx:id="viewMessages" prefHeight="412.0" prefWidth="334.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="322.0" text="Your Messages" />
+                              <Separator prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <VBox fx:id="viewConnections" prefHeight="410.0" prefWidth="189.0">
+                           <children>
+                              <Label prefHeight="18.0" prefWidth="183.0" text="New Message" translateX="3.0" />
+                              <Separator prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

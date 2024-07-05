@@ -24,6 +24,8 @@ public class HtppServer {
             server.createContext("/connect", new ConnectHandler());
             server.createContext("/follow", new FollowHandler());
             server.createContext("/message", new MessageHandler());
+            server.createContext("/post", new PostHandler());
+
 
 
 

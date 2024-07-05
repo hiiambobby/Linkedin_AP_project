@@ -12,7 +12,7 @@ public class ConnectDAO {
     private final Connection connection;
 
     public ConnectDAO() {
-        this.connection = MySql.getConnection(); // Assumes you have a DatabaseConnection class for obtaining connections
+        this.connection = MySql.getConnection();
         createTable();
     }
 
