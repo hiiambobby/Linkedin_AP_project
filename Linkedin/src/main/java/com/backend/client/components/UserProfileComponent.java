@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -47,7 +48,7 @@ public class UserProfileComponent extends VBox {
     private Button contactInfoButton;
   //  private Label noteLabel;
   private JSONObject info;
-    private String profileEmail;
+    private static String profileEmail;
 
     public UserProfileComponent(JSONObject info,String profilePictureUrl, String backgroundPictureUrl, String name, String additionalName, String lastName) {
 
@@ -385,11 +386,7 @@ public class UserProfileComponent extends VBox {
         return false;
     }
 
-    public String findEmail()
-    {
-       return info.optString("userId","");
 
-    }
 
     public void showInfoPopup() throws IOException {
         try {
@@ -405,12 +402,48 @@ public class UserProfileComponent extends VBox {
             e.printStackTrace();
         }
     }
-//    public static JSONObject getContactInfo()
-//    {
-//        //do get based on email
-//
-//
-//    }
+    public static JSONObject getContactInfo() throws IOException {
+        String urlString = "http://localhost:8000/contactInfo?id=" + URLEncoder.encode(profileEmail, StandardCharsets.UTF_8.toString());
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
 
+        int responseCode = conn.getResponseCode();
+        StringBuilder response = new StringBuilder();
 
+        if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+        } else {
+            System.err.println("Failed to retrieve Contact Info, Response code: " + responseCode);
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            String errorLine;
+            while ((errorLine = errorReader.readLine()) != null) {
+                response.append(errorLine);
+            }
+            errorReader.close();
+            System.err.println("Error response: " + response.toString());
+        }
+
+        conn.disconnect();
+        String responseStr = response.toString().trim();
+        System.out.println("Raw response: " + responseStr); // Debugging line
+
+        // Unescape the JSON string
+        String unescapedJson = responseStr.substring(1, responseStr.length() - 1).replace("\\\"", "\"");
+        System.out.println("Unescaped JSON: " + unescapedJson); // Debugging line
+
+        try {
+            return new JSONObject(unescapedJson);
+        } catch (org.json.JSONException e) {
+            System.err.println("Error parsing JSON: " + e.getMessage());
+            System.err.println("Response content: " + unescapedJson);
+            throw e;
+        }
+    }
 }

@@ -5,31 +5,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 
 public class ContactInfo {
-    @JsonProperty("profileUrl")
+    @JsonProperty("profile_url")
     private String profileUrl;
 
 //    @JsonProperty("email")
 //    private String email;
 
-    @JsonProperty("phoneNumber")
+    @JsonProperty("phone_number")
     private String phoneNumber;
 
-    @JsonProperty("phoneType")
+    @JsonProperty("phone_type")
     private String phoneType;
 
     @JsonProperty("address")//we should choose from different phone type
     private String address;
 
 
-    @JsonProperty("birthMonth")
+    @JsonProperty("month")
     private String month;
-    @JsonProperty("birthDay")
+    @JsonProperty("day")
     private int day;
 
-    @JsonProperty("instantMessaging")
+    @JsonProperty("instant_messaging")
     private String instantMessaging;
 
-    @JsonProperty("userId")
+    @JsonProperty("user_id")
     private String userId;
     @JsonProperty("visibility")
     private String visibility;
@@ -141,16 +141,16 @@ public class ContactInfo {
     @Override
     public String toString() {
         return "ContactInfo{" +
-                ", userId='" + userId + '\'' +
+                ", user_id='" + userId + '\'' +
 //                ", email='" + email + '\'' +
-                ", profileUrl='" + profileUrl + '\'' +
-                ",  phoneNumber='" + phoneNumber + '\'' + //common with user
-                ", phoneType=" + phoneType +
-                ", birthMonth" + month +
-                ", birthDay" + day +
+                ", profile_url='" + profileUrl + '\'' +
+                ",  phone_number='" + phoneNumber + '\'' + //common with user
+                ", phone_type=" + phoneType +
+                ", month" + month +
+                ", day" + day +
                 ", visibility=" + visibility+
                 ", address=" + address +
-                ", instantMessaging=" + instantMessaging +
+                ", instant_messaging=" + instantMessaging +
                 '}';
     }
 }

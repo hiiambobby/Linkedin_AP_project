@@ -115,23 +115,18 @@ public class MessageController implements Initializable {
 
     //for debuggin purposes
     public List<JSONObject> findConnections() throws IOException {
-        // Print debug statement to indicate the method has started
         System.out.println("Starting findConnections method");
 
-        // Prepare the URL string with encoded parameters
         String urlString = String.format("http://localhost:8000/connect?user=%s&connected=%s",
                 URLEncoder.encode(readEmail(), "UTF-8"), URLEncoder.encode("type", "UTF-8"));
 
-        // Print the URL to check if it's correct
         System.out.println("Connecting to URL: " + urlString);
 
-        // Create a URL object and open a connection
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
 
-        // Get the response code and print it for debugging
         int responseCode = conn.getResponseCode();
         System.out.println("Response Code: " + responseCode);
 
@@ -139,7 +134,6 @@ public class MessageController implements Initializable {
             // Print debug statement indicating a successful connection
             System.out.println("Connection successful, reading response");
 
-            // Read the response from the connection
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder response = new StringBuilder();
             String line;
@@ -148,7 +142,6 @@ public class MessageController implements Initializable {
             }
             reader.close();
 
-            // Print the raw JSON response
             System.out.println("Raw JSON Response: " + response.toString());
 
             // Parse the JSON response and convert it to a list of JSON objects
@@ -158,15 +151,12 @@ public class MessageController implements Initializable {
                 requestList.add(jsonResponse.getJSONObject(i));
             }
 
-            // Print the parsed request list
             System.out.println("Parsed request list: " + requestList);
 
             return requestList;
         } else {
-            // Print debug statement indicating a failed connection
             System.err.println("Failed to get connect requests, Response code: " + responseCode);
 
-            // Read and print the error response
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
             StringBuilder errorResponse = new StringBuilder();
             String errorLine;
@@ -175,11 +165,8 @@ public class MessageController implements Initializable {
             }
             errorReader.close();
 
-            // Print the error response
             System.err.println("Error response: " + errorResponse.toString());
         }
-
-        // Disconnect the connection and return null
         conn.disconnect();
         return null;
     }

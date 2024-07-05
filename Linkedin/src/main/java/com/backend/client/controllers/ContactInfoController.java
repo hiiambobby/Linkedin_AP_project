@@ -121,14 +121,14 @@ public class ContactInfoController implements Initializable {
         if(checkLength(addrId.getText(),numberId.getText(),instantMessage.getText())){
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("profileUrl", urlId.getText() != null ? urlId.getText() : "");
-            jsonObject.put("phoneNumber", numberId.getText() != null ? numberId.getText() : "");
-            jsonObject.put("phoneType", phoneType.getValue() != null ? phoneType.getValue() : "");
-            jsonObject.put("birthMonth", monthId.getValue() != null ? monthId.getValue() : ""); // Corrected to match expected retrieval type
-            jsonObject.put("birthDay", dayId.getValue() != null ? dayId.getValue() : 0); // Default to 0 for numeric
+            jsonObject.put("profile_url", urlId.getText() != null ? urlId.getText() : "");
+            jsonObject.put("phone_number", numberId.getText() != null ? numberId.getText() : "");
+            jsonObject.put("phone_type", phoneType.getValue() != null ? phoneType.getValue() : "");
+            jsonObject.put("month", monthId.getValue() != null ? monthId.getValue() : ""); // Corrected to match expected retrieval type
+            jsonObject.put("day", dayId.getValue() != null ? dayId.getValue() : 0); // Default to 0 for numeric
             jsonObject.put("visibility", visibilityId.getValue() != null ? visibilityId.getValue() : "");
             jsonObject.put("address", addrId.getText() != null ? addrId.getText() : "");
-            jsonObject.put("instantMessaging", instantMessage.getText() != null ? instantMessage.getText() : "");
+            jsonObject.put("instant_messaging", instantMessage.getText() != null ? instantMessage.getText() : "");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -286,17 +286,17 @@ public class ContactInfoController implements Initializable {
         urlId.setEditable(false);  // Make the URL field uneditable
 
         // Check if email is null or empty before setting it
-        emailId.setText(jsonObject.optString("userId", ""));
+        emailId.setText(jsonObject.optString("user_id", ""));
         emailId.setEditable(false);  // Make the email field uneditable
 
         // Set other fields based on JSON object
-        numberId.setText(jsonObject.optString("phoneNumber", ""));
-        phoneType.setValue(jsonObject.optString("phoneType", ""));
-        monthId.setValue(jsonObject.optString("birthMonth", ""));
-        dayId.setValue(jsonObject.optInt("birthDay", 1)); // Default to 1 if not available
+        numberId.setText(jsonObject.optString("phone_number", ""));
+        phoneType.setValue(jsonObject.optString("phone_type", ""));
+        monthId.setValue(jsonObject.optString("month", ""));
+        dayId.setValue(jsonObject.optInt("day", 1)); // Default to 1 if not available
         visibilityId.setValue(jsonObject.optString("visibility", ""));
         addrId.setText(jsonObject.optString("address", ""));
-        instantMessage.setText(jsonObject.optString("instantMessaging", ""));
+        instantMessage.setText(jsonObject.optString("instant_messaging", ""));
     }
 
     private String generateRandomId() {

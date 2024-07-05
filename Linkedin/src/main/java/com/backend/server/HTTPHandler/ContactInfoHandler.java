@@ -1,9 +1,9 @@
 package com.backend.server.HTTPHandler;
-import com.backend.server.Controller.UserController;
-import com.backend.server.Database.ContactInfoDAO;
+
+import com.backend.server.Controller.ContactInfoController;
+import com.backend.server.Model.Connect;
 import com.backend.server.Model.ContactInfo;
 import com.backend.server.Util.JWT;
-import com.backend.server.Controller.ContactInfoController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -11,9 +11,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class ContactInfoHandler implements HttpHandler {
@@ -36,63 +35,54 @@ public class ContactInfoHandler implements HttpHandler {
             // Extract user ID (email) from token
             String userId = extractUserIdFromToken(exchange);
 
-
-
-            if (path.equals("/contactInfo") && method.equalsIgnoreCase("POST")) {
-                if (userId == null) {
-                    exchange.sendResponseHeaders(401, -1); // Unauthorized
-                    return;
+            if (path.equals("/contactInfo")) {
+                switch (method.toUpperCase()) {
+                    case "POST":
+                        if (userId == null) {
+                            exchange.sendResponseHeaders(401, -1); // Unauthorized
+                        } else {
+                            JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
+                            handlePost(exchange, userId, jsonObject);
+                        }
+                        break;
+                    case "GET":
+                        if (userId == null) {
+                            response = handeGetWithId(exchange, userId);
+                        } else {
+                            response = handleGet(exchange, userId);
+                        }
+                        exchange.sendResponseHeaders(200, response.getBytes().length);
+                        OutputStream os = exchange.getResponseBody();
+                        os.write(response.getBytes());
+                        os.close();
+                        break;
+                    case "PUT":
+                        if (userId == null) {
+                            exchange.sendResponseHeaders(401, -1); // Unauthorized
+                        } else {
+                            JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
+                            response = handlePut(exchange, userId, jsonObject);
+                            exchange.sendResponseHeaders(200, response.getBytes().length);
+                            OutputStream osPut = exchange.getResponseBody();
+                            osPut.write(response.getBytes());
+                            osPut.close();
+                        }
+                        break;
+                    case "DELETE":
+                        if (userId == null) {
+                            exchange.sendResponseHeaders(401, -1); // Unauthorized
+                        } else {
+                            response = handleDelete(exchange, userId);
+                            exchange.sendResponseHeaders(200, response.getBytes().length);
+                            OutputStream osDelete = exchange.getResponseBody();
+                            osDelete.write(response.getBytes());
+                            osDelete.close();
+                        }
+                        break;
+                    default:
+                        exchange.sendResponseHeaders(404, -1); // Not Found
+                        break;
                 }
-                JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
-                handlePost(exchange, userId, jsonObject);
-            } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("GET")) {
-                String email = "";
-                String query = exchange.getRequestURI().getQuery();
-                if (query != null && query.startsWith("id=")) {
-                    // Extract email from query parameter
-                    email = query.substring(3); // Extract email part after 'id='
-                    email = URLDecoder.decode(email, StandardCharsets.UTF_8.toString());
-                }  else {
-                    // If no query parameters are provided, return an error
-                    response = "{\"error\":\"Missing email parameter.\"}";
-                    exchange.sendResponseHeaders(400, response.getBytes().length); // Bad Request
-                    OutputStream os = exchange.getResponseBody();
-                    os.write(response.getBytes());
-                    os.close();
-                    return; // Exit the handler
-                }
-
-                // Handle the request and generate a response
-                response = handleGet(email);
-
-                // Set response code based on the presence of primary info
-                if (response == null || response.isEmpty() || response.equals("{\"message\":\"Primary info not found\"}")) {
-                    exchange.sendResponseHeaders(404, response.getBytes().length);
-                } else {
-                    exchange.sendResponseHeaders(200, response.getBytes().length);
-                }
-
-                // Send response
-                OutputStream os = exchange.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
-            } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("PUT")) {
-                if (userId == null) {
-                    exchange.sendResponseHeaders(401, -1); // Unauthorized
-                    return;
-                }
-                JSONObject jsonObject = new JSONObject(new String(exchange.getRequestBody().readAllBytes()));
-                response = handlePut(exchange, userId, jsonObject);
-                exchange.sendResponseHeaders(200, response.getBytes().length);
-                OutputStream os = exchange.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
-            } else if (path.equals("/contactInfo") && method.equalsIgnoreCase("DELETE")) {
-                response = handleDelete(exchange, userId);
-                exchange.sendResponseHeaders(200, response.getBytes().length);
-                OutputStream os = exchange.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
             } else {
                 exchange.sendResponseHeaders(404, -1); // Not Found
             }
@@ -103,70 +93,79 @@ public class ContactInfoHandler implements HttpHandler {
     }
 
     private void handlePost(HttpExchange exchange, String userId, JSONObject jsonObject) throws IOException, SQLException {
-      try{  // Implement logic to save contact info
-        String profileUrl = jsonObject.optString("profileUrl", "");
-        String phoneNumber = jsonObject.optString("phoneNumber", "");
-        String phoneType = jsonObject.optString("phoneType", "");
-        String month = jsonObject.optString("birthMonth", ""); // Expecting a String
-        int day = jsonObject.optInt("birthDay", 0); // Expecting an int
-        String visibility = jsonObject.optString("visibility", "");
-        String address = jsonObject.optString("address", "");
-        String instantMessaging = jsonObject.optString("instantMessaging", "");
+        try {  // Implement logic to save contact info
+            String profileUrl = jsonObject.optString("profile_url", "");
+            String phoneNumber = jsonObject.optString("phone_number", "");
+            String phoneType = jsonObject.optString("phone_type", "");
+            String month = jsonObject.optString("month", ""); // Expecting a String
+            int day = jsonObject.optInt("day", 0); // Expecting an int
+            String visibility = jsonObject.optString("visibility", "");
+            String address = jsonObject.optString("address", "");
+            String instantMessaging = jsonObject.optString("instant_messaging", "");
 
 
-        contactInfoController.saveContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
+            contactInfoController.saveContactInfo(userId, profileUrl, phoneNumber, phoneType, month, day, visibility, address, instantMessaging);
 
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("message", "Contact info saved successfully");
+            JSONObject responseJson = new JSONObject();
+            responseJson.put("message", "Contact info saved successfully");
 
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        sendResponse(exchange, 201, responseJson.toString());
-    } catch (Exception e) {
-          e.printStackTrace();
-          JSONObject errorResponse = new JSONObject();
-          errorResponse.put("error", "Internal Server Error");
-          exchange.getResponseHeaders().set("Content-Type", "application/json");
-          sendResponse(exchange, 500, errorResponse.toString());
-      }}
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            sendResponse(exchange, 201, responseJson.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONObject errorResponse = new JSONObject();
+            errorResponse.put("error", "Internal Server Error");
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            sendResponse(exchange, 500, errorResponse.toString());
+        }
+    }
 
     private String handleGet(HttpExchange exchange, String userId) throws IOException, SQLException {
-        // Create an ObjectMapper instance for JSON serialization
         ObjectMapper objectMapper = new ObjectMapper();
-
-        // Retrieve the contact info from the database or other data source
         ContactInfo contactInfo = contactInfoController.getContactInfo(userId);
-
-        // Prepare the response
         String response;
         if (contactInfo != null) {
-            // Serialize ContactInfo object to JSON
             response = objectMapper.writeValueAsString(contactInfo);
         } else {
-            // Return an error message if contact info is not found
             response = "{\"message\":\"Contact info not found\"}";
         }
-
         return response;
     }
 
+    private String handeGetWithId(HttpExchange exchange,String userId) throws IOException, SQLException {
+        String query = exchange.getRequestURI().getQuery();
+        userId = getQueryParam(query, "id");
+
+        if (userId == null) {
+            throw new IllegalArgumentException("User parameter is missing");
+        }
+        String contactInfo = "";
+        ContactInfo contactInfos = contactInfoController.getContactInfo(userId);
+        if(contactInfos != null)
+        {
+            contactInfo = objectMapper.writeValueAsString(contactInfos);
+        }
+        return objectMapper.writeValueAsString(contactInfo);
+
+    }
+
     private String handlePut(HttpExchange exchange, String userId, JSONObject jsonObject) throws IOException, SQLException {
-        // Implement logic to update contact info
-        String profileUrl = jsonObject.optString("profileUrl", "");
-        String phoneNumber = jsonObject.optString("phoneNumber", "");
-        String phoneType = jsonObject.optString("phoneType", "");
+        String profileUrl = jsonObject.optString("profile_url", "");
+        String phoneNumber = jsonObject.optString("phone_number", "");
+        String phoneType = jsonObject.optString("phone_type", "");
         String month = jsonObject.optString("month", "");
         int day = jsonObject.optInt("day", 0);
         String visibility = jsonObject.optString("visibility", "");
         String address = jsonObject.optString("address", "");
-        String instantMessaging = jsonObject.optString("instantMessaging", "");
+        String instantMessaging = jsonObject.optString("instant_messaging", "");
 
-        contactInfoController.updateContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
+        contactInfoController.updateContactInfo(userId, profileUrl, phoneNumber, phoneType, month, day, visibility, address, instantMessaging);
 
         if (contactInfoController.getContactInfo(userId) != null) {
-            contactInfoController.updateContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
+            contactInfoController.updateContactInfo(userId, profileUrl, phoneNumber, phoneType, month, day, visibility, address, instantMessaging);
             return "{\"message\":\"Contact info updated successfully\"}";
         } else {
-            contactInfoController.saveContactInfo(userId,profileUrl,phoneNumber, phoneType,month, day,visibility,address,instantMessaging);
+            contactInfoController.saveContactInfo(userId, profileUrl, phoneNumber, phoneType, month, day, visibility, address, instantMessaging);
             return "{\"message\":\"Contact info created successfully\"}";
         }
     }
@@ -199,5 +198,16 @@ public class ContactInfoHandler implements HttpHandler {
         }
         return null;
     }
+    private String getQueryParam(String query, String param) {
+        if (query == null) return null;
+        for (String pair : query.split("&")) {
+            String[] keyValue = pair.split("=");
+            if (keyValue.length == 2 && keyValue[0].equals(param)) {
+                return keyValue[1];
+            }
+        }
+        return null;
+    }
+
 
 }

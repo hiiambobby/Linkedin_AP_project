@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="341.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.infoControl" >
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="341.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.infoControl">
    <children>
       <VBox prefHeight="200.0" prefWidth="520.0">
          <children>
@@ -20,7 +19,7 @@
                         <Image url="@../icons/icons8-url-50.png" />
                      </image>
                   </ImageView>
-                  <TextField alignment="CENTER" prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+                  <TextField fx:id="profileUrlId" alignment="CENTER" prefHeight="26.0" prefWidth="300.0" style="-fx-background-color: white;" translateX="30.0" translateY="8.0" />
                </children>
             </HBox>
             <HBox prefHeight="51.0" prefWidth="520.0">
@@ -30,7 +29,7 @@
                         <Image url="@../icons/icons8-email-50.png" />
                      </image>
                   </ImageView>
-                  <TextField prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+                  <TextField fx:id="emailId" prefHeight="26.0" prefWidth="300.0" style="-fx-background-color: white;" translateX="30.0" translateY="8.0" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="520.0">
@@ -40,7 +39,7 @@
                         <Image url="@../icons/icons8-phone-50.png" />
                      </image>
                   </ImageView>
-                  <TextField prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+                  <TextField fx:id="phoneId" prefHeight="26.0" prefWidth="300.0" style="-fx-background-color: white;" translateX="30.0" translateY="8.0" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="520.0">
@@ -50,7 +49,7 @@
                         <Image url="@../icons/icons8-message-48.png" />
                      </image>
                   </ImageView>
-                  <TextField prefHeight="26.0" prefWidth="300.0" translateX="30.0" translateY="8.0" />
+                  <TextField fx:id="instantId" prefHeight="26.0" prefWidth="300.0" style="-fx-background-color: white;" translateX="30.0" translateY="8.0" />
                </children>
             </HBox>
             <HBox prefHeight="54.0" prefWidth="520.0">
@@ -60,8 +59,8 @@
                         <Image url="@../icons/icons8-birthday-50.png" />
                      </image>
                   </ImageView>
-                  <TextField prefHeight="26.0" prefWidth="150.0" translateX="30.0" translateY="8.0" />
-                  <TextField prefHeight="26.0" prefWidth="150.0" translateX="30.0" translateY="8.0" />
+                  <TextField fx:id="monthId" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: light gray;" translateX="30.0" translateY="8.0" />
+                  <TextField fx:id="dayId" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: white;" translateX="30.0" translateY="8.0" />
                </children>
             </HBox>
             <HBox prefHeight="82.0" prefWidth="517.0">
@@ -71,7 +70,7 @@
                         <Image url="@../icons/icons8-address-64.png" />
                      </image>
                   </ImageView>
-                  <TextArea prefHeight="200.0" prefWidth="300.0" translateX="30.0" />
+                  <TextArea fx:id="locationId" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: white;" translateX="30.0" />
                </children>
             </HBox>
          </children>
