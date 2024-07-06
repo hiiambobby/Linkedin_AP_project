@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 import java.io.BufferedReader;
@@ -57,6 +59,7 @@ public class TimeLineController {
     private ImageView searchId;
 
 
+    private List<Post> searchResults = new ArrayList<>();
 
     @FXML
     public void handleSearch(ActionEvent event) {
