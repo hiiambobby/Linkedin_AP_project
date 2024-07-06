@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="728.0" style="-fx-background-color: #64b5f6;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.FeedPageController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox prefHeight="37.0" prefWidth="600.0" style="-fx-background-color: white;" translateY="-18.5">
+               <children>
+                  <ImageView fx:id="profileId" accessibleRole="BUTTON" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#profileView" pickOnBounds="true" preserveRatio="true" translateX="20.0">
+                     <image>
+                        <Image url="@../icons/icons8-cat-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="homeId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="30.0">
+                     <image>
+                        <Image url="@../icons/icons8-animal-shelter-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="networkId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" translateX="40.0">
+                     <image>
+                        <Image url="@../icons/icons8-happy-cloud-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="pmId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#openNetwork" pickOnBounds="true" preserveRatio="true" translateX="50.0">
+                     <image>
+                        <Image url="@../icons/icons8-top-view-bird-48.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="searchId" accessibleRole="BUTTON" accessibleText="my network" fitHeight="29.0" fitWidth="35.0" onMouseClicked="#searchId" pickOnBounds="true" preserveRatio="true" translateX="60.0">
+                     <image>
+                        <Image url="@../icons/icons8-search-48.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <ScrollPane fx:id="scrollPane" prefHeight="429.0" prefWidth="749.0" scaleX="0.75" scaleY="0.9">
+               <content>
+                  <VBox fx:id="networkList" prefHeight="427.0" prefWidth="729.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</StackPane>
