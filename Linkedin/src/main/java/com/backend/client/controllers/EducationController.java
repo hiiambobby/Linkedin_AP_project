@@ -251,15 +251,12 @@ public class EducationController {
             skillField.setPromptText("Skill " + (skillsVBox.getChildren().size() + 1));
             skillField.setPrefWidth(200);
 
-            // Create a label for the skill field
             Label skillLabel = new Label("Skill:");
 
-            // Create a HBox to hold the label and the skill field
             HBox skillHBox = new HBox(10);
             skillHBox.setPadding(new Insets(5, 0, 5, 20)); // Padding for each skill row
             skillHBox.getChildren().addAll(skillLabel, skillField);
 
-            // Add the HBox to the VBox
             skillsVBox.getChildren().add(skillHBox);
         } else {
             // Optionally show an alert if trying to add more than the limit

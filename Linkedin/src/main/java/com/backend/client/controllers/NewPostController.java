@@ -1,11 +1,14 @@
 package com.backend.client.controllers;
 
+import com.backend.client.components.ProfileViewComponent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -16,6 +19,8 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +35,8 @@ public class NewPostController {
 
     @FXML
     private ImageView videoId;
+    @FXML
+    private Label nameLabel;
 
     private Stage dialogStage;
 
@@ -195,4 +202,6 @@ public class NewPostController {
         }
         return urls;
     }
+
+
 }
