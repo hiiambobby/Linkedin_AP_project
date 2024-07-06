@@ -52,5 +52,7 @@ public class PostController {
     public List<Post> getPostsByHashtag(String hashtag) throws SQLException {
         return postDAO.getPostsByHashtag(hashtag);
     }
-
+    public List<String> getUsernamesWhoLikedPost(int postId) throws SQLException {
+        return likesDAO.getUsernamesByPostId(postId);
+    }
 }

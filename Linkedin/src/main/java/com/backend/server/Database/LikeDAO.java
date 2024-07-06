@@ -4,7 +4,10 @@ import com.backend.server.MySql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LikeDAO {
 
@@ -32,5 +35,20 @@ public class LikeDAO {
             stmt.setString(2, userId);
             stmt.executeUpdate();
         }
+    }
+    // Retrieve usernames who liked a specific post
+    public List<String> getUsernamesByPostId(int postId) throws SQLException {
+        List<String> usernames = new ArrayList<>();
+        String query = "SELECT u.username FROM likes l JOIN users u ON l.user_id = u.user_id WHERE l.post_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, postId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    usernames.add(rs.getString("username"));
+                }
+            }
+        }
+        return usernames;
     }
 }

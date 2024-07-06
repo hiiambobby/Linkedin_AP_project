@@ -29,6 +29,7 @@ public class PostHandler implements HttpHandler {
         String[] segments = path.split("/");
 
         try {
+
             if (method.equals("GET") && segments.length == 2) {
                 // Handle GET /posts
                 List<Post> posts = postController.getAllPosts();
@@ -123,7 +124,18 @@ public class PostHandler implements HttpHandler {
                 os.write(response.getBytes());
                 os.close();
 
-            } else {
+            }
+            else if (method.equals("GET") && segments.length == 3 && segments[2].equals("likes")) {
+                // Handle GET /posts/{id}/likes
+                int postId = Integer.parseInt(segments[1]);
+                List<String> usernames = postController.getUsernamesWhoLikedPost(postId);
+                String response = new ObjectMapper().writeValueAsString(usernames);
+                exchange.sendResponseHeaders(200, response.length());
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+
+            }else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed
             }
 
