@@ -10,6 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+
 
 import java.io.IOException;
 
@@ -17,16 +22,51 @@ public class TimeLineController {
 
     @FXML
     private ImageView pmId;
+    @FXML
+    private ImageView homeId;
+
+    @FXML
+    private ImageView networkId;
+
+    @FXML
+    private ImageView profileId;
+
+    @FXML
+    private VBox postsVbox;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private Button searchButton;
+
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private ImageView searchId;
+
 
     public void handleSearch(ActionEvent event) {
     }
 
+    /*public void addPostFeed() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Post.fxml"));
+            VBox postComponent = loader.load();
+            // Access the controller of PostComponent to set data
+            PostController controller = loader.getController();
+            controller.setPostDetails();
+            // Add the component to the VBox
+            postsVbox.getChildren().add(postComponent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
 
     public void profileView(MouseEvent mouseEvent) throws IOException {
         openNewStage("/fxml/Profile.fxml", "Profile");
     }
-
-
 
     public void openMessage(MouseEvent mouseEvent) throws IOException {
         openNewStage("/fxml/Network.fxml", "My Network");

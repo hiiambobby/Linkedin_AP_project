@@ -54,7 +54,7 @@
             </HBox>
             <ScrollPane fx:id="scrollPane" prefHeight="455.0" prefWidth="748.0" scaleX="0.9">
                <content>
-                  <VBox fx:id="profileList" alignment="CENTER" prefHeight="440.0" prefWidth="719.0" />
+                  <VBox fx:id="postsVbox" alignment="CENTER" prefHeight="440.0" prefWidth="719.0" />
                </content>
             </ScrollPane>
          </children>
