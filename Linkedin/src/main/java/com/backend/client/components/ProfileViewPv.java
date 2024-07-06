@@ -85,6 +85,3 @@ public class ProfileViewPv extends VBox{
         return profileEmail;
     }
 }
-
-
-

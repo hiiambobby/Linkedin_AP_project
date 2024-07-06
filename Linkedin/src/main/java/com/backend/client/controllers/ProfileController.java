@@ -326,8 +326,26 @@ public class ProfileController implements Initializable {
 
     }
     public void openHome(MouseEvent mouseEvent) throws IOException {
-        openNewStage("/fxml/TimeLine.fxml", "Feed");
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/TimeLine.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return; // Exit the method if the page cannot be loaded
+        }
+        TimeLineController controller = loader.getController();
+        ControllerManager.setTimeLineController(controller);
+        Stage currentStage = (Stage) logOut.getScene().getWindow();
+        currentStage.close();
+        Stage newStage = new Stage();
+        Image icon = new Image("/img/photo_2024-05-15_16-05-20.jpg");
+        newStage.getIcons().add(icon);
+        Scene newScene = new Scene(root);
+        newStage.setScene(newScene);
+        newStage.setTitle("Feed");
+        newStage.initStyle(StageStyle.DECORATED);
+        newStage.show();
     }
 
 }

@@ -48,8 +48,8 @@ public class PostController {
 
     }
 
-    /*public void setPostDetails() {
-        captionLabel.setText("");
-    }*/
+    public void setPostDetails(String caption) {
+        captionLabel.setText(caption);
+    }
 
 }

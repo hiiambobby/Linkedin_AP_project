@@ -137,19 +137,19 @@ public class TimeLineController {
         return searchResults;
     }
 
-    /*public void addPostFeed() {
+    public void addPostFeed(String caption) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Post.fxml"));
             VBox postComponent = loader.load();
             // Access the controller of PostComponent to set data
             PostController controller = loader.getController();
-            controller.setPostDetails();
+            controller.setPostDetails(caption);
             // Add the component to the VBox
             postsVbox.getChildren().add(postComponent);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     public void profileView(MouseEvent mouseEvent) throws IOException {
         openNewStage("/fxml/Profile.fxml", "Profile");
