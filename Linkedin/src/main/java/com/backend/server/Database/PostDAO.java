@@ -39,21 +39,21 @@ public class PostDAO {
     //add
 
     public void insertPost(Post post) throws SQLException {
-            String insertPostQuery = "INSERT INTO post (sender, text, video, image) VALUES (?, ?, ?, ?)";
-            String insertHashtagQuery = "INSERT INTO hashtags (post_id, hashtag) VALUES (?, ?)";
+        String insertPostQuery = "INSERT INTO post (sender, text, video, image) VALUES (?, ?, ?, ?)";
+        String insertHashtagQuery = "INSERT INTO hashtags (post_id, hashtag) VALUES (?, ?)";
 
-            try (PreparedStatement postStmt = connection.prepareStatement(insertPostQuery, Statement.RETURN_GENERATED_KEYS)) {
-                postStmt.setString(1, post.getSender());
-                postStmt.setString(2, post.getText());
-                postStmt.setString(3, post.getVideoJson());
-                postStmt.setString(4, post.getImageJson());
+        try (PreparedStatement postStmt = connection.prepareStatement(insertPostQuery, Statement.RETURN_GENERATED_KEYS)) {
+            postStmt.setString(1, post.getSender());
+            postStmt.setString(2, post.getText());
+            postStmt.setString(3, post.getVideoJson());
+            postStmt.setString(4, post.getImageJson());
 
-                int affectedRows = postStmt.executeUpdate();
-                if (affectedRows == 0) {
-                    throw new SQLException("Creating post failed, no rows affected.");
-                }
+            int affectedRows = postStmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating post failed, no rows affected.");
+            }
 
-                ResultSet generatedKeys = postStmt.getGeneratedKeys();
+            try (ResultSet generatedKeys = postStmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int postId = generatedKeys.getInt(1);
 
@@ -71,7 +71,12 @@ public class PostDAO {
                     throw new SQLException("Creating post failed, no ID obtained.");
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error inserting post", e);
         }
+    }
+
     public List<Post> getAllPosts() throws SQLException, JsonProcessingException {
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT * FROM post";

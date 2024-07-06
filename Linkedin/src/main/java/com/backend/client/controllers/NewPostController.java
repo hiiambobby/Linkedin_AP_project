@@ -1,18 +1,16 @@
 package com.backend.client.controllers;
 
-import com.backend.server.Model.Post;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -28,15 +26,17 @@ public class NewPostController {
     private ImageView imageId;
 
     @FXML
-    private  ImageView videoId;
+    private ImageView videoId;
 
     private Stage dialogStage;
+
     @FXML
     void discardPressed(ActionEvent event) {
         dialogStage.close();
 
 
     }
+
     private List<String> imageUrls = new ArrayList<>();
     private List<String> videoUrls = new ArrayList<>();
     private final String userId = UserEmail.readEmail();
@@ -44,57 +44,71 @@ public class NewPostController {
 
     //use POST
     @FXML
-    void savePressed(ActionEvent event) {
+    void savePressed(ActionEvent event) throws IOException {
         String caption = captionField.getText();
+        if (caption.length() > 3000) {
+            setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Please enter less than 3000 characters");
+            dialogStage.close();
+            return;
+        }
         List<String> imageUrlsConverted = convertToFileUrls(imageUrls);
         List<String> videoUrlsConverted = convertToFileUrls(videoUrls);
 
-        Post newPost = new Post(userId, caption, videoUrlsConverted, imageUrlsConverted);
+        String urlString = "http://localhost:8000/post";
+        URL url = new URL(urlString);
 
-        HttpURLConnection conn = null;
-        OutputStream os = null;
+        HttpURLConnection connection = null;
         try {
-            // Convert Post object to JSON
-            ObjectMapper objectMapper = new ObjectMapper();
-            String postJson = objectMapper.writeValueAsString(newPost);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setDoOutput(true);
 
-            // Send HTTP POST request
-            URL url = new URL("http://localhost:8000/post");
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Content-Length", Integer.toString(postJson.getBytes("utf-8").length));
 
-            // Write JSON data to the request body
-            os = conn.getOutputStream();
-            os.write(postJson.getBytes("utf-8"));
+            // Create JSON body using org.json.JSONObject
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("sender", UserEmail.readEmail());
+            jsonObject.put("text", caption);
+            jsonObject.put("image", imageUrlsConverted);
+            jsonObject.put("video", videoUrlsConverted);
 
-            // Get response from the server
-            int responseCode = conn.getResponseCode();
+
+            String jsonInputString = jsonObject.toString();
+
+            // Write JSON body to the output stream
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("UTF-8");
+                os.write(input, 0, input.length);
+            }
+
+            // Handle the response
+            int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_CREATED) {
-                System.out.println("Post created successfully.");
+                System.out.println("post Sent.");
+                // Optionally, read the response
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    System.out.println("Response: " + response.toString());
+                }
             } else {
-                System.out.println("Failed to create post. Response code: " + responseCode);
+                System.out.println("Failed to send post. Response Code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new IOException("Failed to send message due to I/O error.", e);
         } finally {
-            // Close output stream and connection
-            try {
-                if (os != null) {
-                    os.close();
-                }
-                if (conn != null) {
-                    conn.disconnect();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (connection != null) {
+                connection.disconnect();
+                dialogStage.close();
             }
         }
-
-        dialogStage.close();
     }
+
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }

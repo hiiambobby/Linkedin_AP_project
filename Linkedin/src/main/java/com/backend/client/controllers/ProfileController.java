@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
 public class ProfileController implements Initializable {
 
     @FXML
-    private Button contactInfoBtn;
+    private Label headLine;
     @FXML
     private Label nameLabel;
     @FXML
@@ -86,31 +86,25 @@ public class ProfileController implements Initializable {
     public  JSONObject getPrimaryInfoJSONObject() {
         HttpURLConnection conn = null;
         try {
-            // Retrieve the email from TokenManager
             String email = readEmail();
             System.out.println("Email before encoding: " + email);
 
 
-            // Check if the email is null and handle it
             if (email == null || email.trim().isEmpty()) {
                 System.err.println("Email is null or empty.");
                 setAlert.showAlert(Alert.AlertType.ERROR, "Error", "Email is not available.");
                 return null;
             }
 
-            // Ensure the email ID is URL-encoded
             String encodedEmailId = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
 
             // Construct the URL with the email ID as a query parameter
             URL url = new URL("http://localhost:8000/primaryInfo?id=" + encodedEmailId);
 
-            // Open connection
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            // No token required; we skip setting the Authorization header
 
-            // Get the response code
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 // Read the response
@@ -123,7 +117,6 @@ public class ProfileController implements Initializable {
                 }
                 reader.close();
 
-                // Parse the JSON response
                 return new JSONObject(response.toString());
             } else {
                 // Handle HTTP error response
@@ -158,8 +151,13 @@ public class ProfileController implements Initializable {
 
     private void populateFields(JSONObject jsonObject) {
         // Set other fields based on JSON object
-        nameLabel.setText((jsonObject.optString("firstName", "") + jsonObject.optString("additionalName", "")
-                + jsonObject.optString("lastName", "")));
+        if(jsonObject.optString("additionalName", "") != null)
+        nameLabel.setText((jsonObject.optString("firstName", "") + " ("+jsonObject.optString("additionalName", "")
+               +") " + jsonObject.optString("lastName", "")));
+        else
+            nameLabel.setText((jsonObject.optString("firstName", "") +
+                    " " + jsonObject.optString("lastName", "")));
+        headLine.setText(jsonObject.optString("headTitle", ""));
     }
             public void ContactInfo(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ContactInfo.fxml"));

@@ -4,12 +4,14 @@ import com.backend.server.Controller.PostController;
 import com.backend.server.Model.Comment;
 import com.backend.server.Model.Post;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -54,14 +56,41 @@ public class PostHandler implements HttpHandler {
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
-            } else if (method.equals("POST") && segments.length == 2) {
-                // Handle POST /posts
-                InputStream is = exchange.getRequestBody();
-                Post post = new ObjectMapper().readValue(is, Post.class);
-                postController.addPost(post);
-                exchange.sendResponseHeaders(201, -1);
+            }else if (method.equals("POST") && segments.length == 2) {InputStream is = null;
+                try {
+                    is = exchange.getRequestBody();
+                    String requestBody = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                    System.out.println("Received POST request body: " + requestBody);
 
-            } else if (method.equals("POST") && segments.length == 4 && segments[3].equals("like")) {
+                    // Convert JSON string to Post object
+                    ObjectMapper mapper = new ObjectMapper();
+                    Post post = mapper.readValue(requestBody, Post.class);
+                    System.out.println("Converted Post object: " + post.toString());
+
+                    // Handle the post
+                    postController.addPost(post);
+                    exchange.sendResponseHeaders(201, -1);
+
+                } catch (UnrecognizedPropertyException e) {
+                    System.err.println("Unrecognized field in JSON: " + e.getPropertyName());
+                    e.printStackTrace();
+                    exchange.sendResponseHeaders(400, -1); // Bad Request
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    exchange.sendResponseHeaders(500, -1); // Internal Server Error
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                    }
+
+                }
+            }
+
+            else if (method.equals("POST") && segments.length == 4 && segments[3].equals("like")) {
                 // Handle POST /posts/{id}/like
                 int postId = Integer.parseInt(segments[2]);
                 String userId = new ObjectMapper().readTree(exchange.getRequestBody()).get("user_id").asText();

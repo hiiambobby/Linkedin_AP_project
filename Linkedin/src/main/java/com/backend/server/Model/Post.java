@@ -53,6 +53,13 @@ public class Post {
     }
 
 
+    public List<String> getImage() {
+        return image;
+    }
+
+    public List<String> getVideo() {
+        return video;
+    }
 
     public String getVideoJson() {
         return convertListToJson(video);
