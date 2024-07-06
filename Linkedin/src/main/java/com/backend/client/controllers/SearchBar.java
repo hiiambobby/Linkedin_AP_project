@@ -71,6 +71,10 @@ public class SearchBar {
         newStage.initStyle(StageStyle.DECORATED);
         newStage.show();
     }
+    @FXML
+    void openSearch(MouseEvent event) throws IOException{
+        openNewStage("/fxml/Search.fxml", "Search");
+    }
 
 
     @FXML

@@ -99,6 +99,17 @@ public class MessageController implements Initializable {
         openNewStage("/fxml/Search.fxml", "Search");
     }
 
+    @FXML
+    void openHome(MouseEvent event) throws IOException {
+        openNewStage("/fxml/TimeLine.fxml", "Feed");
+
+    }
+
+    @FXML
+    void openMessages(MouseEvent event) throws IOException{
+        openNewStage("/fxml/MessagePage.fxml", "Messages");
+
+    }
     private void openNewStage(String fxmlPath, String title) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
         Stage currentStage = (Stage) networkId.getScene().getWindow();

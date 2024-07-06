@@ -95,8 +95,20 @@ public class myNetworkController {
         openNewStage("/fxml/Profile.fxml", "Profile");
     }
     @FXML
-    public void openNetwork(MouseEvent mouseEvent) throws IOException {
+    public void openMessages(MouseEvent mouseEvent) throws IOException {
         openNewStage("/fxml/MessagePage.fxml", "Messages");
+    }
+
+    @FXML
+    void openFeed(MouseEvent event) throws IOException{
+        openNewStage("/fxml/TimeLine.fxml", "Feed");
+
+    }
+
+    @FXML
+    void openNetwork(MouseEvent event) throws IOException {
+        openNewStage("/fxml/Network.fxml", "Network");
+
     }
 
     private void openNewStage(String fxmlPath, String title) throws IOException {
