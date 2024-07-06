@@ -187,6 +187,7 @@ public class TimeLineController {
 
     }
 
+    @FXML
     public void searchwithHashtag(ActionEvent event) {
         String keyword = searchField.getText().trim();
         if (keyword.isEmpty()) {
@@ -241,6 +242,8 @@ public class TimeLineController {
                         post.setImage(imageList);
 
                         searchResults.add(post);
+                        getSearchResults(post);
+
                     }
 
                     // Use or display searchResults

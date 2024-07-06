@@ -165,7 +165,7 @@ public class PostController{
         try {
 
             // Make a GET request to fetch usernames who liked the post
-            String urlString = "http://localhost:8000/post/" + "1" + "/likes";
+            String urlString = "http://localhost:8000/post/" + currentPostId + "/likes";
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");

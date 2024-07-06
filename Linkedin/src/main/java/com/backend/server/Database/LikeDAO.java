@@ -39,13 +39,15 @@ public class LikeDAO {
     // Retrieve usernames who liked a specific post
     public List<String> getUsernamesByPostId(int postId) throws SQLException {
         List<String> usernames = new ArrayList<>();
-        String query = "SELECT u.username FROM likes l JOIN users u ON l.user_id = u.user_id WHERE l.post_id = ?";
+       String query = "SELECT u.sender FROM post_like l " +
+                "JOIN post u ON l.user_id = u.sender " +
+                "WHERE l.post_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, postId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    usernames.add(rs.getString("username"));
+                    usernames.add(rs.getString("sender"));
                 }
             }
         }
