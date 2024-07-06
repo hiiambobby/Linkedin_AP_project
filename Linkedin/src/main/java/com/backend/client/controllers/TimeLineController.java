@@ -183,4 +183,73 @@ public class TimeLineController {
         openNewStage("/fxml/Network.fxml", "My Network");
 
     }
+
+    public void searchwithHashtag(ActionEvent event) {
+        String keyword = searchField.getText().trim();
+        if (keyword.isEmpty()) {
+            System.out.println("Search keyword is empty.");
+            return;
+        }
+
+        try {
+            // Define the search URL with the keyword as a query parameter
+            String urlString = "http://localhost:8000/post/hashtag?query=" + URLEncoder.encode(keyword, "UTF-8");
+            URL url = new URL(urlString);
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            // Handle the response
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Read and parse the response
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+                    // Parse JSON response
+                    JSONArray jsonArray = new JSONArray(response.toString());
+                    searchResults.clear(); // Clear previous results
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Post post = new Post();
+                        post.setId(jsonObject.getInt("id"));
+                        post.setSender(jsonObject.getString("sender"));
+                        post.setText(jsonObject.getString("text"));
+
+                        // Convert JSON arrays to lists
+                        JSONArray videoArray = jsonObject.getJSONArray("video");
+                        List<String> videoList = new ArrayList<>();
+                        for (int j = 0; j < videoArray.length(); j++) {
+                            videoList.add(videoArray.getString(j));
+                        }
+                        post.setVideo(videoList);
+
+                        JSONArray imageArray = jsonObject.getJSONArray("image");
+                        List<String> imageList = new ArrayList<>();
+                        for (int j = 0; j < imageArray.length(); j++) {
+                            imageList.add(imageArray.getString(j));
+                        }
+                        post.setImage(imageList);
+
+                        searchResults.add(post);
+                    }
+
+                    // Use or display searchResults
+                    System.out.println("Search Results: " + searchResults);
+                    // Update UI or perform other actions with searchResults
+
+                }
+            } else {
+                System.out.println("Failed to search posts. Response Code: " + responseCode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
