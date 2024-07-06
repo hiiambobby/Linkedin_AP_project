@@ -70,8 +70,6 @@ public class TimeLineController {
         }
 
         try {
-            // Define the search URL with the keyword as a query parameter
-            //keyword?query={keyword}
             String urlString = "http://localhost:8000/post/keyword?query=" + URLEncoder.encode(keyword, "UTF-8");
             URL url = new URL(urlString);
 
@@ -79,10 +77,8 @@ public class TimeLineController {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
 
-            // Handle the response
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Read and parse the response
                 try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                     String inputLine;
                     StringBuilder response = new StringBuilder();
@@ -90,9 +86,8 @@ public class TimeLineController {
                         response.append(inputLine);
                     }
 
-                    // Parse JSON response
                     JSONArray jsonArray = new JSONArray(response.toString());
-                    searchResults.clear(); // Clear previous results
+                    postsVbox.getChildren().clear(); // Clear existing posts
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -101,7 +96,6 @@ public class TimeLineController {
                         post.setSender(jsonObject.getString("sender"));
                         post.setText(jsonObject.getString("text"));
 
-                        // Convert JSON arrays to lists
                         JSONArray videoArray = jsonObject.getJSONArray("video");
                         List<String> videoList = new ArrayList<>();
                         for (int j = 0; j < videoArray.length(); j++) {
@@ -116,12 +110,9 @@ public class TimeLineController {
                         }
                         post.setImage(imageList);
 
-                        searchResults.add(post);
+                        // Add each post to the VBox
+                        getSearchResults(post);
                     }
-
-                    // Use or display searchResults
-                    System.out.println("Search Results: " + searchResults);
-                    // Update UI or perform other actions with searchResults
 
                 }
             } else {
@@ -133,8 +124,20 @@ public class TimeLineController {
     }
 
     // Getters for searchResults if needed
-    public List<Post> getSearchResults() {
-        return searchResults;
+    public void getSearchResults(Post post) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Post.fxml"));
+            VBox postComponent = loader.load();
+
+            // Get the PostController and set the post
+            PostController postController = loader.getController();
+            postController.setPostDetails(post);
+
+            // Add the postComponent to the VBox
+            postsVbox.getChildren().add(postComponent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addPostFeed(String caption) {

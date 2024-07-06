@@ -54,9 +54,9 @@ public class PostController{
     }
 
 
-    public void setPostDetails(Post post, String userId) {
+    public void setPostDetails(Post post) {
         this.currentPostId = post.getId();
-        this.userId = userId;
+        this.userId =  post.getSender();
         captionLabel.setText(post.getText());
         checkIfLiked();
     }
@@ -245,4 +245,3 @@ public class PostController{
         captionLabel.setText("");
     }*/
 
-}

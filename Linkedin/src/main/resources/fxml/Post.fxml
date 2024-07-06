@@ -51,12 +51,6 @@
       <VBox prefHeight="84.0" prefWidth="412.0">
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="37.0" prefWidth="412.0" spacing="5.0">
-               <children>
-                  <Label fx:id="commentsCounterLabel" text="0" />
-                  <Label text="comments" />
-                  <Label fx:id="likesCounterLabel" text="0" />
-                  <Label text="likes" />
-               </children>
                <padding>
                   <Insets right="5.0" />
                </padding>
