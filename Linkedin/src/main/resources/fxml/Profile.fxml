@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.text.Font?>
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="728.0" style="-fx-background-color: #64b5f6;" stylesheets="@/Profile.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="728.0" style="-fx-background-color: #64b5f6;" stylesheets="@/Profile.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.backend.client.controllers.ProfileController">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
@@ -84,19 +84,19 @@
                   </VBox>
                   <VBox prefHeight="422.0" prefWidth="106.0" spacing="10.0" style="-fx-background-color: white;">
                      <children>
-                        <Button fx:id="primaryInfoBtn" mnemonicParsing="false" onAction="#PrimaryInfo" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5;" text="Primary Info" textFill="#1cabcf">
+                        <Button fx:id="primaryInfoBtn" mnemonicParsing="false" onAction="#PrimaryInfo" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5; -fx-background-color: cyan;" text="Primary Info" textFill="#085e73">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="contactInfoBtn" mnemonicParsing="false" onAction="#ContactInfo" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5;" text="Contact Info" textFill="#1cabcf">
+                        <Button fx:id="contactInfoBtn" mnemonicParsing="false" onAction="#ContactInfo" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5; -fx-background-color: cyan;" text="Contact Info" textFill="#085e73">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="addEducationBtn" mnemonicParsing="false" onAction="#addEducation" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5;" text="Add Education" textFill="#1cabcf" />
-                        <Button fx:id="postBtn" mnemonicParsing="false" onAction="#addPost" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5;" text="Add Post" textFill="#1cabcf" />
-                        <Button fx:id="logOut" alignment="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5;" text="Log Out" textFill="#1cabcf">
+                        <Button fx:id="addEducationBtn" mnemonicParsing="false" onAction="#addEducation" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5; -fx-background-color: cyan;" text="Add Education" textFill="#085e73" />
+                        <Button fx:id="postBtn" mnemonicParsing="false" onAction="#addPost" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5; -fx-background-color: cyan;" text="Add Post" textFill="#085e73" />
+                        <Button fx:id="logOut" alignment="CENTER" mnemonicParsing="false" onAction="#logOut" prefHeight="26.0" prefWidth="94.0" style="-fx-background-radius: 5; -fx-background-color: cyan;" text="Log Out" textFill="#085e73">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>

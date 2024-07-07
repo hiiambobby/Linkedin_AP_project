@@ -151,7 +151,8 @@ public class ProfileController implements Initializable {
 
     private void populateFields(JSONObject jsonObject) {
         // Set other fields based on JSON object
-        if(jsonObject.optString("additionalName", "") != null)
+        String additionalName = jsonObject.optString("additionalName", "");
+        if(additionalName != null || additionalName.length() > 0)
         nameLabel.setText((jsonObject.optString("firstName", "") + " ("+jsonObject.optString("additionalName", "")
                +") " + jsonObject.optString("lastName", "")));
         else
